@@ -8,7 +8,7 @@
 <link rel="icon" href="logo/refract-iris-64.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
   :root{
     /* ─── THREE COLORS ───────────────────────────────
@@ -46,7 +46,7 @@
     --border-2: rgba(29,11,64,.20);
 
     --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-    --serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+    --serif: 'Inter', ui-sans-serif, system-ui, sans-serif;
     --mono: 'JetBrains Mono', ui-monospace, monospace;
 
     --radius: 14px;
@@ -153,7 +153,7 @@
   .nav-in{display:flex;align-items:center;justify-content:space-between;height:66px;}
   .brand{display:flex;align-items:center;gap:11px;}
   .brand .mark{width:30px;height:30px;flex:none;}
-  .brand .name{font-family:var(--serif);font-weight:600;font-size:19px;letter-spacing:-.005em;color:var(--ink);}
+  .brand .name{font-family:var(--font-sans);font-weight:800;font-size:18px;letter-spacing:-.01em;color:var(--ink);}
   .nav-links{display:flex;align-items:center;gap:30px;}
   .nav-links a{font-size:14.5px;font-weight:500;color:var(--ink-2);}
   .nav-links a:hover{color:var(--p);}
@@ -164,6 +164,23 @@
   }
   .icon-btn:hover{border-color:var(--p);color:var(--p);}
   .icon-btn svg{width:18px;height:18px;}
+  /* language switcher */
+  .lang-btn{width:auto;gap:7px;padding:0 12px;font-family:var(--mono);font-size:12.5px;font-weight:600;letter-spacing:.04em;color:var(--ink-2);}
+  .lang-btn:hover{color:var(--p);}
+  .lang-btn svg{width:16px;height:16px;}
+  .lang-btn .lang-code{line-height:1;display:inline-block;}
+  @keyframes langCodeIn{0%{opacity:0;transform:translateY(7px);}100%{opacity:1;transform:none;}}
+  .lang-code.flip{animation:langCodeIn .4s cubic-bezier(.2,0,0,1);}
+  @media (prefers-reduced-motion:reduce){
+    .lang-code.flip{animation:none;}
+  }
+  .m-lang{display:flex;gap:8px;margin-top:4px;}
+  .m-lang button{
+    flex:1;display:flex;align-items:center;justify-content:center;gap:7px;
+    height:44px;border-radius:11px;cursor:pointer;font-family:var(--font-sans);
+    font-size:14px;font-weight:600;background:var(--card);border:1px solid var(--border-2);color:var(--ink-2);
+  }
+  .m-lang button.on{background:var(--p-tint);border-color:var(--p-tint-2);color:var(--p);}
   html[data-theme="dark"] .icon-btn .i-moon{display:none;}
   html:not([data-theme="dark"]) .icon-btn .i-sun{display:none;}
   @media (max-width:860px){ .nav-links{display:none;} }
@@ -206,9 +223,9 @@
 
   .hero h1{
     margin:0;
-    font-family:var(--serif);font-weight:600;
-    font-size:clamp(46px,6.4vw,84px);line-height:1.0;
-    letter-spacing:-.015em;color:var(--ink);text-wrap:balance;
+    font-family:var(--font-sans);font-weight:800;
+    font-size:clamp(38px,6.2vw,76px);line-height:1.03;
+    letter-spacing:-.03em;color:var(--ink);text-wrap:balance;
   }
   .hero h1 .hl{color:var(--p);}
   .hero p.sub{
@@ -269,13 +286,13 @@
   .mod-detail{padding:28px;min-height:330px;display:flex;flex-direction:column;}
   .md-top{display:flex;align-items:center;gap:16px;}
   .md-ic{width:70px;height:70px;border-radius:16px;flex:none;display:grid;place-items:center;font-family:var(--serif);font-weight:700;font-size:28px;color:#0a0a0e;}
-  .md-top h3{margin:0;font-family:var(--serif);font-size:25px;font-weight:600;letter-spacing:-.01em;color:var(--ink);}
+  .md-top h3{margin:0;font-family:var(--font-sans);font-size:24px;font-weight:800;letter-spacing:-.02em;color:var(--ink);}
   .md-tags{display:flex;gap:7px;margin-top:8px;flex-wrap:wrap;}
   .md-tag{font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--p);background:var(--p-tint);border:1px solid var(--p-tint-2);border-radius:6px;padding:3px 8px;}
   .md-desc{margin:20px 0 0;font-size:15px;color:var(--ink-2);line-height:1.65;}
   .md-stats{display:flex;gap:28px;margin:22px 0 0;padding:20px 0 0;border-top:1px solid var(--border);}
   .md-stat .k{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);}
-  .md-stat .v{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--ink);margin-top:4px;}
+  .md-stat .v{font-family:var(--font-sans);font-size:20px;font-weight:800;letter-spacing:-.01em;color:var(--ink);margin-top:4px;}
   .md-act{margin-top:auto;padding-top:24px;display:flex;gap:12px;flex-wrap:wrap;}
   .showcase-foot{text-align:center;margin-top:34px;}
   .mod-ic.has-img,.md-ic.has-img{overflow:hidden;}
@@ -294,7 +311,7 @@
   section.block{padding:92px 0;}
   .sec-head{max-width:660px;margin-bottom:46px;}
   .sec-head.center{margin-left:auto;margin-right:auto;text-align:center;}
-  .sec-head h2{margin:16px 0 0;font-family:var(--serif);font-size:clamp(28px,3.7vw,44px);font-weight:600;letter-spacing:-.01em;line-height:1.14;color:var(--ink);text-wrap:balance;}
+  .sec-head h2{margin:16px 0 0;font-family:var(--font-sans);font-size:clamp(28px,3.6vw,40px);font-weight:800;letter-spacing:-.025em;line-height:1.1;color:var(--ink);text-wrap:balance;}
   .sec-head p{margin:14px 0 0;font-size:16.5px;color:var(--ink-2);line-height:1.6;text-wrap:pretty;}
   .sec-head.center .kicker::after{content:"";width:20px;height:1.5px;background:var(--p);opacity:.5;}
 
@@ -386,7 +403,7 @@
   @media (max-width:820px){.oss{grid-template-columns:1fr;padding:40px 30px;gap:28px;}}
   .oss .kicker{color:var(--lilac);}
   .oss .kicker::before{background:var(--lilac);opacity:.6;}
-  .oss h2{margin:16px 0 0;font-family:var(--serif);font-size:clamp(26px,3.2vw,38px);font-weight:600;letter-spacing:-.01em;line-height:1.1;color:#fff;}
+  .oss h2{margin:16px 0 0;font-family:var(--font-sans);font-size:clamp(26px,3.2vw,36px);font-weight:800;letter-spacing:-.02em;line-height:1.1;color:#fff;}
   .oss p{margin:14px 0 0;font-size:16px;color:rgba(255,255,255,.72);line-height:1.6;max-width:46ch;}
   .oss .actions{display:flex;flex-direction:column;gap:12px;}
   .oss .btn-primary{background:#fff;color:#1d0b40;}
@@ -566,16 +583,24 @@
   @media (max-width:680px){
     .wrap{padding:0 20px;}
     section.block{padding:60px 0;}
-    .hero-in{padding-top:44px;}
-    .stats{margin-top:64px;}
-    .shot-wrap{margin-top:40px;}
+    .hero-in{padding-top:40px;padding-bottom:48px;gap:38px;}
+    .stats{margin-top:0;}
+    .hero-shot{max-width:480px;border-radius:14px;}
     .feat-grid{gap:14px;}
     .oss{border-radius:18px;}
-    .hero-cta .btn{flex:1 1 auto;justify-content:center;}
-    .win-bar .title{font-size:11px;}
+    .hero-cta{gap:10px;}
+    .hero-cta .btn-primary{flex:1 1 auto;justify-content:center;}
+    .hero-cta .btn-link{flex:1 1 100%;justify-content:center;text-align:center;}
+    .loaders{gap:8px;}
+    .ver-row{gap:10px;}
+    .mod-detail{min-height:0;padding:22px;}
+    .md-ic{width:56px;height:56px;font-size:22px;}
+    .md-stats{gap:20px;flex-wrap:wrap;}
+    .sec-head{margin-bottom:34px;}
   }
   @media (max-width:600px){
     .feat.wide,.feat.fill{grid-column:auto;}
+    .md-act .btn{flex:1 1 auto;justify-content:center;}
   }
 </style>
 </head>
@@ -600,6 +625,10 @@
       <a href="#faq">FAQ</a>
     </nav>
     <div class="nav-cta">
+      <button class="icon-btn lang-btn" id="langBtn" type="button" aria-label="Change language" title="Change language / Змінити мову">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18z"/></svg>
+        <span class="lang-code" id="langCode">EN</span>
+      </button>
       <button class="icon-btn" id="themeBtn" type="button" aria-label="Toggle dark theme" title="Toggle theme">
         <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.6 6.6 0 0 0 9.8 9.8z"/></svg>
         <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
@@ -622,6 +651,10 @@
     <a class="m-link" href="#gallery">Screenshots</a>
     <a class="m-link" href="#download">Download</a>
     <a class="m-link" href="#faq">FAQ</a>
+    <div class="m-lang">
+      <button type="button" data-lang="en" id="mLangEn">English</button>
+      <button type="button" data-lang="uk" id="mLangUk">Українська</button>
+    </div>
     <div class="m-actions">
       <a class="btn btn-ghost" href="https://github.com/RefractMC/Refract_MC" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49 0-.24-.01-.88-.01-1.73-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.62.07-.62 1 .07 1.53 1.06 1.53 1.06.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.55-1.14-4.55-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05A9.34 9.34 0 0 1 12 6.84c.85 0 1.71.12 2.51.34 1.91-1.33 2.75-1.05 2.75-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.06.36.32.68.94.68 1.9 0 1.37-.01 2.48-.01 2.82 0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.25C22 6.58 17.52 2 12 2z"/></svg>
@@ -767,7 +800,7 @@
     <div class="spot">
       <div class="reveal">
         <span class="kicker">Mod browser</span>
-        <h2 style="margin:16px 0 0;font-family:var(--serif);font-size:clamp(26px,3.2vw,38px);font-weight:600;letter-spacing:-.01em;line-height:1.1;">Find a mod, hit install, play.</h2>
+        <h2 style="margin:16px 0 0;font-family:var(--font-sans);font-size:clamp(26px,3.2vw,36px);font-weight:800;letter-spacing:-.02em;line-height:1.1;">Find a mod, hit install, play.</h2>
         <p style="margin:14px 0 0;font-size:16px;color:var(--ink-2);line-height:1.6;max-width:46ch;">Search 60,000+ projects across Modrinth and CurseForge, filter by loader and version, and install straight into the right instance — dependencies resolved for you.</p>
         <div class="list">
           <div class="row">
@@ -1066,6 +1099,259 @@
     setTheme(saved);
     const btn = document.getElementById('themeBtn');
     if (btn) btn.addEventListener('click', ()=> setTheme(window.getRefractTheme() === 'dark' ? 'light' : 'dark'));
+  })();
+
+  // ── i18n: English ⇄ Ukrainian ────────────────────────────────
+  (function(){
+    const UK = {
+      // nav
+      "Features":"Можливості",
+      "Browse mods":"Огляд модів",
+      "Screenshots":"Скриншоти",
+      "Download":"Завантажити",
+      "FAQ":"Питання",
+      "Download for free":"Завантажити безкоштовно",
+      // hero
+      "View release notes":"Примітки до випуску",
+      "Mod Launcher":"Лаунчер модів",
+      "Mods for Minecraft, minus the hassle. Browse, install and update mods in a couple of clicks — instances, accounts and Java all handled for you.":
+        "Моди для Minecraft без зайвого клопоту. Шукайте, встановлюйте та оновлюйте моди у кілька кліків — збірки, акаунти та Java працюють самі.",
+      "All downloads →":"Усі завантаження →",
+      "Free & open source · Windows · macOS · Linux · No account required to browse":
+        "Безкоштовний і відкритий код · Windows · macOS · Linux · Огляд без акаунта",
+      "Works with":"Працює з",
+      // features
+      "Make Minecraft yours.":"Зробіть Minecraft своїм.",
+      "Refract handles the whole loop — instances, accounts, mods, Java and updates — so you spend your time playing, not configuring.":
+        "Refract бере на себе весь процес — збірки, акаунти, моди, Java та оновлення — щоб ви грали, а не налаштовували.",
+      "Instance management":"Керування збірками",
+      "Create, group, duplicate, export and delete instances. Drag cards between groups and set custom JVM args per instance.":
+        "Створюйте, групуйте, дублюйте, експортуйте та видаляйте збірки. Перетягуйте картки між групами й задавайте власні аргументи JVM для кожної збірки.",
+      "Modrinth & CurseForge":"Modrinth і CurseForge",
+      "Browse and install mods, resource packs, shaders, datapacks and modpacks from both platforms without leaving the app.":
+        "Шукайте та встановлюйте моди, ресурс-паки, шейдери, датапаки й модпаки з обох платформ, не виходячи з програми.",
+      "Java, handled":"Java під ключ",
+      "The right JRE — 8, 17 or 21 — is downloaded automatically for every Minecraft version. No PATH wrangling, ever.":
+        "Потрібний JRE — 8, 17 чи 21 — завантажується автоматично для кожної версії Minecraft. Жодного клопоту з PATH.",
+      "Microsoft & offline":"Microsoft і офлайн",
+      "Full Microsoft device-code login, offline profiles, or any third-party Yggdrasil server — with live skin faces on the account page.":
+        "Повний вхід через Microsoft (device-code), офлайн-профілі або будь-який сторонній сервер Yggdrasil — з обличчями скінів на сторінці акаунта.",
+      "Mod update checker":"Перевірка оновлень модів",
+      "Instances badge when mods fall behind. Review what's new on the Updates tab and update one mod — or all of them — in a click.":
+        "Збірки позначаються, коли моди застаріли. Перегляньте новинки на вкладці «Оновлення» та оновіть один мод — або всі — одним кліком.",
+      "Import from MultiMC / Prism":"Імпорт з MultiMC / Prism",
+      "Bring your existing setup across in one step — mods, configs and resource packs included. Nothing left behind.":
+        "Перенесіть наявне налаштування за один крок — разом із модами, конфігами та ресурс-паками. Нічого не загубиться.",
+      "Show the instance, version and elapsed playtime in Discord. Refract also tracks total time played in every instance.":
+        "Показуйте збірку, версію та час гри в Discord. Refract також рахує загальний час гри в кожній збірці.",
+      "Friends panel":"Панель друзів",
+      "NameMC links, copy-UUID, a whitelist helper and inline notes — a tidy roster for the people you actually play with.":
+        "Посилання на NameMC, копіювання UUID, помічник вайтлиста та нотатки — зручний список тих, з ким ви граєте.",
+      "Silent auto-updates":"Тихі автооновлення",
+      "Refract updates itself in the background and surfaces a tidy \"What's New\" panel — with a Restart button right in the title bar.":
+        "Refract оновлюється у фоні й показує акуратну панель «Що нового» — з кнопкою перезапуску прямо в заголовку вікна.",
+      // stats
+      "Mods to browse":"Модів для перегляду",
+      "Mod platforms":"Платформи модів",
+      "Java auto-installed":"Java авто-встановлення",
+      "Desktop platforms":"Платформи ПК",
+      // showcase
+      "Showcase":"Вітрина",
+      "Browse & install mods in seconds.":"Огляд і встановлення модів за секунди.",
+      "Discover popular mods, check the details, and install with a single click — straight into the instance you want.":
+        "Знаходьте популярні моди, дивіться деталі та встановлюйте одним кліком — одразу в потрібну збірку.",
+      "Popular mods":"Популярні моди",
+      "Browse all mods →":"Переглянути всі моди →",
+      "Install":"Встановити",
+      "View details":"Докладніше",
+      "Downloads":"Завантаження",
+      "Followers":"Підписники",
+      "Source":"Джерело",
+      // spotlight
+      "Mod browser":"Браузер модів",
+      "Find a mod, hit install, play.":"Знайдіть мод, натисніть «Встановити», грайте.",
+      "Search 60,000+ projects across Modrinth and CurseForge, filter by loader and version, and install straight into the right instance — dependencies resolved for you.":
+        "Шукайте серед 60 000+ проєктів на Modrinth і CurseForge, фільтруйте за лоадером і версією та встановлюйте одразу в потрібну збірку — залежності розв'язуються автоматично.",
+      "Filter the way you think":"Фільтруйте, як вам зручно",
+      "By category, loader (Fabric / Forge / Quilt / NeoForge) and Minecraft version, all at once.":
+        "За категорією, лоадером (Fabric / Forge / Quilt / NeoForge) та версією Minecraft — усе одразу.",
+      "Mod profiles per instance":"Профілі модів для збірки",
+      "Save named sets like \"Survival\" or \"Performance\" and batch-toggle mods on apply.":
+        "Зберігайте набори на кшталт «Survival» чи «Performance» і вмикайте моди пакетно при застосуванні.",
+      "Add local jars too":"Додавайте локальні jar-файли",
+      "Drop in a":"Перетягніть",
+      "straight from disk when a mod isn't on either platform.":
+        ".jar прямо з диска, коли мода немає на жодній платформі.",
+      "Modrinth · 61,868 results":"Modrinth · 61 868 результатів",
+      // gallery
+      "A look around":"Огляд інтерфейсу",
+      "Every screen, considered.":"Кожен екран продуманий.",
+      "From the instance library to the mod browser, skins and settings — Refract is one coherent, keyboard-friendly app. Click any shot to see it full size.":
+        "Від бібліотеки збірок до браузера модів, скінів і налаштувань — Refract це цілісна програма, зручна з клавіатури. Натисніть будь-який знімок, щоб відкрити на весь екран.",
+      "Swipe or drag to explore →":"Гортайте або перетягуйте →",
+      "Browse Mods":"Огляд модів",
+      "Instance Library":"Бібліотека збірок",
+      "Home":"Головна",
+      "Settings":"Налаштування",
+      "Appearance":"Вигляд",
+      "Skins":"Скіни",
+      "Profile":"Профіль",
+      // download
+      "Get Refract":"Отримати Refract",
+      "Download for your platform.":"Завантажте для вашої платформи.",
+      "Free, open source and self-updating. Grab the latest release — version":
+        "Безкоштовний, з відкритим кодом і самооновленням. Завантажте останній випуск — версію",
+      "— below.":"— нижче.",
+      "Your OS":"Ваша ОС",
+      "Windows 10 / 11 · 64-bit":"Windows 10 / 11 · 64-розрядна",
+      "Download installer":"Завантажити інсталятор",
+      "Intel & Apple Silicon":"Intel і Apple Silicon",
+      "Download for Apple Silicon":"Завантажити для Apple Silicon",
+      "AppImage · Debian / Ubuntu":"AppImage · Debian / Ubuntu",
+      "Download AppImage":"Завантажити AppImage",
+      "Direct download ·":"Пряме завантаження ·",
+      "all versions & checksums":"усі версії та контрольні суми",
+      // open source
+      "Free & open source":"Безкоштовний і відкритий код",
+      "Built in the open, licensed for everyone.":"Створено відкрито, ліцензовано для всіх.",
+      "Refract is GPL-3.0 and developed in public. Read the code, file an issue, translate the UI, or open a pull request — the whole launcher is yours to inspect and improve.":
+        "Refract має ліцензію GPL-3.0 і розробляється публічно. Читайте код, повідомляйте про проблеми, перекладайте інтерфейс або відкривайте pull request — увесь лаунчер відкритий для вас.",
+      "Star on GitHub":"Зірка на GitHub",
+      "Help translate":"Допомогти з перекладом",
+      // faq
+      "Good to know":"Корисно знати",
+      "Questions, answered.":"Відповіді на питання.",
+      "Is Refract really free?":"Refract справді безкоштовний?",
+      "Yes. Refract is completely free and open source under the GPL-3.0 license. There's no paid tier, no account wall and no telemetry-for-profit — download a build and play.":
+        "Так. Refract повністю безкоштовний і з відкритим кодом під ліцензією GPL-3.0. Немає платних версій, обовʼязкових акаунтів чи телеметрії заради прибутку — завантажте збірку і грайте.",
+      "Which version of Minecraft does it support?":"Які версії Minecraft підтримуються?",
+      "Minecraft: Java Edition. You pick any Minecraft version from a live version picker when you create an instance, and Refract sets everything up — including the matching Java runtime.":
+        "Minecraft: Java Edition. Ви обираєте будь-яку версію з живого списку при створенні збірки, а Refract налаштовує все — зокрема відповідний рантайм Java.",
+      "Do I need to install Java myself?":"Чи треба встановлювати Java самостійно?",
+      "No. Refract auto-downloads the correct JRE — Java 8, 17 or 21 — for each Minecraft version, so you never have to manage installations or environment variables.":
+        "Ні. Refract сам завантажує потрібний JRE — Java 8, 17 чи 21 — для кожної версії Minecraft, тож вам не треба керувати встановленнями чи змінними середовища.",
+      "Do I need a Microsoft account?":"Чи потрібен акаунт Microsoft?",
+      "You can sign in with a Microsoft account via the official device-code flow, use an offline profile, or connect any third-party Yggdrasil authentication server. Browsing mods needs no account at all.":
+        "Можна увійти через акаунт Microsoft за офіційним device-code, користуватися офлайн-профілем або підключити сторонній сервер автентифікації Yggdrasil. Для огляду модів акаунт не потрібен.",
+      "Can I bring my instances from MultiMC or Prism?":"Чи можна перенести збірки з MultiMC або Prism?",
+      "Yes — Refract imports MultiMC and Prism instances directly, including their mods, configs and resource packs, in a single step.":
+        "Так — Refract імпортує збірки MultiMC і Prism напряму, разом із модами, конфігами та ресурс-паками, за один крок.",
+      "Which platforms can I run it on?":"На яких платформах він працює?",
+      "Windows (installer), macOS (universal DMG for Intel and Apple Silicon) and Linux (AppImage and .deb). The app keeps itself up to date silently in the background.":
+        "Windows (інсталятор), macOS (універсальний DMG для Intel і Apple Silicon) та Linux (AppImage і .deb). Програма тихо оновлюється у фоні.",
+      // footer
+      "A fast, modern Minecraft launcher built with Electron and React. Free, open source, and yours.":
+        "Швидкий сучасний лаунчер Minecraft на Electron і React. Безкоштовний, з відкритим кодом і ваш.",
+      "Product":"Продукт",
+      "Project":"Проєкт",
+      "Community":"Спільнота",
+      "Releases":"Випуски",
+      "Changelog":"Список змін",
+      "Report an issue":"Повідомити про проблему",
+      "Translate":"Переклад",
+      "Code: GPL-3.0-only · Logo & assets: CC BY-SA 4.0":"Код: GPL-3.0-only · Логотип і ресурси: CC BY-SA 4.0",
+      "Refract is not affiliated with Mojang or Microsoft.":"Refract не пов'язаний з Mojang чи Microsoft.",
+      // cookie
+      "We use a couple of cookies.":"Ми використовуємо кілька cookie.",
+      "Refract stores a theme preference locally and uses anonymous analytics to improve the launcher site. No tracking-for-profit.":
+        "Refract зберігає налаштування теми локально й використовує анонімну аналітику, щоб покращувати сайт. Жодного стеження заради прибутку.",
+      "Learn more":"Дізнатися більше",
+      "Decline":"Відхилити",
+      "Accept":"Прийняти"
+    };
+
+    const SKIP = {SCRIPT:1,STYLE:1,TEMPLATE:1,NOSCRIPT:1,SVG:1,svg:1,PATH:1,path:1};
+    const originals = new WeakMap();
+    const KEY = 'refract-lang';
+    let cur = 'en';
+
+    function collectTextNodes(){
+      const out = [];
+      const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+        acceptNode(n){
+          if (!n.nodeValue || !n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+          let p = n.parentNode;
+          while (p && p.nodeType === 1){
+            if (SKIP[p.nodeName] || p.getAttribute && p.getAttribute('translate') === 'no') return NodeFilter.FILTER_REJECT;
+            p = p.parentNode;
+          }
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      while (w.nextNode()) out.push(w.currentNode);
+      return out;
+    }
+
+    function apply(lang){
+      const nodes = collectTextNodes();
+      nodes.forEach(function(n){
+        const raw = n.nodeValue;
+        const key = raw.trim();
+        if (lang === 'en'){
+          if (originals.has(n)) n.nodeValue = originals.get(n);
+        } else {
+          const t = UK[key];
+          if (t){
+            if (!originals.has(n)) originals.set(n, raw);
+            n.nodeValue = raw.replace(key, t);
+          }
+        }
+      });
+      cur = lang;
+      document.documentElement.lang = lang;
+      const code = document.getElementById('langCode');
+      if (code) code.textContent = lang === 'uk' ? 'UA' : 'EN';
+      document.querySelectorAll('.m-lang button').forEach(function(b){
+        b.classList.toggle('on', b.getAttribute('data-lang') === lang);
+      });
+      try { localStorage.setItem(KEY, lang); } catch(e){}
+    }
+
+    window.setRefractLang = apply;
+    window.getRefractLang = function(){ return cur; };
+
+    // animated language switch (globe spin + code flip + content cross-fade)
+    let animating = false;
+    function switchTo(lang){
+      if (lang === cur || animating) return;
+      const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+      const btn = document.getElementById('langBtn');
+      const code = document.getElementById('langCode');
+      const svg = btn && btn.querySelector('svg');
+      function flipCode(){ if (code){ code.classList.remove('flip'); void code.offsetWidth; code.classList.add('flip'); } }
+      if (reduce){ apply(lang); flipCode(); return; }
+      // spin the globe
+      if (svg && svg.animate) svg.animate([{transform:'rotate(0deg)'},{transform:'rotate(360deg)'}],{duration:550,easing:'cubic-bezier(.2,0,0,1)'});
+      // cross-fade page content (WAAPI self-cleans back to base opacity)
+      const targets = [document.querySelector('main'), document.querySelector('footer.foot')].filter(Boolean);
+      targets.forEach(function(t){
+        if (t.animate) t.animate(
+          [{opacity:1,filter:'blur(0px)'},{opacity:.35,filter:'blur(2px)'},{opacity:1,filter:'blur(0px)'}],
+          {duration:560,easing:'ease',offset:[0,.32,1]}
+        );
+      });
+      animating = true;
+      setTimeout(function(){ apply(lang); flipCode(); animating = false; }, 175);
+    }
+    window.toggleRefractLang = function(){ switchTo(cur === 'uk' ? 'en' : 'uk'); };
+
+    // re-translate dynamically-rendered showcase content
+    const sc = document.querySelector('.showcase');
+    if (sc) new MutationObserver(function(){ if (cur !== 'en') apply(cur); })
+      .observe(sc, {childList:true, subtree:true});
+
+    function init(){
+      let saved = 'en';
+      try { saved = localStorage.getItem(KEY) || 'en'; } catch(e){}
+      if (saved === 'uk') apply('uk'); else apply('en');
+      const btn = document.getElementById('langBtn');
+      if (btn) btn.addEventListener('click', function(){ switchTo(cur === 'uk' ? 'en' : 'uk'); });
+      document.querySelectorAll('.m-lang button').forEach(function(b){
+        b.addEventListener('click', function(){ switchTo(b.getAttribute('data-lang')); });
+      });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
   })();
 
   // ── live download links from the GitHub release ──────────────
