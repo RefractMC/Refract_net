@@ -5,6 +5,21 @@
 <title>Refract — A fast, modern Minecraft launcher</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="theme-color" content="#f2f0eb" />
+<script>
+  /* pre-paint theme: set before first render to avoid a white flash.
+     Honors a saved choice, else the visitor's OS dark preference. */
+  (function(){
+    try{
+      var KEY='refract-theme-v2';
+      var saved=localStorage.getItem(KEY);
+      var osDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches;
+      var mode=saved||(osDark?'dark':'light');
+      if(mode==='dark') document.documentElement.setAttribute('data-theme','dark');
+      var mc=document.querySelector('meta[name="theme-color"]');
+      if(mc) mc.setAttribute('content', mode==='dark' ? '#14201c' : '#f2f0eb');
+    }catch(e){}
+  })();
+</script>
 <link rel="icon" href="logo/refract-iris-64.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1132,7 +1147,7 @@
     window.setRefractTheme = setTheme;
     window.getRefractTheme = () => root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
     let saved = 'light';
-    try { saved = localStorage.getItem(KEY) || 'light'; } catch(e){}
+    try { saved = localStorage.getItem(KEY) || ((window.matchMedia && window.matchMedia('(prefers-color-scheme:dark)').matches) ? 'dark' : 'light'); } catch(e){}
     setTheme(saved);
     const btn = document.getElementById('themeBtn');
     if (btn) btn.addEventListener('click', ()=> setTheme(window.getRefractTheme() === 'dark' ? 'light' : 'dark'));
