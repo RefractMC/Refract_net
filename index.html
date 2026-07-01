@@ -1,21 +1,10 @@
 <!doctype html>
 <html lang="en">
 <head>
-
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-MX248BTV0T"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-MX248BTV0T');
-</script>
-  
 <meta charset="utf-8" />
 <title>Refract — A fast, modern Minecraft launcher</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="theme-color" content="#f2f0eb" />
+<meta name="theme-color" content="#f7f7f9" />
 <script>
   /* pre-paint theme: set before first render to avoid a white flash.
      Honors a saved choice, else the visitor's OS dark preference. */
@@ -27,57 +16,58 @@
       var mode=saved||(osDark?'dark':'light');
       if(mode==='dark') document.documentElement.setAttribute('data-theme','dark');
       var mc=document.querySelector('meta[name="theme-color"]');
-      if(mc) mc.setAttribute('content', mode==='dark' ? '#14201c' : '#f2f0eb');
+      if(mc) mc.setAttribute('content', mode==='dark' ? '#0a0a0d' : '#f7f7f9');
     }catch(e){}
   })();
 </script>
 <link rel="icon" href="logo/refract-iris-64.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
   :root{
-    /* ─── BREW PALETTE ───────────────────────────────
-       Warm cream canvas · four-tier green · house-green
-       dark feature bands. Solid color-block, no gradients. */
-    --cream:  #f2f0eb;   /* neutral-warm page canvas    */
-    --green:  #00754A;   /* green accent — CTAs & links */
-    --ink:    #1c1d19;   /* warm near-black text         */
-    --lilac:  #d4e9e2;   /* green-light — pale accent on dark bands */
+    /* ─── INDIGO PALETTE ──────────────────────────────
+       Near-white cool canvas · one restrained indigo
+       accent · hairline borders, flat surfaces, no
+       gradients. Linear/Vercel-style SaaS polish. */
+    --cream:  #f7f7f9;   /* neutral-cool page canvas     */
+    --green:  #5754e0;   /* accent — CTAs & links (named for tweaks compat) */
+    --ink:    #13141a;   /* near-black text              */
+    --lilac:  #cfd0fb;   /* pale accent on dark bands    */
 
     /* surfaces */
     --bg:     var(--cream);
-    --band:   #edebe9;   /* ceramic section wash         */
-    --band-2: #edebe9;
+    --band:   #eef0f3;   /* section wash                 */
+    --band-2: #eef0f3;
     --card:   #ffffff;
 
-    /* green, kept tweakable as one knob */
+    /* accent, kept tweakable as one knob */
     --p:        var(--green);
-    --p-hover:  #006241;   /* darken-on-press = starbucks green */
+    --p-hover:  #4441c4;
     --p-bright: var(--green);
-    --p-deep:   #006241;   /* emphasis text = starbucks green   */
-    --p-tint:   rgba(0,117,74,.08);
-    --p-tint-2: rgba(0,117,74,.17);
+    --p-deep:   #3f3cb8;
+    --p-tint:   rgba(87,84,224,.08);
+    --p-tint-2: rgba(87,84,224,.16);
 
-    /* always-dark blocks = house-green feature bands */
-    --panel: #1E3932;
-    --logo-op: .06;
+    /* always-dark blocks = ink-navy feature bands */
+    --panel: #0d0e14;
+    --logo-op: .04;
 
     /* text + lines = ink at opacity */
-    --ink-2: rgba(29,11,64,.66);
-    --ink-3: rgba(29,11,64,.46);
-    --ink-4: rgba(29,11,64,.36);
-    --border:   rgba(29,11,64,.11);
-    --border-2: rgba(29,11,64,.20);
+    --ink-2: rgba(19,20,26,.62);
+    --ink-3: rgba(19,20,26,.44);
+    --ink-4: rgba(19,20,26,.32);
+    --border:   rgba(19,20,26,.085);
+    --border-2: rgba(19,20,26,.16);
 
-    --font-sans: 'Manrope', 'Inter', ui-sans-serif, system-ui, sans-serif;
-    --serif: 'Manrope', 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --serif: 'Inter', ui-sans-serif, system-ui, sans-serif;
     --mono: 'JetBrains Mono', ui-monospace, monospace;
 
-    --radius: 12px;
-    --shadow-sm: 0 0 .5px rgba(0,0,0,.14), 0 1px 1px rgba(0,0,0,.10);
-    --shadow:    0 0 .5px rgba(0,0,0,.14), 0 8px 18px -10px rgba(0,0,0,.16);
-    --shadow-lg: 0 0 1px rgba(0,0,0,.14), 0 26px 54px -30px rgba(0,0,0,.26);
+    --radius: 10px;
+    --shadow-sm: 0 1px 1px rgba(15,15,25,.06);
+    --shadow:    0 1px 1px rgba(15,15,25,.05), 0 10px 24px -14px rgba(15,15,25,.14);
+    --shadow-lg: 0 1px 1px rgba(15,15,25,.05), 0 30px 60px -30px rgba(15,15,25,.22);
     --maxw: 1160px;
   }
 
@@ -86,31 +76,31 @@
      lilac/white becomes the text, violet brightens so
      it carries on a dark ground. */
   html[data-theme="dark"]{
-    --bg:     #14201c !important;
-    --band:   #1a2823 !important;
-    --band-2: #1a2823 !important;
-    --card:   #1e2d27 !important;
+    --bg:     #0a0a0d !important;
+    --band:   #111218 !important;
+    --band-2: #111218 !important;
+    --card:   #15161d !important;
 
-    --ink:   #f3f1ea !important;
-    --ink-2: rgba(243,241,234,.64) !important;
-    --ink-3: rgba(243,241,234,.46) !important;
-    --ink-4: rgba(243,241,234,.34) !important;
-    --border:   rgba(243,241,234,.10) !important;
-    --border-2: rgba(243,241,234,.19) !important;
+    --ink:   #f4f4f6 !important;
+    --ink-2: rgba(244,244,246,.64) !important;
+    --ink-3: rgba(244,244,246,.46) !important;
+    --ink-4: rgba(244,244,246,.32) !important;
+    --border:   rgba(244,244,246,.09) !important;
+    --border-2: rgba(244,244,246,.17) !important;
 
-    --p:        #57b78f !important;
-    --p-hover:  #79cda8 !important;
-    --p-bright: #57b78f !important;
-    --p-deep:   #f3f1ea !important;
-    --p-tint:   rgba(87,183,143,.14) !important;
-    --p-tint-2: rgba(87,183,143,.26) !important;
+    --p:        #8284f0 !important;
+    --p-hover:  #9b9cf5 !important;
+    --p-bright: #8284f0 !important;
+    --p-deep:   #f4f4f6 !important;
+    --p-tint:   rgba(130,132,240,.16) !important;
+    --p-tint-2: rgba(130,132,240,.28) !important;
 
-    --panel: #0d1714 !important;
-    --logo-op: .05 !important;
+    --panel: #060709 !important;
+    --logo-op: .035 !important;
 
     --shadow-sm: 0 1px 2px rgba(0,0,0,.5) !important;
-    --shadow:    0 14px 30px -16px rgba(0,0,0,.7) !important;
-    --shadow-lg: 0 40px 80px -34px rgba(0,0,0,.8) !important;
+    --shadow:    0 14px 30px -16px rgba(0,0,0,.6) !important;
+    --shadow-lg: 0 40px 80px -34px rgba(0,0,0,.7) !important;
   }
 
   /* ─── fixed background layers ─────────────────────
@@ -211,7 +201,7 @@
   .m-lang button.on{background:var(--p-tint);border-color:var(--p-tint-2);color:var(--p);}
   html[data-theme="dark"] .icon-btn .i-moon{display:none;}
   html:not([data-theme="dark"]) .icon-btn .i-sun{display:none;}
-  @media (max-width:860px){ .nav-links{display:none;} }
+  @media (max-width:1100px){ .nav-links{display:none;} }
 
   /* ── hero (deadlock-style: left copy, screenshot bleeds right) ── */
   .hero{position:relative;overflow:hidden;}
@@ -251,9 +241,9 @@
 
   .hero h1{
     margin:0;
-    font-family:var(--font-sans);font-weight:800;
-    font-size:clamp(38px,6.2vw,76px);line-height:1.03;
-    letter-spacing:-.03em;color:var(--ink);text-wrap:balance;
+    font-family:var(--font-sans);font-weight:700;
+    font-size:clamp(36px,5.6vw,68px);line-height:1.05;
+    letter-spacing:-.025em;color:var(--ink);text-wrap:balance;
   }
   .hero h1 .hl{color:var(--p);}
   .hero p.sub{
@@ -265,6 +255,7 @@
   @media (max-width:980px){ .hero-cta{justify-content:center;} }
   .btn-link{background:transparent;color:var(--ink-2);font-weight:600;padding:12px 4px;}
   .btn-link:hover{color:var(--p);}
+  .hero-cta .btn-ghost{padding:12px 22px;}
   .hero-note{margin-top:16px;font-family:var(--mono);font-size:12px;color:var(--ink-3);letter-spacing:.02em;}
 
   /* loader chips */
@@ -281,18 +272,14 @@
   @media (max-width:980px){ .hero-visual{display:flex;justify-content:center;} }
   .hero-shot{
     position:relative;width:min(58vw,880px);max-width:none;
-    border-radius:16px;overflow:hidden;background:var(--panel);
+    border-radius:12px;overflow:hidden;background:var(--panel);
     border:1px solid var(--border-2);box-shadow:var(--shadow-lg);
   }
   @media (max-width:980px){ .hero-shot{width:100%;max-width:560px;} }
   .hero-shot img{width:100%;display:block;}
 
-  /* faint gear watermarks (deadlock motif) */
-  .hero-gear{position:absolute;color:var(--ink);opacity:.05;pointer-events:none;z-index:0;}
-  .hero-gear svg{width:100%;height:100%;display:block;}
-  .hero-gear.g1{top:-70px;left:-90px;width:300px;height:300px;}
-  .hero-gear.g2{bottom:-46px;left:4%;width:170px;height:170px;}
-  @media (max-width:980px){ .hero-gear{display:none;} }
+  /* faint gear watermarks — dropped for the indigo system: restrained, no decorative iconography */
+  .hero-gear{display:none;}
 
   /* ── popular-mods showcase ──────────────────────── */
   .showcase{display:grid;grid-template-columns:360px 1fr;gap:20px;align-items:start;}
@@ -328,12 +315,12 @@
 
   /* ── stats strip ────────────────────────────────── */
   .stats{border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-top:90px;background:var(--card);}
-  .stats-in{display:grid;grid-template-columns:repeat(4,1fr);}
+  .stats-in{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));}
   .stat{padding:30px 24px;text-align:center;border-right:1px solid var(--border);}
   .stat:last-child{border-right:0;}
   .stat .num{font-size:30px;font-weight:800;letter-spacing:-.02em;color:var(--p);font-feature-settings:"tnum";}
   .stat .cap{margin-top:5px;font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);}
-  @media (max-width:760px){ .stats-in{grid-template-columns:repeat(2,1fr);} .stat:nth-child(2){border-right:0;} .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--border);} }
+  @media (max-width:760px){ .stats-in{grid-template-columns:repeat(2,minmax(0,1fr));} .stat:nth-child(2){border-right:0;} .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--border);} }
 
   /* ── section scaffolding ────────────────────────── */
   section.block{padding:92px 0;}
@@ -343,35 +330,35 @@
   .sec-head p{margin:14px 0 0;font-size:16.5px;color:var(--ink-2);line-height:1.6;text-wrap:pretty;}
   .sec-head.center .kicker::after{content:"";width:20px;height:1.5px;background:var(--p);opacity:.5;}
 
-  /* ── features grid ──────────────────────────────── */
-  .feat-ledger{display:grid;grid-template-columns:1fr 1fr;column-gap:60px;border-top:1px solid var(--border-2);}
-  @media (max-width:760px){.feat-ledger{grid-template-columns:1fr;column-gap:0;}}
-  .feat-row{display:grid;grid-template-columns:34px 1fr;gap:18px;align-items:start;padding:24px 2px 22px;border-bottom:1px solid var(--border);}
-  .feat-row .fnum{font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--p);letter-spacing:.06em;padding-top:4px;font-feature-settings:"tnum";}
-  .feat-row .fbody h3{margin:0;font-size:19px;font-weight:700;letter-spacing:-.015em;color:var(--ink);transition:color .15s ease;}
-  .feat-row .fbody p{margin:7px 0 0;font-size:14.5px;color:var(--ink-2);line-height:1.55;max-width:44ch;}
-  .feat-row:hover .fnum{color:var(--p-deep);}
-  .feat-row:hover .fbody h3{color:var(--p);}
-
-  /* ── spotlight (band) ───────────────────────────── */
+  /* ── band (shared section wash used by tour/testimonials/faq) ── */
   .band{background:var(--band);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
-  .spot{display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center;}
-  @media (max-width:880px){.spot{grid-template-columns:1fr;gap:36px;}}
-  .spot .list{display:flex;flex-direction:column;gap:18px;margin-top:26px;}
-  .spot .row{display:flex;gap:14px;align-items:flex-start;}
-  .spot .row .tick{flex:none;width:24px;height:24px;border-radius:7px;background:var(--p);color:#fff;display:grid;place-items:center;margin-top:1px;}
-  .spot .row .tick svg{width:13px;height:13px;}
-  .spot .row h4{margin:0;font-size:15.5px;font-weight:700;color:var(--ink);}
-  .spot .row p{margin:3px 0 0;font-size:14px;color:var(--ink-2);line-height:1.5;}
-  .spot .visual{
-    background:var(--card);border:1px solid var(--border-2);border-radius:16px;padding:14px;
-    box-shadow:var(--shadow);
-  }
-  .spot .visual .frame{border-radius:10px;overflow:hidden;border:1px solid var(--border);background:var(--panel);}
-  .spot .visual .cap{display:flex;align-items:center;justify-content:space-between;padding:11px 6px 4px;font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em;}
+
+  /* ── product tour ───────────────────────────────── */
+  .java-chip{display:inline-flex;align-items:center;gap:7px;margin-top:18px;font-family:var(--mono);font-size:12px;color:var(--p);background:var(--p-tint);border:1px solid var(--p-tint-2);border-radius:999px;padding:7px 14px;}
+  .java-chip svg{width:13px;height:13px;}
+  .tour{display:grid;grid-template-columns:240px 1fr;gap:24px;align-items:start;}
+  @media (max-width:880px){ .tour{grid-template-columns:1fr;} }
+  .tour-rail{display:flex;flex-direction:column;gap:3px;background:var(--panel);border-radius:var(--radius);padding:10px;position:sticky;top:90px;}
+  @media (max-width:880px){ .tour-rail{position:static;flex-direction:row;overflow-x:auto;gap:6px;-webkit-overflow-scrolling:touch;} }
+  .tour-tab{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:9px;background:transparent;border:0;
+    color:rgba(255,255,255,.56);font-family:var(--font-sans);font-weight:600;font-size:14.5px;cursor:pointer;text-align:left;width:100%;white-space:nowrap;}
+  @media (max-width:880px){ .tour-tab{width:auto;flex:none;} }
+  .tour-tab .ic{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.07);display:grid;place-items:center;flex:none;color:rgba(255,255,255,.8);}
+  .tour-tab .ic svg{width:16px;height:16px;}
+  .tour-tab:hover{color:#fff;}
+  .tour-tab.active{background:rgba(255,255,255,.1);color:#fff;}
+  .tour-tab.active .ic{background:var(--p);color:#fff;}
+  .tour-panel{min-height:0;}
+  .tour-pane{display:none;}
+  .tour-pane.active{display:block;}
+  .tour-pane > .gal{margin:0 0 22px;}
+  .tour-pane > .showcase{margin:0 0 22px;}
+  .tour-bullets{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;}
+  .tour-bullets li{font-size:14.5px;color:var(--ink-2);line-height:1.55;padding:16px 18px;background:var(--card);border:1px solid var(--border);border-radius:12px;}
+  .tour-bullets li b{display:block;color:var(--ink);font-size:14.5px;margin-bottom:3px;}
 
   /* ── download ───────────────────────────────────── */
-  .dl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .dl-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
   @media (max-width:820px){.dl-grid{grid-template-columns:1fr;}}
   .dl-card{
     background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
@@ -418,7 +405,7 @@
 
   /* ── open source band ───────────────────────────── */
   .oss{
-    background:var(--panel);color:#fff;border-radius:22px;padding:54px 56px;
+    background:var(--panel);color:#fff;border-radius:14px;padding:54px 56px;
     display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:center;
   }
   @media (max-width:820px){.oss{grid-template-columns:1fr;padding:40px 30px;gap:28px;}}
@@ -452,8 +439,8 @@
 
   /* ── footer ─────────────────────────────────────── */
   footer.foot{background:var(--card);border-top:1px solid var(--border);padding:54px 0 40px;}
-  .foot-in{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:32px;}
-  @media (max-width:760px){.foot-in{grid-template-columns:1fr 1fr;gap:28px;}}
+  .foot-in{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);gap:32px;}
+  @media (max-width:760px){.foot-in{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;}}
   .foot .brand{margin-bottom:14px;}
   .foot .blurb{font-size:14px;color:var(--ink-2);line-height:1.6;max-width:34ch;}
   .foot h5{margin:0 0 14px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-4);}
@@ -472,7 +459,7 @@
   /* ── mobile nav ─────────────────────────────────── */
   .nav-toggle{display:none;}
   .m-menu{display:none;}
-  @media (max-width:860px){
+  @media (max-width:1100px){
     .nav-toggle{
       display:grid;place-items:center;width:42px;height:42px;flex:none;border-radius:11px;
       background:var(--card);border:1px solid var(--border-2);color:var(--ink);cursor:pointer;
@@ -497,37 +484,8 @@
     .m-menu .m-actions .btn{justify-content:center;width:100%;}
   }
 
-  /* ── gallery carousel ───────────────────────────── */
-  .gal-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px;}
-  .gal-hint{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);}
-  .gal-ctrl{display:flex;gap:10px;}
-  .gal-arrow{width:44px;height:44px;flex:none;border-radius:11px;display:grid;place-items:center;cursor:pointer;
-    background:var(--card);border:1px solid var(--border-2);color:var(--ink);
-    transition:border-color .15s ease,color .15s ease,opacity .15s ease,transform .12s ease;}
-  .gal-arrow:hover{border-color:var(--p);color:var(--p);}
-  .gal-arrow:active{transform:scale(.94);}
-  .gal-arrow svg{width:20px;height:20px;}
-  .gal-arrow:disabled{opacity:.35;cursor:default;border-color:var(--border);color:var(--ink-3);transform:none;}
-
-  .gal-carousel{position:relative;}
-  .gal-track{
-    display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;
-    padding:4px 4px 20px;margin:0 -4px;
-    scrollbar-width:none;-webkit-overflow-scrolling:touch;cursor:grab;
-  }
-  .gal-track::-webkit-scrollbar{display:none;}
-  .gal-track.dragging{cursor:grabbing;scroll-behavior:auto;scroll-snap-type:none;}
-  .gal-track.dragging .gal img{pointer-events:none;}
-  .gal-track .gal{flex:0 0 min(84%, 600px);scroll-snap-align:center;}
-  @media (min-width:900px){.gal-track .gal{flex-basis:min(56%, 680px);}}
-
-  .gal-dots{display:flex;justify-content:center;gap:8px;margin-top:4px;}
-  .gal-dots button{width:8px;height:8px;border-radius:50%;border:0;padding:0;cursor:pointer;
-    background:var(--border-2);transition:background .15s ease,width .15s ease;}
-  .gal-dots button.active{background:var(--p);width:22px;border-radius:5px;}
-  @media (max-width:600px){ .gal-ctrl{display:none;} }
   .gal{
-    position:relative;border-radius:15px;overflow:hidden;background:var(--panel);
+    position:relative;border-radius:10px;overflow:hidden;background:var(--panel);
     border:1px solid var(--border-2);box-shadow:var(--shadow);cursor:zoom-in;
     transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
   }
@@ -546,6 +504,7 @@
     background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.18);color:#fff;opacity:0;transition:opacity .18s ease;}
   .gal:hover .zoom{opacity:1;}
   .gal .zoom svg{width:15px;height:15px;}
+  .win-chrome .zoom{top:50px;}
 
   /* ── lightbox ───────────────────────────────────── */
   .lb{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:5vh 5vw;
@@ -611,7 +570,7 @@
     .oss{border-radius:18px;}
     .hero-cta{gap:10px;}
     .hero-cta .btn-primary{flex:1 1 auto;justify-content:center;}
-    .hero-cta .btn-link{flex:1 1 100%;justify-content:center;text-align:center;}
+    .hero-cta .btn-ghost{flex:1 1 auto;justify-content:center;}
     .loaders{gap:8px;}
     .ver-row{gap:10px;}
     .mod-detail{min-height:0;padding:22px;}
@@ -638,6 +597,57 @@
   .frap.hide{opacity:0;visibility:hidden;transform:translateY(12px);pointer-events:none;}
   @media (max-width:560px){ .frap{right:16px;bottom:16px;width:54px;height:54px;} }
   @media print{ .frap{display:none;} }
+
+  /* ── hero window chrome (wraps the hero screenshot) ──── */
+  .win-chrome .wbar{display:flex;align-items:center;gap:7px;padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.08);}
+  .win-chrome .wbar i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.22);display:block;}
+  .win-chrome .wbar .wt{margin-left:7px;font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.55);letter-spacing:.04em;}
+
+  /* ── testimonials ─────────────────────────── */
+  .testi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
+  @media (max-width:900px){ .testi-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);} }
+  @media (max-width:600px){ .testi-grid{grid-template-columns:minmax(0,1fr);} }
+  .testi{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px 22px;display:flex;flex-direction:column;gap:18px;margin:0;}
+  .testi blockquote{margin:0;font-size:15.5px;line-height:1.6;color:var(--ink);font-weight:500;letter-spacing:-.005em;min-height:4.8em;}
+  .testi blockquote:empty::before{content:"Quote goes here\2026";color:var(--ink-4);font-style:italic;}
+  .testi .t-ava:empty{background:var(--border);border-style:dashed;}
+  .testi figcaption b:empty::before{content:"Name";color:var(--ink-4);}
+  .testi figcaption span:empty::before{content:"Role";color:var(--ink-4);}
+  .testi figcaption{display:flex;align-items:center;gap:11px;margin-top:auto;}
+  .testi .t-ava{width:36px;height:36px;border-radius:50%;flex:none;display:grid;place-items:center;background:var(--p-tint);border:1px solid var(--p-tint-2);color:var(--p);font-family:var(--mono);font-size:12px;font-weight:700;}
+  .testi figcaption div{display:flex;flex-direction:column;line-height:1.3;}
+  .testi figcaption b{font-size:13.5px;font-weight:700;color:var(--ink);}
+  .testi figcaption span{font-size:12px;color:var(--ink-3);}
+
+  /* ── comparison table ───────────────────── */
+  .cmp-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius);background:var(--card);-webkit-overflow-scrolling:touch;}
+  .cmp-table{width:100%;min-width:680px;border-collapse:collapse;font-size:14.5px;}
+  .cmp-table th,.cmp-table td{padding:15px 18px;text-align:center;border-bottom:1px solid var(--border);white-space:nowrap;}
+  .cmp-table td:first-child,.cmp-table th:first-child{text-align:left;white-space:normal;position:sticky;left:0;background:var(--card);font-weight:600;color:var(--ink);}
+  .cmp-table thead th{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:600;}
+  .cmp-table thead th.me{color:var(--p);}
+  .cmp-table tbody tr:last-child td{border-bottom:0;}
+  .cmp-table td.me{background:var(--p-tint);}
+  .cmp-ic{display:inline-flex;width:20px;height:20px;border-radius:50%;align-items:center;justify-content:center;}
+  .cmp-ic.yes{background:var(--p);color:#fff;}
+  .cmp-ic.no{background:var(--border-2);color:var(--ink-4);}
+  .cmp-ic.partial{background:transparent;border:1.5px solid var(--ink-4);color:var(--ink-3);font-size:12px;line-height:1;}
+  .cmp-ic svg{width:11px;height:11px;}
+  .cmp-foot{text-align:center;margin:22px 0 0;font-family:var(--mono);font-size:12px;color:var(--ink-3);letter-spacing:.02em;}
+  .cmp-foot a{color:var(--p);}
+  @media (max-width:600px){ .cmp-table{font-size:13.5px;} .cmp-table th,.cmp-table td{padding:12px 14px;} }
+
+  /* ── changelog ──────────────────────────── */
+  .chg-list{display:flex;flex-direction:column;gap:0;max-width:760px;margin:0 auto;}
+  .chg-item{display:grid;grid-template-columns:140px 1fr;gap:24px;padding:28px 0;border-bottom:1px solid var(--border);}
+  .chg-item:last-child{border-bottom:0;}
+  @media (max-width:600px){ .chg-item{grid-template-columns:1fr;gap:8px;} }
+  .chg-meta{display:flex;flex-direction:column;gap:6px;}
+  .chg-ver{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--ink);}
+  .chg-date{font-family:var(--mono);font-size:12px;color:var(--ink-3);}
+  .chg-item ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px;}
+  .chg-item li{font-size:15px;color:var(--ink-2);line-height:1.55;padding-left:18px;position:relative;}
+  .chg-item li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%;background:var(--p);opacity:.6;}
 </style>
 </head>
 <body>
@@ -654,11 +664,11 @@
       <span class="name">Refract</span>
     </a>
     <nav class="nav-links">
-      <a href="#features">Features</a>
-      <a href="#showcase">Browse mods</a>
-      <a href="#gallery">Screenshots</a>
+      <a href="#tour">Tour</a>
+      <a href="#compare">Compare</a>
       <a href="#download">Download</a>
       <a href="#faq">FAQ</a>
+      <a href="docs.html">Docs</a>
     </nav>
     <div class="nav-cta">
       <button class="icon-btn lang-btn" id="langBtn" type="button" aria-label="Change language" title="Change language / Змінити мову">
@@ -685,11 +695,11 @@
   </div>
   <!-- mobile menu sheet -->
   <div class="m-menu" id="mMenu">
-    <a class="m-link" href="#features">Features</a>
-    <a class="m-link" href="#showcase">Browse mods</a>
-    <a class="m-link" href="#gallery">Screenshots</a>
+    <a class="m-link" href="#tour">Tour</a>
+    <a class="m-link" href="#compare">Compare</a>
     <a class="m-link" href="#download">Download</a>
     <a class="m-link" href="#faq">FAQ</a>
+    <a class="m-link" href="docs.html">Docs</a>
     <div class="m-lang">
       <button type="button" data-lang="en" id="mLangEn">English</button>
       <button type="button" data-lang="uk" id="mLangUk">Українська</button>
@@ -726,7 +736,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 21h14"/></svg>
           Download for free
         </a>
-        <a class="btn btn-link" href="#download">All downloads →</a>
+        <a class="btn btn-ghost" href="#tour">See it in action</a>
       </div>
       <div class="hero-note">Free &amp; open source · Windows · macOS · Linux · No account required to browse</div>
       <div class="loaders">
@@ -740,85 +750,9 @@
       </div>
     </div>
     <div class="hero-visual reveal">
-      <div class="hero-shot">
+      <div class="hero-shot win-chrome">
+        <div class="wbar"><i></i><i></i><i></i><span class="wt">refract · browse mods</span></div>
         <img src="screenshots/hero-browse.png" alt="The Refract launcher browsing mods from Modrinth and CurseForge" />
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ════ FEATURES ════ -->
-<section class="block" id="features">
-  <div class="wrap">
-    <div class="sec-head center reveal">
-      <span class="kicker">Features</span>
-      <h2>Make Minecraft yours.</h2>
-      <p>Refract handles the whole loop — instances, accounts, mods, Java and updates — so you spend your time playing, not configuring.</p>
-    </div>
-
-    <div class="feat-ledger">
-      <div class="feat-row reveal">
-        <span class="fnum">01</span>
-        <div class="fbody">
-        <h3>Instance management</h3>
-        <p>Create, group, duplicate, export and delete instances. Drag cards between groups and set custom JVM args per instance.</p>
-        </div>
-      </div>
-      <div class="feat-row reveal">
-        <span class="fnum">02</span>
-        <div class="fbody">
-        <h3>Modrinth &amp; CurseForge</h3>
-        <p>Browse and install mods, resource packs, shaders, datapacks and modpacks from both platforms without leaving the app.</p>
-        </div>
-      </div>
-      <div class="feat-row reveal">
-        <span class="fnum">03</span>
-        <div class="fbody">
-        <h3>Java, handled</h3>
-        <p>The right JRE — 8, 17 or 21 — is downloaded automatically for every Minecraft version. No PATH wrangling, ever.</p>
-        </div>
-      </div>
-      <div class="feat-row reveal">
-        <span class="fnum">04</span>
-        <div class="fbody">
-        <h3>Microsoft &amp; offline</h3>
-        <p>Full Microsoft device-code login, offline profiles, or any third-party Yggdrasil server — with live skin faces on the account page.</p>
-        </div>
-      </div>
-      <div class="feat-row reveal">
-        <span class="fnum">05</span>
-        <div class="fbody">
-        <h3>Mod update checker</h3>
-        <p>Instances badge when mods fall behind. Review what's new on the Updates tab and update one mod — or all of them — in a click.</p>
-        </div>
-      </div>
-      <div class="feat-row reveal">
-        <span class="fnum">06</span>
-        <div class="fbody">
-        <h3>Import from MultiMC / Prism</h3>
-        <p>Bring your existing setup across in one step — mods, configs and resource packs included. Nothing left behind.</p>
-        </div>
-      </div>
-      <div class="feat-row reveal">
-        <span class="fnum">07</span>
-        <div class="fbody">
-        <h3>Discord Rich Presence</h3>
-        <p>Show the instance, version and elapsed playtime in Discord. Refract also tracks total time played in every instance.</p>
-        </div>
-      </div>
-      <div class="feat-row reveal">
-        <span class="fnum">08</span>
-        <div class="fbody">
-        <h3>Friends panel</h3>
-        <p>NameMC links, copy-UUID, a whitelist helper and inline notes — a tidy roster for the people you actually play with.</p>
-        </div>
-      </div>
-      <div class="feat-row reveal">
-        <span class="fnum">09</span>
-        <div class="fbody">
-        <h3>Silent auto-updates</h3>
-        <p>Refract updates itself in the background and surfaces a tidy "What's New" panel — with a Restart button right in the title bar.</p>
-        </div>
       </div>
     </div>
   </div>
@@ -834,108 +768,166 @@
   </div>
 </div>
 
-<!-- ════ SHOWCASE ════ -->
-<section class="block" id="showcase">
+<!-- ════ TOUR ════ -->
+<section class="block" id="tour">
   <div class="wrap">
     <div class="sec-head center reveal">
-      <span class="kicker">Showcase</span>
-      <h2>Browse &amp; install mods in seconds.</h2>
-      <p>Discover popular mods, check the details, and install with a single click — straight into the instance you want.</p>
+      <span class="kicker">Take a look</span>
+      <h2>This is the whole app.</h2>
+      <p>Five screens, one launcher. Click around — it's the same interface you'll actually use.</p>
+      <span class="java-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg>Java 8 · 17 · 21 — installed automatically, every time</span>
     </div>
-    <div class="showcase reveal">
-      <div class="mod-list-wrap">
-        <div class="mod-list-head">Popular mods</div>
-        <div class="mod-list" id="modList"></div>
+    <div class="tour reveal">
+      <div class="tour-rail" role="tablist">
+        <button class="tour-tab active" data-tab="library" type="button" role="tab" aria-selected="true">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="3.5" width="6" height="17" rx="1.6"></rect><rect x="13.5" y="3.5" width="6" height="17" rx="1.6"></rect><line x1="6" y1="8" x2="9" y2="8"></line><line x1="15" y1="8" x2="18" y2="8"></line></svg></span>
+          Instance Library
+        </button>
+        <button class="tour-tab" data-tab="browse" type="button" role="tab" aria-selected="false">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9.2 3.5h2.1a1.7 1.7 0 0 1 1.7 2.4 1.4 1.4 0 0 0 1.3 2h.6a1.7 1.7 0 0 1 1.7 1.7v2.1a1.7 1.7 0 0 0 2.4 1.3 1.4 1.4 0 0 1 2 1.3v2.5a1.4 1.4 0 0 1-1.4 1.4h-3.6a1.7 1.7 0 0 1-1.7-2.4 1.4 1.4 0 0 0-1.3-2 1.4 1.4 0 0 0-1.4 1.4 1.7 1.7 0 0 1-1.7 1.7H6.1a1.4 1.4 0 0 1-1.4-1.4v-3.6a1.7 1.7 0 0 1 2.4-1.7 1.4 1.4 0 0 0 2-1.3 1.4 1.4 0 0 0-1.4-1.4A1.7 1.7 0 0 1 5.9 5.2V4.9a1.4 1.4 0 0 1 1.4-1.4z"></path></svg></span>
+          Browse Mods
+        </button>
+        <button class="tour-tab" data-tab="modpacks" type="button" role="tab" aria-selected="false">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2l8 4v0L12 11.2 4 7.2z"></path><path d="M4 12l8 4 8-4"></path><path d="M4 16.5l8 4 8-4"></path></svg></span>
+          Modpacks
+        </button>
+        <button class="tour-tab" data-tab="account" type="button" role="tab" aria-selected="false">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.2" r="3.6"></circle><path d="M5 20.2a7 7 0 0 1 14 0"></path></svg></span>
+          Accounts &amp; Skins
+        </button>
+        <button class="tour-tab" data-tab="settings" type="button" role="tab" aria-selected="false">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.05"></circle><path d="M12 2.4l1.3 1.9 2.2-.65.45 2.25 2.25.45-.65 2.2 1.9 1.3-1.9 1.3.65 2.2-2.25.45-.45 2.25-2.2-.65L12 21.6l-1.3-1.9-2.2.65-.45-2.25-2.25-.45.65-2.2L4.5 14l1.9-1.3-.65-2.2 2.25-.45.45-2.25 2.2.65z"></path></svg></span>
+          Settings
+        </button>
       </div>
-      <div class="mod-detail" id="modDetail"></div>
-    </div>
-    <div class="showcase-foot reveal">
-      <a class="btn btn-ghost" href="#download">Browse all mods →</a>
-    </div>
-  </div>
-</section>
-
-<!-- ════ SPOTLIGHT BAND ════ -->
-<section class="band">
-  <div class="wrap block">
-    <div class="spot">
-      <div class="reveal">
-        <span class="kicker">Mod browser</span>
-        <h2 style="margin:16px 0 0;font-family:var(--font-sans);font-size:clamp(26px,3.2vw,36px);font-weight:800;letter-spacing:-.02em;line-height:1.1;">Find a mod, hit install, play.</h2>
-        <p style="margin:14px 0 0;font-size:16px;color:var(--ink-2);line-height:1.6;max-width:46ch;">Search 60,000+ projects across Modrinth and CurseForge, filter by loader and version, and install straight into the right instance — dependencies resolved for you.</p>
-        <div class="list">
-          <div class="row">
-            <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg></span>
-            <div><h4>Filter the way you think</h4><p>By category, loader (Fabric / Forge / Quilt / NeoForge) and Minecraft version, all at once.</p></div>
+      <div class="tour-panel">
+        <div class="tour-pane active" data-pane="library" role="tabpanel">
+          <figure class="gal win-chrome" data-full="screenshots/gallery-library.png" data-caption="Instance Library — recents, playtime and what's new">
+            <div class="wbar"><i></i><i></i><i></i><span class="wt">refract · instance library</span></div>
+            <div class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></div>
+            <div class="gimg"><img src="screenshots/gallery-library.png" alt="Refract Instance Library screen" loading="lazy" /></div>
+          </figure>
+          <ul class="tour-bullets">
+            <li><b>Instance management.</b> Create, group, duplicate, export and delete instances. Drag cards between groups and set custom JVM args per instance.</li>
+            <li><b>Import from MultiMC / Prism.</b> Bring your existing setup across in one step — mods, configs and resource packs included.</li>
+          </ul>
+        </div>
+        <div class="tour-pane" data-pane="browse" role="tabpanel">
+          <div class="showcase">
+            <div class="mod-list-wrap">
+              <div class="mod-list-head">Popular mods</div>
+              <div class="mod-list" id="modList"></div>
+            </div>
+            <div class="mod-detail" id="modDetail"></div>
           </div>
-          <div class="row">
-            <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg></span>
-            <div><h4>Mod profiles per instance</h4><p>Save named sets like "Survival" or "Performance" and batch-toggle mods on apply.</p></div>
-          </div>
-          <div class="row">
-            <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg></span>
-            <div><h4>Add local jars too</h4><p>Drop in a <span style="font-family:var(--mono);font-size:.9em">.jar</span> straight from disk when a mod isn't on either platform.</p></div>
-          </div>
+          <ul class="tour-bullets">
+            <li><b>Modrinth &amp; CurseForge, one search.</b> Mods, resource packs, shaders, datapacks and modpacks from both platforms.</li>
+            <li><b>Filter the way you think.</b> By category, loader (Fabric / Forge / Quilt / NeoForge) and Minecraft version, all at once.</li>
+            <li><b>Mod update checker.</b> Instances badge when mods fall behind — update one, or all of them, in a click.</li>
+          </ul>
+        </div>
+        <div class="tour-pane" data-pane="modpacks" role="tabpanel">
+          <figure class="gal win-chrome" data-full="screenshots/gallery-modpacks.png" data-caption="Content Browser — modpacks, resource packs, shaders and data packs">
+            <div class="wbar"><i></i><i></i><i></i><span class="wt">refract · modpacks</span></div>
+            <div class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></div>
+            <div class="gimg"><img src="screenshots/gallery-modpacks.png" alt="Refract Content Browser screen" loading="lazy" /></div>
+          </figure>
+          <ul class="tour-bullets">
+            <li><b>One-click modpacks.</b> Install a full pack with dependencies resolved, straight into a new instance.</li>
+            <li><b>Mod profiles per instance.</b> Save named sets like "Survival" or "Performance" and batch-toggle mods on apply.</li>
+          </ul>
+        </div>
+        <div class="tour-pane" data-pane="account" role="tabpanel">
+          <figure class="gal win-chrome" data-full="screenshots/gallery-skins.png" data-caption="Skins — manage and preview your Minecraft skins">
+            <div class="wbar"><i></i><i></i><i></i><span class="wt">refract · accounts &amp; skins</span></div>
+            <div class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></div>
+            <div class="gimg"><img src="screenshots/gallery-skins.png" alt="Refract Skins screen" loading="lazy" /></div>
+          </figure>
+          <ul class="tour-bullets">
+            <li><b>Microsoft &amp; offline.</b> Device-code login, offline profiles, or any third-party Yggdrasil server — with live skin faces.</li>
+            <li><b>Friends panel.</b> NameMC links, copy-UUID, a whitelist helper and inline notes.</li>
+          </ul>
+        </div>
+        <div class="tour-pane" data-pane="settings" role="tabpanel">
+          <figure class="gal win-chrome" data-full="screenshots/gallery-custom-theme.png" data-caption="Custom themes — set your own background image and accent colour">
+            <div class="wbar"><i></i><i></i><i></i><span class="wt">refract · settings</span></div>
+            <div class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></div>
+            <div class="gimg"><img src="screenshots/gallery-custom-theme.png" alt="Refract with a custom background theme" loading="lazy" /></div>
+          </figure>
+          <ul class="tour-bullets">
+            <li><b>Custom themes.</b> Set your own background image and accent colour, light or dark.</li>
+            <li><b>Discord Rich Presence.</b> Show the instance, version and elapsed playtime in Discord.</li>
+            <li><b>Silent auto-updates.</b> Refract updates in the background with a tidy "What's New" panel.</li>
+          </ul>
         </div>
       </div>
-      <div class="visual reveal">
-        <div class="frame"><img src="screenshots/gallery-browse.png" alt="Refract mod browser" /></div>
-        <div class="cap"><span>refract · browse mods</span><span>Modrinth · CurseForge</span></div>
-      </div>
     </div>
   </div>
 </section>
 
-<!-- ════ GALLERY ════ -->
-<section class="block" id="gallery">
+<!-- ════ TESTIMONIALS ════ -->
+<section class="block band" id="testimonials" style="border-bottom:1px solid var(--border)">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <span class="kicker">A look around</span>
-      <h2>Every screen, considered.</h2>
-      <p>From the instance library to the mod browser, modpacks, news and skins — Refract is one coherent, keyboard-friendly app. Click any shot to see it full size.</p>
+    <div class="sec-head center reveal">
+      <span class="kicker">Community feedback</span>
+      <h2>Players say it gets out of the way.</h2>
+      <p>Real quotes coming soon.</p>
     </div>
-    <div class="gal-bar reveal">
-      <span class="gal-hint">Swipe or drag to explore →</span>
-      <div class="gal-ctrl">
-        <button class="gal-arrow" id="galPrev" type="button" aria-label="Scroll left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
-        <button class="gal-arrow" id="galNext" type="button" aria-label="Scroll right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
-      </div>
+    <div class="testi-grid reveal">
+      <figure class="testi">
+        <blockquote></blockquote>
+        <figcaption><span class="t-ava"></span><div><b></b><span></span></div></figcaption>
+      </figure>
+      <figure class="testi">
+        <blockquote></blockquote>
+        <figcaption><span class="t-ava"></span><div><b></b><span></span></div></figcaption>
+      </figure>
+      <figure class="testi">
+        <blockquote></blockquote>
+        <figcaption><span class="t-ava"></span><div><b></b><span></span></div></figcaption>
+      </figure>
+      <figure class="testi">
+        <blockquote></blockquote>
+        <figcaption><span class="t-ava"></span><div><b></b><span></span></div></figcaption>
+      </figure>
+      <figure class="testi">
+        <blockquote></blockquote>
+        <figcaption><span class="t-ava"></span><div><b></b><span></span></div></figcaption>
+      </figure>
+      <figure class="testi">
+        <blockquote></blockquote>
+        <figcaption><span class="t-ava"></span><div><b></b><span></span></div></figcaption>
+      </figure>
     </div>
-    <div class="gal-carousel reveal">
-      <div class="gal-track" id="galTrack">
-      <figure class="gal" data-full="screenshots/gallery-library.png" data-caption="Instance Library — recents, playtime and what's new">
-        <div class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></div>
-        <div class="gimg"><img src="screenshots/gallery-library.png" alt="Refract Instance Library screen" loading="lazy" /></div>
-        <figcaption class="gcap"><h4>Instance Library</h4><span class="gtag">Home</span></figcaption>
-      </figure>
-      <figure class="gal reveal" data-full="screenshots/gallery-browse.png" data-caption="Browse Mods — Modrinth & CurseForge in one search">
-        <div class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></div>
-        <div class="gimg"><img src="screenshots/gallery-browse.png" alt="Refract Browse Mods screen" loading="lazy" /></div>
-        <figcaption class="gcap"><h4>Browse Mods</h4><span class="gtag">Mod browser</span></figcaption>
-      </figure>
-      <figure class="gal reveal" data-full="screenshots/gallery-modpacks.png" data-caption="Content Browser — modpacks, resource packs, shaders and data packs">
-        <div class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></div>
-        <div class="gimg"><img src="screenshots/gallery-modpacks.png" alt="Refract Content Browser screen" loading="lazy" /></div>
-        <figcaption class="gcap"><h4>Content Browser</h4><span class="gtag">Modpacks</span></figcaption>
-      </figure>
-      <figure class="gal reveal" data-full="screenshots/gallery-news.png" data-caption="News — headlines, summaries and images from minecraft.net">
-        <div class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></div>
-        <div class="gimg"><img src="screenshots/gallery-news.png" alt="Refract News screen" loading="lazy" /></div>
-        <figcaption class="gcap"><h4>News</h4><span class="gtag">Minecraft</span></figcaption>
-      </figure>
-      <figure class="gal reveal" data-full="screenshots/gallery-skins.png" data-caption="Skins — manage and preview your Minecraft skins">
-        <div class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></div>
-        <div class="gimg"><img src="screenshots/gallery-skins.png" alt="Refract Skins screen" loading="lazy" /></div>
-        <figcaption class="gcap"><h4>Skins</h4><span class="gtag">Profile</span></figcaption>
-      </figure>
-      <figure class="gal reveal" data-full="screenshots/gallery-custom-theme.png" data-caption="Custom themes — set your own background image and accent colour">
-        <div class="zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></div>
-        <div class="gimg"><img src="screenshots/gallery-custom-theme.png" alt="Refract with a custom background theme" loading="lazy" /></div>
-        <figcaption class="gcap"><h4>Custom themes</h4><span class="gtag">Appearance</span></figcaption>
-      </figure>
-      </div>
+  </div>
+</section>
+
+<!-- ════ COMPARISON ════ -->
+<section class="block" id="compare">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="kicker">How it stacks up</span>
+      <h2>One launcher, both mod platforms.</h2>
+      <p>A quick look at how Refract compares to the launchers people usually switch from. Default feature sets — yours may vary by version.</p>
     </div>
-    <div class="gal-dots" id="galDots" aria-hidden="true"></div>
+    <div class="cmp-wrap reveal">
+      <table class="cmp-table">
+        <thead>
+          <tr><th>Feature</th><th class="me">Refract</th><th>Prism Launcher</th><th>CurseForge App</th><th>Vanilla launcher</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Free &amp; open source</td><td class="me"><span class="cmp-ic yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg></span></td><td><span class="cmp-ic yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg></span></td><td><span class="cmp-ic no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></td><td><span class="cmp-ic no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></td></tr>
+          <tr><td>Modrinth + CurseForge, one app</td><td class="me"><span class="cmp-ic yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg></span></td><td><span class="cmp-ic partial">–</span></td><td><span class="cmp-ic no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></td><td><span class="cmp-ic no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></td></tr>
+          <tr><td>Auto Java install (8 / 17 / 21)</td><td class="me"><span class="cmp-ic yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg></span></td><td><span class="cmp-ic yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg></span></td><td><span class="cmp-ic yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg></span></td><td><span class="cmp-ic no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></td></tr>
+          <tr><td>Mod update checker</td><td class="me"><span class="cmp-ic yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg></span></td><td><span class="cmp-ic no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></td><td><span class="cmp-ic partial">–</span></td><td><span class="cmp-ic no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></td></tr>
+          <tr><td>Import from MultiMC / Prism</td><td class="me"><span class="cmp-ic yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg></span></td><td><span class="cmp-ic partial">–</span></td><td><span class="cmp-ic no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></td><td><span class="cmp-ic no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></td></tr>
+          <tr><td>Discord Rich Presence</td><td class="me"><span class="cmp-ic yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg></span></td><td><span class="cmp-ic no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></td><td><span class="cmp-ic no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></td><td><span class="cmp-ic no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></td></tr>
+          <tr><td>Friends &amp; whitelist panel</td><td class="me"><span class="cmp-ic yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg></span></td><td><span class="cmp-ic no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></td><td><span class="cmp-ic no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></td><td><span class="cmp-ic no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></td></tr>
+          <tr><td>Custom in-app themes</td><td class="me"><span class="cmp-ic yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg></span></td><td><span class="cmp-ic partial">–</span></td><td><span class="cmp-ic no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></td><td><span class="cmp-ic no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="cmp-foot">Comparison reflects each launcher's default install — double-check before you quote it. <a href="https://github.com/RefractMC/Refract_MC/issues" target="_blank" rel="noopener">Spot something off? Tell us →</a></p>
   </div>
 </section>
 
@@ -987,6 +979,23 @@
       </div>
     </div>
     <p class="dl-foot" id="dlFoot">Direct download · <a href="https://github.com/RefractMC/Refract_MC/releases" target="_blank" rel="noopener">all versions &amp; checksums</a></p>
+  </div>
+</section>
+
+<!-- ════ CHANGELOG ════ -->
+<section class="block band" id="changelog" style="border-bottom:1px solid var(--border)">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="kicker">Changelog</span>
+      <h2>Shipping in the open.</h2>
+      <p>The three most recent releases, pulled live from GitHub.</p>
+    </div>
+    <div class="chg-list reveal" id="changelogList">
+      <div class="chg-item"><div class="chg-meta"><span class="chg-ver">···</span></div><ul><li>Loading the latest releases…</li></ul></div>
+    </div>
+    <div class="showcase-foot reveal">
+      <a class="btn btn-ghost" href="https://github.com/RefractMC/Refract_MC/releases" target="_blank" rel="noopener">Full release history on GitHub →</a>
+    </div>
   </div>
 </section>
 
@@ -1062,10 +1071,11 @@
       <div>
         <h5>Product</h5>
         <ul>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#gallery">Screenshots</a></li>
+          <li><a href="#tour">Tour</a></li>
+          <li><a href="#compare">Compare</a></li>
           <li><a href="#download">Download</a></li>
           <li><a href="#faq">FAQ</a></li>
+          <li><a href="docs.html">Docs</a></li>
         </ul>
       </div>
       <div>
@@ -1073,7 +1083,7 @@
         <ul>
           <li><a href="https://github.com/RefractMC/Refract_MC" target="_blank" rel="noopener">GitHub</a></li>
           <li><a href="https://github.com/RefractMC/Refract_MC/releases" target="_blank" rel="noopener">Releases</a></li>
-          <li><a href="https://github.com/RefractMC/Refract_MC/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Changelog</a></li>
+          <li><a href="#changelog">Changelog</a></li>
           <li><a href="https://github.com/RefractMC/Refract_MC/issues" target="_blank" rel="noopener">Report an issue</a></li>
         </ul>
       </div>
@@ -1324,7 +1334,93 @@
         "Refract зберігає налаштування теми локально й використовує анонімну аналітику, щоб покращувати сайт. Жодного стеження заради прибутку.",
       "Learn more":"Дізнатися більше",
       "Decline":"Відхилити",
-      "Accept":"Прийняти"
+      "Accept":"Прийняти",
+      // nav (v5)
+      "Tour":"Огляд",
+      "Compare":"Порівняння",
+      "See it in action":"Подивитися на ділі",
+      // tour
+      "Take a look":"Погляньте",
+      "This is the whole app.":"Це весь застосунок.",
+      "Five screens, one launcher. Click around — it's the same interface you'll actually use.":
+        "П'ять екранів, один лаунчер. Натискайте на вкладки — це той савий інтерфейс, який ви й використовуватимете.",
+      "Java 8 · 17 · 21 — installed automatically, every time":
+        "Java 8 · 17 · 21 — встановлюється автоматично щоразу",
+      "Accounts & Skins":"Акаунти й скіни",
+      "Instance management.":"Керування збірками.",
+      "Import from MultiMC / Prism.":"Імпорт з MultiMC / Prism.",
+      "Bring your existing setup across in one step — mods, configs and resource packs included.":
+        "Перенесіть наявне налагодження за один крок — разом із модами, конфігами та ресурс-паками.",
+      "Modrinth & CurseForge, one search.":"Modrinth і CurseForge в одному пошуку.",
+      "Mods, resource packs, shaders, datapacks and modpacks from both platforms.":
+        "Моди, ресурс-паки, шейдери, датапаки й модпаки з обох платформ.",
+      "Filter the way you think.":"Фільтруйте, як вам зручно.",
+      "Mod update checker.":"Перевірка оновлень модів.",
+      "Instances badge when mods fall behind — update one, or all of them, in a click.":
+        "Сбірки позначаються, коли моди застаріли — оновіть один мод або всі одним кліком.",
+      "One-click modpacks.":"Модпаки в один клік.",
+      "Install a full pack with dependencies resolved, straight into a new instance.":
+        "Встановіть повний модпак із розв'язаними залежностями одразу в нову збірку.",
+      "Mod profiles per instance.":"Профілі модів для збірки.",
+      "Microsoft & offline.":"Microsoft і офлайн.",
+      "Device-code login, offline profiles, or any third-party Yggdrasil server — with live skin faces.":
+        "Вхід через device-code, офлайн-профілі або сторонній сервер Yggdrasil — з обличчями скінів.",
+      "Friends panel.":"Панель друзів.",
+      "NameMC links, copy-UUID, a whitelist helper and inline notes.":
+        "Посилання на NameMC, копіювання UUID, поміжник вайтлиста та нотатки.",
+      "Custom themes.":"Власні теми.",
+      "Set your own background image and accent colour, light or dark.":
+        "Встановіть власне фонове зображення та колір акценту — у світлій або темній темі.",
+      "Discord Rich Presence.":"Discord Rich Presence.",
+      "Show the instance, version and elapsed playtime in Discord.":
+        "Показуйте збірку, версію та час гри в Discord.",
+      "Silent auto-updates.":"Тихі автооновлення.",
+      "Refract updates in the background with a tidy \"What's New\" panel.":
+        "Refract оновлюється у фоні й показує акуратну панель «Що нового».",
+      // testimonials
+      "Community feedback":"Відгуки спільноти",
+      "Players say it gets out of the way.":"Гравці кажуть, що він не заважає.",
+      "Sample notes in the style of what people say in Discord and GitHub issues — swap these for real quotes once you've got a batch.":
+        "Зразкові відгуки у стилі того, що пишуть у Discord та GitHub issues — замініть їх на справжні цитати, коли зберете достатньо.",
+      "“Switched over for the CurseForge support — I don't miss tab-juggling two launchers anymore.”":
+        "«Перейшов через підтримку CurseForge — більше не доводиться тримати два лаунчери одночасно.»",
+      "“Imported forty instances from Prism in one go. Nothing broke, nothing missing.”":
+        "«Імпортував сорок збірок із Prism за один раз. Нічого не зламалось, нічого не загубилось.»",
+      "“Java just works now. I forgot that used to be a whole afternoon.”":
+        "«Java просто працює. я вже й забув, що раніше на це йшов цілий вечір.»",
+      "“The friends panel is such a small thing but I use it constantly for whitelist requests.”":
+        "«Панель друзів — дрібниця, але я постійно нею користуюсь для запитів на вайтлист.»",
+      "“Looks calmer than every launcher I've used. Easy to hand to a kid who just wants to play.”":
+        "«Виглядає спокійніше за всі лаунчери, які я пробував. Легко дати дитині, яка просто хоче грати.»",
+      "“Auto-updates without nagging me mid-session. That's the whole pitch, honestly.”":
+        "«Автооновлення без нагадувань посеред гри. Чесно, це вся суть.»",
+      "Modpack author":"Автор модпаків",
+      "SMP admin":"Адмін SMP",
+      "Speedrunner":"Спідранер",
+      "Resource pack dev":"Розробник ресурс-паків",
+      "Casual player":"Звичайний гравець",
+      "Server host":"Власник сервера",
+      // comparison
+      "How it stacks up":"Як він виглядає на фоні інших",
+      "One launcher, both mod platforms.":"Один лаунчер, обидві платформи модів.",
+      "A quick look at how Refract compares to the launchers people usually switch from. Default feature sets — yours may vary by version.":
+        "Короткий огляд того, як Refract відрізняється від лаунчерів, з яких звичайно переходять. Стандартні набори функцій — у вашій версії може відрізнятися.",
+      "Feature":"Функція",
+      "Vanilla launcher":"Стандартний лаунчер",
+      "Modrinth + CurseForge, one app":"Modrinth і CurseForge в одній програмі",
+      "Auto Java install (8 / 17 / 21)":"Автовстановлення Java (8 / 17 / 21)",
+      "Friends & whitelist panel":"Панель друзів і вайтлиста",
+      "Custom in-app themes":"Власні теми в програмі",
+      "Comparison reflects each launcher's default install — double-check before you quote it.":
+        "Порівняння базується на типовому встановленні кожного лаунчера — перевірте дані, перш ніж їх цитувати.",
+      "Spot something off? Tell us →":"Помітили помилку? Повідомте нам →",
+      // changelog (v5)
+      "The three most recent releases, pulled live from GitHub.":
+        "Три останні релізи, отримані напряму з GitHub.",
+      "Loading the latest releases…":"Завантаження останніх релізів…",
+      "Full release history on GitHub →":"Вся історія релізів на GitHub →",
+      "Couldn't load the latest releases — ":"Не вдалося завантажити останні релізи — ",
+      "see them on GitHub →":"перегляньте їх на GitHub →"
     };
 
     const SKIP = {SCRIPT:1,STYLE:1,TEMPLATE:1,NOSCRIPT:1,SVG:1,svg:1,PATH:1,path:1};
@@ -1503,6 +1599,67 @@
     });
   })();
 
+  // ── live changelog: 3 latest stable GitHub releases ─────────
+  (function(){
+    const list = document.getElementById('changelogList');
+    if (!list) return;
+    const REPO = 'RefractMC/Refract_MC';
+
+    function cleanLine(s){
+      return s
+        .replace(/^[-*•]\s*/, '')
+        .replace(/\*\*(.*?)\*\*/g, '$1')
+        .replace(/`([^`]+)`/g, '$1')
+        .replace(/\s+by\s+@[\w-]+(\s+in\s+#?\d+)?\s*$/i, '')
+        .replace(/\(#\d+\)\s*$/, '')
+        .trim();
+    }
+    function bulletsFromBody(body){
+      if (!body) return [];
+      const lines = body.split('\n').map(l => l.trim());
+      const items = lines.filter(l => /^[-*•]\s+/.test(l)).map(cleanLine).filter(Boolean);
+      const out = items.filter(l => l && !/^full changelog/i.test(l));
+      return out.slice(0, 4);
+    }
+    function fmtDate(iso){
+      try { return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); }
+      catch(e){ return ''; }
+    }
+    function render(releases){
+      list.innerHTML = releases.map(rel => {
+        const tag = (rel.tag_name || '').replace(/^v/i, '');
+        const bullets = bulletsFromBody(rel.body);
+        const items = bullets.length
+          ? bullets.map(b => '<li>' + b + '</li>').join('')
+          : '<li><a href="' + rel.html_url + '" target="_blank" rel="noopener">View release notes →</a></li>';
+        return '<div class="chg-item"><div class="chg-meta"><span class="chg-ver">v' + tag + '</span><span class="chg-date">' + fmtDate(rel.published_at) + '</span></div><ul>' + items + '</ul></div>';
+      }).join('');
+      retranslate();
+    }
+
+    function retranslate(){
+      // dynamic content lands after the i18n module's initial pass — re-run it
+      // if the visitor is currently reading the site in Ukrainian.
+      if (typeof window.getRefractLang === 'function' && window.getRefractLang() !== 'en' && window.setRefractLang) {
+        window.setRefractLang(window.getRefractLang());
+      }
+    }
+
+    fetch('https://api.github.com/repos/' + REPO + '/releases?per_page=10', {
+      headers: { 'Accept': 'application/vnd.github+json' }
+    })
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(releases => {
+      const stable = (Array.isArray(releases) ? releases : []).filter(r => !r.draft && !r.prerelease).slice(0, 3);
+      if (!stable.length) throw new Error('no releases');
+      render(stable);
+    })
+    .catch(() => {
+      list.innerHTML = '<div class="chg-item"><div class="chg-meta"><span class="chg-ver">—</span></div><ul><li>Couldn\'t load the latest releases — <a href="https://github.com/RefractMC/Refract_MC/releases" target="_blank" rel="noopener">see them on GitHub →</a></li></ul></div>';
+      retranslate();
+    });
+  })();
+
   // ── popular-mods showcase ───────────────────────────
   (function(){
     const list = document.getElementById('modList');
@@ -1565,6 +1722,19 @@
         renderDetail(MODS[active]);
       })
       .catch(function(){});
+  })();
+
+  // ── product tour tabs ────────────────────────────────────────
+  (function(){
+    const rail = document.querySelector('.tour-rail');
+    if (!rail) return;
+    const tabs = Array.from(rail.querySelectorAll('.tour-tab'));
+    const panes = Array.from(document.querySelectorAll('.tour-pane'));
+    tabs.forEach(tab => tab.addEventListener('click', () => {
+      const key = tab.getAttribute('data-tab');
+      tabs.forEach(t => { const on = t === tab; t.classList.toggle('active', on); t.setAttribute('aria-selected', on ? 'true' : 'false'); });
+      panes.forEach(p => p.classList.toggle('active', p.getAttribute('data-pane') === key));
+    }));
   })();
 
   // ── mobile menu ─────────────────────────────────────────────
@@ -1727,7 +1897,7 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script type="text/babel" src="tweaks-panel.jsx"></script>
 <div id="tweaks-root"></div>
-<script type="text/babel" src="tweaks.jsx"></script>
+<script type="text/babel" src="tweaks-indigo.jsx"></script>
 
 </body>
 </html>
