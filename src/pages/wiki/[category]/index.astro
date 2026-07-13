@@ -1,0 +1,20 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+import DocsNavigation from "@/components/DocsNavigation.astro";
+import { docsCategories } from "@/data/site";
+export async function getStaticPaths() { return docsCategories.map((category) => ({ params: { category: category.id }, props: { category } })); }
+const { category } = Astro.props;
+const docs = (await getCollection("docs")).filter((doc) => doc.data.category === category.id).sort((a,b) => a.data.order - b.data.order);
+---
+<BaseLayout title={category.label} description={category.description}><PageHero eyebrow="Documentation" title={category.label} description={category.description} compact /><div class="narrow docs-layout"><section class="page-list">{docs.map((doc, index) => <a class="surface" href={`/wiki/${doc.id}/`}><span>{String(index+1).padStart(2,"0")}</span><div><h2>{doc.data.title}</h2><p>{doc.data.description}</p></div><strong>→</strong></a>)}</section><DocsNavigation /></div></BaseLayout>
+<style>
+  .docs-layout { padding-bottom: 6rem; display: grid; grid-template-columns: minmax(0,1fr) 19rem; gap: 1rem; }
+  .page-list { display: grid; gap: .7rem; }
+  .page-list > a { padding: 1.2rem; display: grid; grid-template-columns: 2rem 1fr auto; align-items: center; gap: 1rem; }
+  .page-list span { color: var(--primary-bright); font: .7rem/1 var(--mono); }
+  .page-list h2 { margin: 0 0 .35rem; font-size: 1.35rem; }
+  .page-list p { margin: 0; }
+  @media (max-width: 55rem) { .docs-layout { grid-template-columns: 1fr; } .docs-layout aside { order: -1; } }
+</style>

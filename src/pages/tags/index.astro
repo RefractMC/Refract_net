@@ -1,0 +1,9 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+const posts = await getCollection("news");
+const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
+---
+<BaseLayout title="News tags" description="Browse Refract news by topic."><PageHero eyebrow="News archive" title="Browse by tag." description="Filter release notes and project updates by topic." compact /><div class="narrow tag-cloud">{tags.map((tag) => <a class="surface" href={`/tags/${tag.toLowerCase()}/`}><span>{tag}</span><strong>{posts.filter((post) => post.data.tags.includes(tag)).length}</strong></a>)}</div></BaseLayout>
+<style>.tag-cloud { padding-bottom: 6rem; display: grid; grid-template-columns: repeat(auto-fit,minmax(13rem,1fr)); gap: .7rem; }.tag-cloud a { min-height: 5rem; padding: 1rem; display: flex; align-items: center; justify-content: space-between; font-weight: 800; }.tag-cloud strong { color: var(--primary-bright); font-family: var(--mono); }</style>

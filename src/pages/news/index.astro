@@ -1,0 +1,12 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+import NewsCard from "@/components/NewsCard.astro";
+const posts = (await getCollection("news")).sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+---
+<BaseLayout title="News" description="Refract release notes, project updates, and development news." editPath="src/pages/news/index.astro">
+  <PageHero eyebrow="Project log" title="News from Refract." description="Release notes, migration details, and changes that affect players and contributors." compact />
+  <section class="narrow news-list">{posts.map((post) => <NewsCard href={`/news/${post.id}/`} title={post.data.title} description={post.data.description} date={post.data.publishedAt} tags={post.data.tags} />)}</section>
+</BaseLayout>
+<style>.news-list { padding-bottom: 6rem; display: grid; gap: .8rem; }</style>

@@ -1,0 +1,38 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { site } from "@/data/site";
+export async function getStaticPaths() {
+  const posts = await getCollection("news");
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post, posts } }));
+}
+const { post, posts } = Astro.props as { post: CollectionEntry<"news">; posts: CollectionEntry<"news">[] };
+const { Content } = await render(post);
+const sorted = posts.sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+const index = sorted.findIndex((item) => item.id === post.id);
+const newer = sorted[index - 1];
+const older = sorted[index + 1];
+const articleData = { "@context": "https://schema.org", "@type": "Article", headline: post.data.title, description: post.data.description, datePublished: post.data.publishedAt.toISOString(), dateModified: (post.data.updatedAt ?? post.data.publishedAt).toISOString(), author: { "@type": "Organization", name: "Refract contributors" }, publisher: { "@type": "Organization", name: "Refract", url: site.url }, mainEntityOfPage: `${site.url}/news/${post.id}/` };
+---
+<BaseLayout title={post.data.title} description={post.data.description} image={post.data.hero} structuredData={articleData} editPath={`src/content/news/${post.id}.md`}>
+  <article class="article-wrap narrow">
+    <header><div class="meta"><time datetime={post.data.publishedAt.toISOString()}>{post.data.publishedAt.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</time>{post.data.tags.map((tag) => <a class="tag" href={`/tags/${tag.toLowerCase()}/`}>{tag}</a>)}</div><h1>{post.data.title}</h1><p>{post.data.description}</p></header>
+    {post.data.hero && <img class="article-hero" src={post.data.hero} alt="" width="1919" height="1033" />}
+    <div class="prose article-body"><Content /></div>
+    <nav class="article-nav" aria-label="Adjacent articles">{newer ? <a href={`/news/${newer.id}/`}><span>Newer</span><strong>{newer.data.title}</strong></a> : <span />}{older && <a href={`/news/${older.id}/`}><span>Older</span><strong>{older.data.title}</strong></a>}</nav>
+  </article>
+</BaseLayout>
+<style>
+  .article-wrap { padding-block: clamp(4rem, 9vw, 7rem); }
+  header { max-width: 58rem; }
+  header h1 { max-width: 15ch; margin: 1rem 0 1.25rem; }
+  header > p { max-width: 64ch; font-size: 1.15rem; }
+  .meta { display: flex; flex-wrap: wrap; align-items: center; gap: .55rem; color: var(--subtle); font: .7rem/1 var(--mono); text-transform: uppercase; }
+  .article-hero { width: 100%; margin-block: 2.5rem; aspect-ratio: 16/8.5; object-fit: cover; object-position: left top; border: 1px solid var(--border); border-radius: var(--radius-lg); }
+  .article-body { padding-block: 1rem 3rem; }
+  .article-nav { padding-top: 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; border-top: 1px solid var(--border); }
+  .article-nav a { padding: 1rem; display: grid; border: 1px solid var(--border); border-radius: var(--radius); }
+  .article-nav a:last-child { text-align: right; }
+  .article-nav span { color: var(--subtle); font: .65rem/1 var(--mono); text-transform: uppercase; }
+  .article-nav strong { margin-top: .35rem; }
+</style>

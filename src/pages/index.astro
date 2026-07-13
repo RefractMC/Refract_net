@@ -1,0 +1,141 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { site } from "@/data/site";
+const appData = { "@context": "https://schema.org", "@type": "SoftwareApplication", name: site.name, description: site.description, applicationCategory: "GameApplication", operatingSystem: "Windows 10/11, macOS, Linux, SteamOS", softwareVersion: site.release.version, license: `${site.repository}/blob/main/LICENSE`, downloadUrl: `${site.url}/download/`, codeRepository: site.repository };
+---
+<BaseLayout title={site.name} description={site.description} structuredData={appData} editPath="src/pages/index.astro">
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <h1>Refract</h1>
+        <p>A modern, open-source Minecraft launcher for managing instances, accounts, mods, worlds, and Java runtimes.</p>
+        <a class="button button-primary hero-button" href="/download/">Download Now</a>
+      </div>
+      <img class="hero-image" src="/images/screenshots/library.png" alt="Refract instance library" width="1919" height="1033" fetchpriority="high" />
+    </div>
+  </section>
+
+  <div class="home-main">
+    <section class="feature-row container">
+      <div class="feature-media">
+        <img src="/images/screenshots/browse.png" alt="Refract content browser" width="1919" height="1032" loading="lazy" />
+      </div>
+      <div class="feature-copy">
+        <h2>Modpack management</h2>
+        <p>Install modpacks from Modrinth, CurseForge, and FTB. Refract keeps every pack in its own clean instance and preserves worlds during updates.</p>
+      </div>
+    </section>
+
+    <section class="feature-row feature-row-reverse container">
+      <div class="feature-copy">
+        <h2>Download &amp; update mods</h2>
+        <p>Find the mod you need without leaving the launcher. Browse compatible content, install dependencies, and update individual mods in place.</p>
+      </div>
+      <div class="feature-media media-pair">
+        <img src="/images/screenshots/browse.png" alt="Mod search in Refract" width="1919" height="1032" loading="lazy" />
+        <img src="/images/screenshots/settings.png" alt="Content and runtime settings in Refract" width="1919" height="1031" loading="lazy" />
+      </div>
+    </section>
+
+    <section class="feature-row container">
+      <div class="feature-media">
+        <img src="/images/screenshots/library.png" alt="Organized Minecraft instances in Refract" width="1919" height="1033" loading="lazy" />
+      </div>
+      <div class="feature-copy">
+        <h2>Minecraft instance management</h2>
+        <p>Each instance has separate mods, resource packs, worlds, settings, and launch options. Import existing libraries without mixing files or breaking saves.</p>
+      </div>
+    </section>
+
+    <section class="feature-row feature-row-reverse container">
+      <div class="feature-copy">
+        <h2>Lightweight &amp; customizable</h2>
+        <p>Refract uses Tauri and Rust for a small native shell. Choose themes, accent colors, sidebar layouts, Java versions, memory limits, and launch behavior.</p>
+      </div>
+      <div class="feature-media">
+        <img src="/images/screenshots/settings.png" alt="Refract appearance and Java settings" width="1919" height="1031" loading="lazy" />
+      </div>
+    </section>
+
+    <section class="community container" id="community">
+      <h2>Get involved</h2>
+      <hr />
+      <div class="community-grid">
+        <article>
+          <h3>Discord</h3>
+          <p>Talk with players, get help, and join project discussions.</p>
+          <a class="community-link" href={site.discord} target="_blank" rel="noreferrer">Join the Refract Discord</a>
+        </article>
+        <article>
+          <h3>GitHub</h3>
+          <p>Report reproducible bugs, propose changes, or contribute code.</p>
+          <a class="community-link" href={site.repository} target="_blank" rel="noreferrer">View the repository</a>
+        </article>
+        <article>
+          <h3>Discussions</h3>
+          <p>Share ideas and ask questions that need more room.</p>
+          <a class="community-link" href={site.discussions} target="_blank" rel="noreferrer">Open discussions</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="source-section container">
+      <h2>Source code</h2>
+      <hr />
+      <p>Refract is free software licensed under GNU GPL v3.0. The application and this website are developed in public.</p>
+      <p><a href={site.repository} target="_blank" rel="noreferrer">Application source</a> · <a href={site.websiteRepository} target="_blank" rel="noreferrer">Website source</a></p>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .hero { min-height: 570px; height: calc(100dvh - 75px); max-height: 700px; display: grid; align-items: center; }
+  .hero-grid { display: grid; grid-template-columns: minmax(22rem, .95fr) minmax(32rem, 1.05fr); align-items: center; gap: clamp(2rem, 5vw, 5rem); padding-block: 2rem; }
+  .hero-copy { text-align: center; }
+  .hero h1 { margin: 0 0 1.6rem; font-size: clamp(2.7rem, 4.2vw, 3.4rem); }
+  .hero p { max-width: 35rem; margin: 0 auto; color: var(--text); font-size: clamp(1.2rem, 2vw, 1.58rem); line-height: 1.45; }
+  .hero-button { min-height: 56px; margin-top: 2.6rem; padding-inline: 2.6rem; font-size: 1.22rem; }
+  .hero-image { width: 100%; border: 1px solid rgba(255,255,255,.14); border-radius: var(--radius-card); filter: drop-shadow(0 15px 18px rgba(14,19,24,.5)); }
+  .home-main { width: min(calc(100% - 1rem), var(--container)); margin: 0 auto 1rem; overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-shell); background: var(--surface); box-shadow: var(--shadow); }
+  .feature-row { min-height: 570px; padding-block: clamp(3rem, 6vw, 5.5rem); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: clamp(2rem, 6vw, 6rem); }
+  .feature-copy { text-align: center; }
+  .feature-copy h2 { margin: 0 0 1.5rem; font-size: clamp(2rem, 3vw, 2.45rem); }
+  .feature-copy p { max-width: 38rem; margin: 0 auto; color: var(--text); font-size: clamp(1.08rem, 1.7vw, 1.45rem); line-height: 1.45; }
+  .feature-media { position: relative; }
+  .feature-media img { width: 100%; border: 1px solid rgba(255,255,255,.13); border-radius: var(--radius-card); filter: drop-shadow(0 13px 16px rgba(12,15,19,.55)); }
+  .media-pair { min-height: 25rem; }
+  .media-pair img { position: absolute; width: 70%; }
+  .media-pair img:first-child { left: 0; bottom: 0; }
+  .media-pair img:last-child { right: 0; top: 0; }
+  .community, .source-section { padding-block: clamp(3.5rem, 7vw, 6rem); }
+  .community h2, .source-section h2 { margin-bottom: .6rem; }
+  hr { height: 1px; margin: 0 0 2.2rem; border: 0; background: rgba(255,255,255,.35); }
+  .community-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(2rem, 5vw, 5rem); }
+  .community-grid h3 { margin-bottom: .7rem; }
+  .community-grid p { min-height: 3.3rem; margin-bottom: 1rem; }
+  .community-link, .source-section a { color: #a7e77a; text-decoration: underline; text-underline-offset: .2em; }
+  .source-section { padding-top: 1.5rem; }
+  .source-section > p { max-width: 55rem; font-size: 1.05rem; }
+  @media (max-width: 58rem) {
+    .hero { height: auto; max-height: none; padding-block: 3.5rem; }
+    .hero-grid, .feature-row { grid-template-columns: 1fr; }
+    .hero-copy { order: 1; }
+    .hero-image { order: 2; }
+    .feature-row { min-height: 0; gap: 2.5rem; }
+    .feature-row .feature-copy { order: 1; }
+    .feature-row .feature-media { order: 2; }
+    .media-pair { min-height: 22rem; }
+    .community-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .community-grid p { min-height: 0; }
+  }
+  @media (max-width: 38rem) {
+    .hero { padding-block: 3rem; }
+    .hero-grid { grid-template-columns: minmax(0,1fr); gap: 2.5rem; }
+    .hero h1 { margin-bottom: 1rem; }
+    .hero p { font-size: 1.1rem; }
+    .hero-button { margin-top: 1.7rem; }
+    .feature-row { padding-block: 3.5rem; }
+    .feature-copy p { font-size: 1.03rem; }
+    .media-pair { min-height: 15rem; }
+  }
+</style>

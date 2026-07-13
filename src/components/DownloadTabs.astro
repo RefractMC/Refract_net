@@ -1,0 +1,13 @@
+---
+import { downloadTabs } from "@/data/downloads";
+const { active } = Astro.props as { active: string };
+---
+<nav class="download-tabs" aria-label="Download platforms">
+  {downloadTabs.map((tab) => <a href={tab.href} class:list={{ active: tab.key === active }} aria-current={tab.key === active ? "page" : undefined}>{tab.label}</a>)}
+</nav>
+<style>
+  .download-tabs { display: flex; flex-wrap: wrap; gap: .45rem; padding: .5rem; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface-raised); box-shadow: inset 0 1px 0 rgba(255,255,255,.05); }
+  .download-tabs a { min-height: 44px; padding: .65rem 1rem; display: inline-flex; align-items: center; border-radius: var(--radius-control); color: var(--muted); font-weight: 800; }
+  .download-tabs a:hover { color: var(--text); background: var(--surface-soft); }
+  .download-tabs a.active { color: #fff; background: var(--primary-dark); }
+</style>

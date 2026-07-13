@@ -1,0 +1,56 @@
+---
+import { navigation, site } from "@/data/site";
+const path = Astro.url.pathname;
+const isActive = (href: string) => href !== "/#community" && path.startsWith(href);
+---
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/" aria-label="Refract home">
+      <img src="/icons/refract-iris.svg" alt="" width="50" height="50" />
+      <span>Refract</span>
+    </a>
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      {navigation.map((item) => <a href={item.href} class:list={{ active: isActive(item.href) }} aria-current={isActive(item.href) ? "page" : undefined}>{item.label}</a>)}
+    </nav>
+    <div class="header-actions">
+      <a class="social-link" href={site.discord} target="_blank" rel="noreferrer" aria-label="Refract Discord, opens in a new tab"><img src="/icons/discord.svg" alt="" width="24" height="24" /></a>
+      <a class="social-link" href={site.repository} target="_blank" rel="noreferrer" aria-label="Refract on GitHub, opens in a new tab"><img src="/icons/github.svg" alt="" width="24" height="24" /></a>
+      <a class="button button-primary header-button" href="/download/">Download</a>
+      <a class="button button-primary header-button" href={`${site.repository}/blob/main/CONTRIBUTING.md`} target="_blank" rel="noreferrer">Contribute</a>
+    </div>
+    <details class="mobile-menu">
+      <summary>Menu</summary>
+      <nav aria-label="Mobile navigation">
+        {navigation.map((item) => <a href={item.href}>{item.label}</a>)}
+        <a href={site.discord} target="_blank" rel="noreferrer">Discord</a>
+        <a href={site.repository} target="_blank" rel="noreferrer">GitHub</a>
+        <a href="/download/">Download</a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<style>
+  .site-header { position: relative; z-index: 20; min-height: 75px; border-bottom: 1px solid var(--border); border-radius: 0 0 var(--radius-shell) var(--radius-shell); background: var(--surface); box-shadow: 0 5px 16px rgba(20,25,30,.2); }
+  .header-inner { min-height: 75px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 1.2rem; }
+  .brand { display: inline-flex; align-items: center; gap: .65rem; font-size: 1.65rem; font-weight: 500; }
+  .brand img { width: 50px; height: 50px; }
+  .desktop-nav { display: flex; align-items: center; gap: 1.35rem; }
+  .desktop-nav a { min-height: 44px; display: inline-flex; align-items: center; color: var(--text); font-size: 1.05rem; font-weight: 430; }
+  .desktop-nav a:hover, .desktop-nav a.active { color: #9de56a; }
+  .header-actions { display: flex; align-items: center; justify-content: flex-end; gap: .75rem; }
+  .social-link { width: 42px; height: 44px; display: grid; place-items: center; border-radius: var(--radius-control); }
+  .social-link:hover { background: rgba(255,255,255,.08); }
+  .social-link img { width: 24px; height: 24px; }
+  .header-button { min-width: 130px; font-size: 1rem; }
+  .mobile-menu { display: none; justify-self: end; }
+  .mobile-menu summary { min-width: 48px; min-height: 44px; display: grid; place-items: center; cursor: pointer; border: 1px solid var(--border); border-radius: var(--radius-control); font-weight: 750; list-style: none; }
+  .mobile-menu summary::-webkit-details-marker { display: none; }
+  .mobile-menu nav { position: absolute; left: .625rem; right: .625rem; top: calc(100% + .55rem); padding: .5rem; display: grid; overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow); }
+  .mobile-menu:not([open]) nav { display: none; }
+  .mobile-menu nav a { min-height: 48px; display: flex; align-items: center; padding-inline: .8rem; border-bottom: 1px solid var(--border); font-weight: 700; }
+  .mobile-menu nav a:last-child { border-bottom: 0; color: #b8ed91; }
+  @media (max-width: 68rem) { .header-button:last-child { display: none; } }
+  @media (max-width: 58rem) { .header-inner { grid-template-columns: 1fr auto; } .desktop-nav, .header-actions { display: none; } .mobile-menu { display: block; } }
+  @media (prefers-color-scheme: light) { .social-link img { filter: invert(1); } }
+</style>

@@ -1,0 +1,27 @@
+---
+import { site } from "@/data/site";
+const editPath = Astro.props.editPath as string | undefined;
+---
+<footer class="footer">
+  <div class="container footer-inner">
+    <a class="footer-brand" href="/"><img src="/icons/refract-iris.svg" alt="" width="42" height="42" /><span>Refract</span></a>
+    <nav aria-label="Footer navigation">
+      {editPath && <a href={`${site.websiteRepository}/edit/main/${editPath}`} target="_blank" rel="noreferrer">Edit this page</a>}
+      <a href={site.repository} target="_blank" rel="noreferrer">Source</a>
+      <a href={`${site.repository}/blob/main/LICENSE`} target="_blank" rel="noreferrer">GPL-3.0</a>
+      <a href={site.issues} target="_blank" rel="noreferrer">Issues</a>
+    </nav>
+    <p>© 2026 Refract contributors</p>
+  </div>
+</footer>
+<style>
+  .footer { border-top: 1px solid var(--border); border-radius: var(--radius-shell) var(--radius-shell) 0 0; background: var(--surface); }
+  .footer-inner { min-height: 100px; padding-block: 1.5rem; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 2rem; }
+  .footer-brand { display: inline-flex; align-items: center; gap: .6rem; font-size: 1.35rem; font-weight: 500; }
+  .footer-brand img { width: 42px; height: 42px; }
+  .footer nav { display: flex; flex-wrap: wrap; gap: 1.2rem; }
+  .footer nav a { color: var(--text); font-size: .95rem; }
+  .footer nav a:hover { color: #9de56a; }
+  .footer p { margin: 0; color: var(--subtle); font-size: .82rem; }
+  @media (max-width: 46rem) { .footer-inner { grid-template-columns: 1fr; gap: 1rem; } }
+</style>
