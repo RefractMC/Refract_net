@@ -1,0 +1,7 @@
+---
+import DownloadLayout from "@/layouts/DownloadLayout.astro";
+---
+<DownloadLayout platform="linux" title="Linux" description="Use the AppImage for a portable install, or choose the package that matches your distribution.">
+  <h2>Linux install</h2><p>The one-line installer selects the published package for your system:</p><pre><code>curl -fsSL https://refractmc.net/install.sh | sh</code></pre><h3>AppImage</h3><pre><code>chmod +x Refract-Linux-x86_64.AppImage
+./Refract-Linux-x86_64.AppImage</code></pre><p>Debian/Ubuntu users can install the <code>.deb</code> with <code>sudo apt install ./Refract-Linux-amd64.deb</code>. Fedora/RHEL users can install the RPM with <code>sudo dnf install ./Refract-1.3.0-1.x86_64.rpm</code>.</p>
+</DownloadLayout>

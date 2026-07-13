@@ -1,0 +1,59 @@
+---
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { site } from "@/data/site";
+import "@/styles/global.css";
+
+interface Props { title: string; description: string; image?: string; editPath?: string; structuredData?: Record<string, unknown> | Record<string, unknown>[]; }
+const { title, description, image = "/images/screenshots/library.png", editPath, structuredData } = Astro.props;
+const canonical = new URL(Astro.url.pathname, site.url);
+const fullTitle = title === site.name ? `${site.name} | ${site.tagline}` : `${title} | ${site.name}`;
+const socialImage = new URL(image, site.url);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/icons/refract-iris-64.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="preload" as="image" href="/images/backgrounds/voxel-mountains.webp" type="image/webp" />
+    <link rel="alternate" type="application/rss+xml" title="Refract news" href="/feed.xml" />
+    <link rel="alternate" type="application/feed+json" title="Refract news" href="/feed.json" />
+    <meta name="theme-color" content="#09090d" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f4f3f8" media="(prefers-color-scheme: light)" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <!-- Google tag (gtag.js) -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-MX248BTV0T"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-MX248BTV0T');
+    </script>
+    {structuredData && <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <picture class="fixed-bg" aria-hidden="true">
+      <source srcset="/images/backgrounds/voxel-mountains.webp" type="image/webp" />
+      <img src="/images/backgrounds/voxel-mountains.png" alt="" width="1672" height="941" />
+    </picture>
+    <Header />
+    <main id="main-content"><slot /></main>
+    <Footer editPath={editPath} />
+  </body>
+</html>

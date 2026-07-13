@@ -1,0 +1,24 @@
+---
+import type { DownloadItem } from "@/data/downloads";
+const { items } = Astro.props as { items: DownloadItem[] };
+---
+<div class="downloads">
+  {items.map((item) => (
+    <article class:list={["download-card surface", { recommended: item.recommended }]}>
+      <div>
+        {item.recommended && <span class="tag">Recommended</span>}
+        <h2>{item.name}</h2>
+        <p>{item.detail}{item.size ? ` · ${item.size}` : ""}</p>
+      </div>
+      <a class="button button-primary" href={item.href}>Download</a>
+    </article>
+  ))}
+</div>
+<style>
+  .downloads { display: grid; gap: .8rem; margin-block: 1.4rem 2rem; }
+  .download-card { padding: 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+  .download-card.recommended { border-color: rgba(103,189,47,.62); background: linear-gradient(100deg, rgba(86,170,34,.15), var(--surface) 55%); }
+  .download-card h2 { margin: .7rem 0 .25rem; font-size: 1.35rem; }
+  .download-card p { margin: 0; font: .77rem/1.5 var(--mono); }
+  @media (max-width: 36rem) { .download-card { align-items: stretch; flex-direction: column; } }
+</style>

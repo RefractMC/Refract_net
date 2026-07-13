@@ -1,0 +1,19 @@
+---
+interface Props { eyebrow?: string; title: string; description: string; compact?: boolean; }
+const { eyebrow, title, description, compact = false } = Astro.props;
+---
+<section class:list={["page-hero", { compact }]}>
+  <div class="narrow">
+    {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+    <h1>{title}</h1>
+    <p>{description}</p>
+    <slot />
+  </div>
+</section>
+<style>
+  .page-hero { width: min(calc(100% - 2rem), var(--container)); margin: 2rem auto 1.25rem; padding-block: clamp(3.5rem, 7vw, 6rem); overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-shell); background: var(--surface); box-shadow: var(--shadow); }
+  .page-hero.compact { padding-block: 3.5rem 2.5rem; }
+  h1 { max-width: 18ch; margin: .8rem 0 1.1rem; font-size: clamp(2.4rem, 5vw, 3.4rem); }
+  p { max-width: 64ch; margin: 0; font-size: clamp(1rem, 2vw, 1.18rem); }
+  :global(.page-hero-actions) { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.7rem; }
+</style>

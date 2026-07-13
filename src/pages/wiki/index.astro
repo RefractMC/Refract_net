@@ -1,0 +1,21 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+import DocsNavigation from "@/components/DocsNavigation.astro";
+import { docsCategories } from "@/data/site";
+const docs = await getCollection("docs");
+---
+<BaseLayout title="Documentation" description="Install, configure, troubleshoot, and contribute to Refract." editPath="src/pages/wiki/index.astro">
+  <PageHero eyebrow="Refract wiki" title="Documentation." description="Start with installation, learn how instances and content work, troubleshoot launch problems, or build the project from source." compact />
+  <div class="narrow docs-layout"><section class="category-grid">{docsCategories.map((category) => <a class="category-card surface" href={`/wiki/${category.id}/`}><span class="eyebrow">{String(docs.filter((doc) => doc.data.category === category.id).length).padStart(2,"0")} pages</span><h2>{category.label}</h2><p>{category.description}</p><strong>Browse category →</strong></a>)}</section><DocsNavigation /></div>
+</BaseLayout>
+<style>
+  .docs-layout { padding-bottom: 6rem; display: grid; grid-template-columns: minmax(0,1fr) 19rem; gap: 1rem; }
+  .category-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: .8rem; }
+  .category-card { padding: 1.4rem; }
+  .category-card h2 { margin: 1.25rem 0 .7rem; font-size: 1.7rem; }
+  .category-card strong { color: var(--primary-bright); }
+  @media (max-width: 55rem) { .docs-layout { grid-template-columns: 1fr; } .docs-layout aside { order: -1; } }
+  @media (max-width: 36rem) { .category-grid { grid-template-columns: 1fr; } }
+</style>

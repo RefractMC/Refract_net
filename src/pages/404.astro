@@ -1,0 +1,5 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+<BaseLayout title="Page not found" description="The requested Refract page could not be found."><section class="not-found narrow"><span class="eyebrow">Error 404</span><h1>That path<br />lost focus.</h1><p>The page may have moved, or the address may be incomplete. The launcher is still right where you left it.</p><div><a class="button button-primary button-large" href="/">Return home</a><a class="button button-secondary button-large" href="/download/">Downloads</a><a class="button button-secondary button-large" href="/wiki/">Documentation</a></div></section></BaseLayout>
+<style>.not-found { min-height: calc(100dvh - 13rem); padding-block: 6rem; display: flex; flex-direction: column; justify-content: center; }.not-found h1 { margin: 1rem 0; }.not-found p { max-width: 55ch; font-size: 1.08rem; }.not-found div { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1rem; }</style>

@@ -1,0 +1,28 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+import DownloadTabs from "@/components/DownloadTabs.astro";
+import DownloadCards from "@/components/DownloadCards.astro";
+import { downloadData } from "@/data/downloads";
+import { site } from "@/data/site";
+
+interface Props { platform: keyof typeof downloadData.platforms; title: string; description: string; }
+const { platform, title, description } = Astro.props;
+const structuredData = { "@context": "https://schema.org", "@type": "SoftwareApplication", name: site.name, applicationCategory: "GameApplication", operatingSystem: title, softwareVersion: downloadData.version, license: `${site.repository}/blob/main/LICENSE`, downloadUrl: downloadData.platforms[platform][0].href };
+---
+<BaseLayout title={`Download for ${title}`} description={description} structuredData={structuredData}>
+  <PageHero eyebrow={`Version ${downloadData.version}`} title={`Download Refract for ${title}`} description={description} compact />
+  <div class="narrow download-content">
+    <DownloadTabs active={platform} />
+    <DownloadCards items={downloadData.platforms[platform]} />
+    <section class="surface instructions"><slot /></section>
+  </div>
+</BaseLayout>
+<style>
+  .download-content { padding-bottom: 6rem; }
+  .instructions { padding: clamp(1.25rem, 4vw, 2.3rem); }
+  .instructions :global(h2) { margin-top: 0; }
+  .instructions :global(code) { padding: .15rem .35rem; color: var(--primary-bright); background: var(--code); font-family: var(--mono); }
+  .instructions :global(pre) { overflow-x: auto; padding: 1rem; border-radius: var(--radius); background: var(--code); }
+  .instructions :global(a) { color: var(--primary-bright); text-decoration: underline; text-underline-offset: .2em; }
+</style>

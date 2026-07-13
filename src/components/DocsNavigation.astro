@@ -1,0 +1,33 @@
+---
+import { getCollection } from "astro:content";
+import { docsCategories } from "@/data/site";
+const { currentId } = Astro.props as { currentId?: string };
+const docs = (await getCollection("docs")).sort((a, b) => a.data.order - b.data.order);
+---
+<aside class="docs-nav" aria-label="Documentation navigation">
+  <details open>
+    <summary>On this site</summary>
+    <nav>
+      <a class:list={{ active: !currentId }} href="/wiki/">Documentation home</a>
+      {docsCategories.map((category) => (
+        <section>
+          <a class="category" href={`/wiki/${category.id}/`}>{category.label}</a>
+          <div>
+            {docs.filter((doc) => doc.data.category === category.id).map((doc) => <a class:list={{ active: currentId === doc.id }} aria-current={currentId === doc.id ? "page" : undefined} href={`/wiki/${doc.id}/`}>{doc.data.title}</a>)}
+          </div>
+        </section>
+      ))}
+    </nav>
+  </details>
+</aside>
+<style>
+  .docs-nav { position: sticky; top: 6rem; align-self: start; padding: 1rem; overflow: hidden; border: 1px solid rgba(103,189,47,.42); border-radius: var(--radius-card); background: color-mix(in srgb, var(--primary-dark) 30%, var(--surface)); }
+  summary { padding: .4rem .3rem .8rem; cursor: pointer; font-weight: 850; }
+  nav { display: grid; }
+  nav a { min-height: 40px; display: flex; align-items: center; padding: .45rem .65rem; border-radius: var(--radius-control); color: var(--muted); font-size: .86rem; font-weight: 650; }
+  nav a:hover, nav a.active { color: var(--text); background: rgba(255,255,255,.08); }
+  .category { color: var(--text); font-weight: 850; }
+  section { padding-top: .7rem; border-top: 1px solid rgba(255,255,255,.12); }
+  section div { display: grid; padding: 0 0 .6rem .5rem; }
+  @media (max-width: 55rem) { .docs-nav { position: static; } .docs-nav details:not([open]) nav { display: none; } }
+</style>

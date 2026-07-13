@@ -1,0 +1,51 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import DocsNavigation from "@/components/DocsNavigation.astro";
+import { docsCategories, site } from "@/data/site";
+export async function getStaticPaths() {
+  const docs = await getCollection("docs");
+  return docs.map((doc) => { const [category, slug] = doc.id.split("/"); return { params: { category, slug }, props: { doc, docs } }; });
+}
+const { doc, docs } = Astro.props as { doc: CollectionEntry<"docs">; docs: CollectionEntry<"docs">[] };
+const { Content, headings } = await render(doc);
+const category = docsCategories.find((item) => item.id === doc.data.category)!;
+const categoryDocs = docs.filter((item) => item.data.category === doc.data.category).sort((a,b) => a.data.order - b.data.order);
+const index = categoryDocs.findIndex((item) => item.id === doc.id);
+const previous = categoryDocs[index - 1]; const next = categoryDocs[index + 1];
+const crumbs = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Documentation", item: `${site.url}/wiki/` }, { "@type": "ListItem", position: 2, name: category.label, item: `${site.url}/wiki/${category.id}/` }, { "@type": "ListItem", position: 3, name: doc.data.title, item: `${site.url}/wiki/${doc.id}/` }] };
+---
+<BaseLayout title={doc.data.title} description={doc.data.description} structuredData={crumbs} editPath={`src/content/docs/${doc.id}.md`}>
+  <div class="narrow docs-layout">
+    <article>
+      <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/wiki/">Wiki</a><span>/</span><a href={`/wiki/${category.id}/`}>{category.label}</a></nav>
+      <header><span class="eyebrow">{category.label}</span><h1>{doc.data.title}</h1><p>{doc.data.description}</p>{doc.data.updatedAt && <time datetime={doc.data.updatedAt.toISOString()}>Updated {doc.data.updatedAt.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</time>}</header>
+      {headings.length > 2 && <details class="toc surface"><summary>On this page</summary><nav>{headings.filter((heading) => heading.depth <= 3).map((heading) => <a href={`#${heading.slug}`}>{heading.text}</a>)}</nav></details>}
+      <div class="prose docs-body"><Content /></div>
+      <div class="page-tags"><strong>Pages in this category</strong>{categoryDocs.map((item) => <a class="tag" href={`/wiki/${item.id}/`}>{item.data.title}</a>)}</div>
+      <nav class="article-nav" aria-label="Adjacent documentation pages">{previous ? <a href={`/wiki/${previous.id}/`}><span>Previous</span><strong>{previous.data.title}</strong></a> : <span />}{next && <a href={`/wiki/${next.id}/`}><span>Next</span><strong>{next.data.title}</strong></a>}</nav>
+    </article>
+    <DocsNavigation currentId={doc.id} />
+  </div>
+</BaseLayout>
+<style>
+  .docs-layout { padding-block: 4rem 6rem; display: grid; grid-template-columns: minmax(0,1fr) 19rem; gap: clamp(1.5rem,4vw,4rem); align-items: start; }
+  .breadcrumbs { margin-bottom: 2rem; display: flex; gap: .55rem; color: var(--subtle); font-size: .82rem; }
+  .breadcrumbs a:hover { color: var(--primary-bright); }
+  header h1 { margin: .8rem 0 1rem; max-width: 14ch; font-size: clamp(2.6rem,6vw,4.8rem); }
+  header > p { max-width: 65ch; font-size: 1.08rem; }
+  header time { color: var(--subtle); font: .68rem/1 var(--mono); }
+  .toc { max-width: 42rem; margin-block: 2rem; padding: .8rem 1rem; }
+  .toc summary { cursor: pointer; font-weight: 800; }
+  .toc nav { margin-top: .6rem; display: grid; }
+  .toc a { min-height: 36px; display: flex; align-items: center; color: var(--muted); font-size: .88rem; }
+  .docs-body { padding-top: 1rem; }
+  .page-tags { margin-top: 3rem; padding-block: 1.2rem; display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; border-top: 1px solid var(--border); }
+  .page-tags strong { width: 100%; margin-bottom: .4rem; }
+  .article-nav { margin-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+  .article-nav a { padding: 1rem; display: grid; border: 1px solid var(--border); border-radius: var(--radius); }
+  .article-nav a:last-child { text-align: right; }
+  .article-nav span { color: var(--subtle); font: .65rem/1 var(--mono); text-transform: uppercase; }
+  .article-nav strong { margin-top: .35rem; }
+  @media (max-width: 55rem) { .docs-layout { grid-template-columns: 1fr; padding-top: 1rem; } .docs-layout > aside { order: -1; } }
+</style>

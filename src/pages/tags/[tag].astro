@@ -1,0 +1,14 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+import NewsCard from "@/components/NewsCard.astro";
+export async function getStaticPaths() {
+  const posts = await getCollection("news");
+  const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
+  return tags.map((tag) => ({ params: { tag: tag.toLowerCase() }, props: { tag, posts: posts.filter((post) => post.data.tags.includes(tag)) } }));
+}
+const { tag, posts } = Astro.props;
+---
+<BaseLayout title={`${tag} news`} description={`Refract news tagged ${tag}.`}><PageHero eyebrow="News tag" title={tag} description={`${posts.length} article${posts.length === 1 ? "" : "s"} in this topic.`} compact /><section class="narrow news-list">{posts.map((post) => <NewsCard href={`/news/${post.id}/`} title={post.data.title} description={post.data.description} date={post.data.publishedAt} tags={post.data.tags} />)}</section></BaseLayout>
+<style>.news-list { padding-bottom: 6rem; display: grid; gap: .8rem; }</style>

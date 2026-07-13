@@ -1,0 +1,18 @@
+---
+interface Props { href: string; title: string; description: string; date: Date; tags: string[]; }
+const { href, title, description, date, tags } = Astro.props;
+---
+<article class="news-card surface">
+  <div class="meta"><time datetime={date.toISOString()}>{date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</time><span>{tags[0] ?? "News"}</span></div>
+  <h2><a href={href}>{title}</a></h2>
+  <p>{description}</p>
+  <div class="tags">{tags.map((tag) => <a class="tag" href={`/tags/${encodeURIComponent(tag.toLowerCase())}/`}>{tag}</a>)}</div>
+</article>
+<style>
+  .news-card { position: relative; padding: 1.5rem; border-left: 3px solid var(--primary); }
+  .news-card h2 { margin: .75rem 0 .8rem; font-size: clamp(1.45rem, 3vw, 2.15rem); }
+  .news-card h2 a::after { content: ""; position: absolute; inset: 0; }
+  .news-card p { max-width: 65ch; }
+  .meta { display: flex; gap: .7rem; color: var(--subtle); font: 700 .72rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+  .tags { position: relative; display: flex; flex-wrap: wrap; gap: .45rem; margin-top: 1.1rem; z-index: 1; }
+</style>
