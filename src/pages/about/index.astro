@@ -1,9 +1,11 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PageHero from "@/components/PageHero.astro";
+import { getDownloadData } from "@/data/downloads";
 import { getPeople } from "@/data/people";
 import { site } from "@/data/site";
 const people = await getPeople();
+const downloadData = await getDownloadData();
 ---
 <BaseLayout title="About" description="The people, principles, and open-source foundation behind Refract." editPath="src/pages/about/index.astro">
   <PageHero eyebrow="About Refract" title="A launcher that keeps the whole library together." description="Refract is built for players who want control without turning setup into a second hobby. It combines native performance with a focused interface and public, inspectable source code." />
@@ -14,7 +16,7 @@ const people = await getPeople();
       <h2>Project philosophy</h2><p>Refract favors direct control, useful defaults, reversible actions, and honest status. The application should explain what it is doing, preserve player data through updates, and stay useful without forcing browser hopping.</p>
       <h2>From Electron to Tauri</h2><p>The project began with an Electron shell and moved to Tauri in version 1.2. The React renderer remains, while Rust now handles the native backend, downloads, file operations, secure credential storage, launching, and platform integration.</p>
     </article>
-    <aside class="surface facts"><h2>At a glance</h2><dl><div><dt>Current release</dt><dd>{site.release.version}</dd></div><div><dt>License</dt><dd>{site.license}</dd></div><div><dt>Platforms</dt><dd>Windows, macOS, Linux</dd></div><div><dt>Core</dt><dd>Tauri, Rust, React, TypeScript</dd></div><div><dt>Content</dt><dd>Modrinth, CurseForge, FTB</dd></div></dl></aside>
+    <aside class="surface facts"><h2>At a glance</h2><dl><div><dt>Current release</dt><dd>{downloadData.version}</dd></div><div><dt>License</dt><dd>{site.license}</dd></div><div><dt>Platforms</dt><dd>Windows, macOS, Linux</dd></div><div><dt>Core</dt><dd>Tauri, Rust, React, TypeScript</dd></div><div><dt>Content</dt><dd>Modrinth, CurseForge, FTB</dd></div></dl></aside>
   </section>
   <section class="section people-section"><div class="narrow"><div class="section-head"><span class="eyebrow">Maintainers & contributors</span><h2>The people in the commit history.</h2><p>Contributor data updates automatically from the public Refract repository.</p></div><div class="people-grid">{people.map((person) => <a class="person surface" href={person.href} target="_blank" rel="noreferrer"><img src={person.avatar} alt={`${person.name}'s GitHub avatar`} width="96" height="96" loading="lazy" referrerpolicy="no-referrer" /><div><span>{person.label}</span><h3>{person.name}</h3><p>{person.role} - @{person.handle}</p></div></a>)}</div></div></section>
 </BaseLayout>

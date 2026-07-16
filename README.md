@@ -48,7 +48,7 @@ tags: [installation, beginner]
 ---
 ```
 
-Navigation, release metadata, platform downloads, and project links are centralized in `src/data/`. The About page fetches contributors from the public Refract application repository during each build and uses the local people data only as a fallback.
+Navigation and project links are centralized in `src/data/`. During each build, the site fetches the latest published GitHub release to update the displayed version, download links, and file sizes. The About page also fetches contributors from the public Refract application repository. Both integrations use local fallback data if GitHub is temporarily unavailable.
 
 ## Deployment
 

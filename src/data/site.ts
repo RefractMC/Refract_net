@@ -9,8 +9,7 @@ export const site = {
   discord: "https://discord.gg/T7kSaS9eWK",
   issues: "https://github.com/RefractMC/Refract_MC/issues",
   discussions: "https://github.com/RefractMC/Refract_MC/discussions",
-  license: "GNU GPL v3.0",
-  release: { version: "1.3.0", releasedAt: "2026-07-11" }
+  license: "GNU GPL v3.0"
 } as const;
 
 export const navigation = [

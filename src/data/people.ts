@@ -1,3 +1,5 @@
+import { fetchGitHubJson } from "@/data/github";
+
 export interface Person {
   name: string;
   handle: string;
@@ -33,20 +35,8 @@ const profileOverrides: Record<string, Pick<Person, "name" | "label" | "role">> 
 const isBot = (contributor: GitHubContributor) => contributor.type === "Bot" || contributor.login.endsWith("[bot]");
 
 export async function getPeople(): Promise<Person[]> {
-  const token = import.meta.env.GITHUB_TOKEN;
-  const headers: Record<string, string> = {
-    Accept: "application/vnd.github+json",
-    "User-Agent": "Refract-Website",
-    "X-GitHub-Api-Version": "2026-03-10"
-  };
-
-  if (token) headers.Authorization = `Bearer ${token}`;
-
   try {
-    const response = await fetch(contributorsEndpoint, { headers, signal: AbortSignal.timeout(8_000) });
-    if (!response.ok) throw new Error(`GitHub returned ${response.status}`);
-
-    const contributors = await response.json() as GitHubContributor[];
+    const contributors = await fetchGitHubJson<GitHubContributor[]>(contributorsEndpoint);
     if (!Array.isArray(contributors) || contributors.length === 0) throw new Error("GitHub returned no contributors");
 
     return contributors
