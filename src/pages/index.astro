@@ -1,7 +1,9 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getDownloadData } from "@/data/downloads";
 import { site } from "@/data/site";
-const appData = { "@context": "https://schema.org", "@type": "SoftwareApplication", name: site.name, description: site.description, applicationCategory: "GameApplication", operatingSystem: "Windows 10/11, macOS, Linux, SteamOS", softwareVersion: site.release.version, license: `${site.repository}/blob/main/LICENSE`, downloadUrl: `${site.url}/download/`, codeRepository: site.repository };
+const downloadData = await getDownloadData();
+const appData = { "@context": "https://schema.org", "@type": "SoftwareApplication", name: site.name, description: site.description, applicationCategory: "GameApplication", operatingSystem: "Windows 10/11, macOS, Linux, SteamOS", softwareVersion: downloadData.version, license: `${site.repository}/blob/main/LICENSE`, downloadUrl: `${site.url}/download/`, codeRepository: site.repository };
 ---
 <BaseLayout title={site.name} description={site.description} structuredData={appData} editPath="src/pages/index.astro">
   <section class="hero">
