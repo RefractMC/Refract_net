@@ -3,3 +3,9 @@ dist/
 .astro/
 .DS_Store
 *.zip
+.env
+.env.*
+!.env.example
+output/
+test-results/
+playwright-report/

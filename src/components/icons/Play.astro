@@ -1,0 +1,9 @@
+---
+// Iconoir play; rendered on the server, no client icon runtime.
+import source from 'iconoir/icons/regular/play.svg?raw';
+import type { HTMLAttributes } from 'astro/types';
+type Props = HTMLAttributes<'svg'> & { size?: number; };
+const { size=20, class:className, ...props } = Astro.props;
+const body=source.slice(source.indexOf('>')+1,source.lastIndexOf('</svg>'));
+---
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={size} height={size} fill="none" stroke-width="1.5" class:list={['iconoir',className]} aria-hidden="true" focusable="false" {...props} set:html={body}/>

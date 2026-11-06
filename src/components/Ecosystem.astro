@@ -1,0 +1,28 @@
+---
+const platforms = [
+  { name: "Modrinth", image: "modrinth.svg", href: "https://modrinth.com/" },
+  { name: "CurseForge", image: "curseforge.svg", href: "https://www.curseforge.com/" },
+  { name: "FTB", image: "ftb.png", href: "https://www.feed-the-beast.com/" },
+  { name: "Fabric", image: "fabric.png", href: "https://fabricmc.net/" },
+  { name: "Forge", image: "forge.png", href: "https://files.minecraftforge.net/" },
+  { name: "NeoForge", image: "neoforge.png", href: "https://neoforged.net/" },
+  { name: "Quilt", image: "quilt.png", href: "https://quiltmc.org/" }
+];
+---
+<section class="ecosystem container" aria-labelledby="ecosystem-title">
+  <h2 id="ecosystem-title">The Minecraft ecosystem, together.</h2>
+  <p>Browse community content. Choose the loader your mods need.</p>
+  <div class="ecosystem-logos">{platforms.map(platform => <a href={platform.href}><img src={`/icons/ecosystem/${platform.image}`} width="32" height="32" alt="" loading="lazy" /><span>{platform.name}</span></a>)}</div>
+  <p class="ecosystem-note">Supported platforms and loaders. No partnership or endorsement implied.</p>
+</section>
+<style>
+  .ecosystem { text-align: center; padding-block: 4.2rem 4.5rem; }
+  h2 { font-size: clamp(1.5rem, 2.5vw, 2rem); letter-spacing: -.03em; margin-bottom: .75rem; }
+  p { font-size: .93rem; }
+  .ecosystem-logos { display: flex; justify-content: center; flex-wrap: wrap; gap: 1.2rem 2.7rem; margin-block: 2rem; }
+  .ecosystem-logos a { display: flex; align-items: center; gap: .65rem; min-height: 44px; font-size: 1rem; font-weight: 600; color: #d4d9e3; }
+  .ecosystem-logos a:hover { color: var(--text); }
+  img { width: 30px; height: 30px; object-fit: contain; }
+  .ecosystem-note { color: var(--subtle); font-size: .72rem; margin-bottom: 0; }
+  @media (max-width: 767px) { .ecosystem { padding-block: 3rem; } .ecosystem-logos { gap: 1rem 1.6rem; } .ecosystem-logos a { font-size: .85rem; } img { width: 26px; height: 26px; } }
+</style>

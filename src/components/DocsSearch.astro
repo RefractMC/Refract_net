@@ -1,0 +1,43 @@
+---
+import { getCollection } from "astro:content";
+import { Search, ArrowUpRight } from "@/components/icons";
+const docs = (await getCollection("docs")).sort((a, b) => a.data.title.localeCompare(b.data.title));
+---
+<docs-search>
+  <label for="docs-search-input">Search documentation</label>
+  <div class="search-field"><Search size={18} /><input type="search" id="docs-search-input" placeholder="Try accounts, Java, or installing mods" autocomplete="off" aria-controls="docs-search-results" /></div>
+  <p class="search-status" role="status" aria-live="polite">Search titles, descriptions, and guide topics.</p>
+  <ul id="docs-search-results" hidden>{docs.map(doc => <li data-search={[doc.data.title, doc.data.description, ...doc.data.tags].join(" ").toLowerCase()}><a href={`/wiki/${doc.id}/`}><span><strong>{doc.data.title}</strong><small>{doc.data.description}</small></span><ArrowUpRight size={17} /></a></li>)}</ul>
+</docs-search>
+<script>
+  class DocsSearch extends HTMLElement {
+    connectedCallback() {
+      const input = this.querySelector("input")!;
+      const list = this.querySelector("ul")!;
+      const rows = [...this.querySelectorAll<HTMLLIElement>("li")];
+      const status = this.querySelector(".search-status")!;
+      input.addEventListener("input", () => {
+        const words = input.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+        let count = 0;
+        rows.forEach(row => { const match = words.every(word => row.dataset.search?.includes(word)); row.hidden = !match; if (match) count++; });
+        list.hidden = words.length === 0 || count === 0;
+        status.textContent = words.length === 0 ? "Search titles, descriptions, and guide topics." : count ? `${count} ${count === 1 ? "guide" : "guides"} found.` : "No guides found. Try a shorter phrase, or browse the categories below.";
+      });
+    }
+  }
+  customElements.define("docs-search", DocsSearch);
+</script>
+<style>
+  docs-search { display: block; max-width: 48rem; margin-bottom: 2.3rem; }
+  label { display: block; margin-bottom: .6rem; font-size: .8rem; font-weight: 550; }
+  .search-field { display: flex; gap: .75rem; align-items: center; padding-inline: 1rem; border: 1px solid var(--border-strong); border-radius: .5rem; background: var(--surface); color: var(--subtle); }
+  input { width: 100%; min-width: 0; min-height: 50px; padding: .5rem 0; border: 0; background: transparent; color: var(--text); font-size: 1rem; }
+  input::placeholder { color: var(--subtle); font-size: .85rem; }
+  .search-status { margin: .55rem 0 0; font-size: .72rem; }
+  ul { list-style: none; padding: .5rem 1rem; margin-top: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: .5rem; }
+  li + li { border-top: 1px solid var(--border); }
+  li a { display: flex; justify-content: space-between; gap: 1rem; padding-block: 1rem; }
+  li a:hover { color: var(--primary-bright); }
+  strong, small { display: block; }
+  strong { font-size: .9rem; } small { color: var(--muted); font-size: .75rem; margin-top: .25rem; }
+</style>

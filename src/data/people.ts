@@ -1,4 +1,4 @@
-import { fetchGitHubJson } from "@/data/github";
+import { fetchGitHubJson, GITHUB_API_URL, isCount, isRecord, isSafeUrl, type DataStatus } from "./github";
 
 export interface Person {
   name: string;
@@ -10,55 +10,58 @@ export interface Person {
   contributions?: number;
 }
 
-interface GitHubContributor {
-  login: string;
-  avatar_url: string;
-  html_url: string;
-  type: "User" | "Bot";
-  contributions: number;
+export interface PeopleData {
+  status: DataStatus;
+  fetchedAt: string;
+  people: Person[];
 }
 
-const contributorsEndpoint = "https://api.github.com/repos/RefractMC/Refract_MC/contributors?per_page=100&anon=0";
+export function parseContributor(value: unknown): Person | null {
+  if (!isRecord(value) || value.type !== "User" || typeof value.login !== "string" ||
+      !/^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,38})$/.test(value.login) || !isCount(value.contributions) ||
+      !isSafeUrl(value.html_url, "github.com", `/${value.login}`) ||
+      !isSafeUrl(value.avatar_url, "avatars.githubusercontent.com") ||
+      !/^\/u\/\d+$/.test(new URL(value.avatar_url).pathname)) return null;
+  return {
+    name: value.login, handle: value.login, label: "Contributor", href: value.html_url, avatar: value.avatar_url,
+    role: `${value.contributions} ${value.contributions === 1 ? "contribution" : "contributions"}`,
+    contributions: value.contributions
+  };
+}
 
-const fallbackPeople: Person[] = [
-  { name: "Ruslan Shevchuk", handle: "ShevRuslan1", label: "Maintainer", role: "Creator & lead maintainer", avatar: "/images/people/shevruslan1.png", href: "https://github.com/ShevRuslan1" },
-  { name: "tozetsu", handle: "tozetsu", label: "Contributor", role: "Contributor", avatar: "/images/people/tozetsu.png", href: "https://github.com/tozetsu" },
-  { name: "Oleh Shulha", handle: "ShulhaOleh", label: "Contributor", role: "Contributor", avatar: "/images/people/shulhaoleh.png", href: "https://github.com/ShulhaOleh" },
-  { name: "Ruslan4234", handle: "Ruslan4234", label: "Contributor", role: "Contributor", avatar: "/images/people/ruslan4234.png", href: "https://github.com/Ruslan4234" }
-];
+async function loadPeople(): Promise<PeopleData> {
+  const people: Person[] = [];
+  const logins = new Set<string>();
+  let complete = true;
+  for (let page = 1; page <= 100; page++) {
+    try {
+      const response = await fetchGitHubJson(`${GITHUB_API_URL}/contributors?per_page=100&anon=0&page=${page}`);
+      if (!Array.isArray(response)) throw new Error("Invalid contributors response");
+      for (const value of response) {
+        if (isRecord(value) && value.type === "Bot") continue;
+        const person = parseContributor(value);
+        if (!person) { complete = false; continue; }
+        if (!logins.has(person.handle.toLowerCase())) {
+          logins.add(person.handle.toLowerCase());
+          people.push(person);
+        }
+      }
+      if (response.length < 100) break;
+      if (page === 100) complete = false;
+    } catch {
+      complete = false;
+      break;
+    }
+  }
+  people.sort((a, b) => (b.contributions ?? 0) - (a.contributions ?? 0));
+  return { status: complete ? "available" : people.length ? "partial" : "unavailable", fetchedAt: new Date().toISOString(), people };
+}
 
-const profileOverrides: Record<string, Pick<Person, "name" | "label" | "role">> = {
-  shevruslan1: { name: "Ruslan Shevchuk", label: "Maintainer", role: "Creator & lead maintainer" },
-  shulhaoleh: { name: "Oleh Shulha", label: "Contributor", role: "Contributor" }
-};
-
-const isBot = (contributor: GitHubContributor) => contributor.type === "Bot" || contributor.login.endsWith("[bot]");
+let peoplePromise: Promise<PeopleData> | undefined;
+export function getPeopleData(): Promise<PeopleData> {
+  return peoplePromise ??= loadPeople();
+}
 
 export async function getPeople(): Promise<Person[]> {
-  try {
-    const contributors = await fetchGitHubJson<GitHubContributor[]>(contributorsEndpoint);
-    if (!Array.isArray(contributors) || contributors.length === 0) throw new Error("GitHub returned no contributors");
-
-    return contributors
-      .filter((contributor) => contributor.login && !isBot(contributor))
-      .map((contributor) => {
-        const override = profileOverrides[contributor.login.toLowerCase()];
-        const label = override?.label ?? "Contributor";
-        const role = override?.role ?? `${contributor.contributions} ${contributor.contributions === 1 ? "contribution" : "contributions"}`;
-
-        return {
-          name: override?.name ?? contributor.login,
-          handle: contributor.login,
-          label,
-          role,
-          avatar: contributor.avatar_url,
-          href: contributor.html_url,
-          contributions: contributor.contributions
-        };
-      })
-      .sort((a, b) => Number(b.label === "Maintainer") - Number(a.label === "Maintainer") || (b.contributions ?? 0) - (a.contributions ?? 0));
-  } catch (error) {
-    console.warn(`[contributors] Using fallback data: ${error instanceof Error ? error.message : "unknown error"}`);
-    return fallbackPeople;
-  }
+  return (await getPeopleData()).people;
 }

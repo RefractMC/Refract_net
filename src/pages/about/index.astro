@@ -1,42 +1,39 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PageHero from "@/components/PageHero.astro";
+import { ArrowUpRight } from "@/components/icons";
 import { getDownloadData } from "@/data/downloads";
-import { getPeople } from "@/data/people";
+import { getPeopleData } from "@/data/people";
 import { site } from "@/data/site";
-const people = await getPeople();
-const downloadData = await getDownloadData();
+const [data, contributors] = await Promise.all([getDownloadData(), getPeopleData()]);
 ---
-<BaseLayout title="About" description="The people, principles, and open-source foundation behind Refract." editPath="src/pages/about/index.astro">
-  <PageHero eyebrow="About Refract" title="A launcher that keeps the whole library together." description="Refract is built for players who want control without turning setup into a second hobby. It combines native performance with a focused interface and public, inspectable source code." />
-  <section class="narrow about-grid">
-    <article class="surface prose story">
-      <h2>What is Refract?</h2><p>{site.description}</p>
-      <p>Its instances isolate content and data, while the surrounding tools keep imports, runtimes, accounts, worlds, servers, screenshots, logs, and updates in context.</p>
-      <h2>Project philosophy</h2><p>Refract favors direct control, useful defaults, reversible actions, and honest status. The application should explain what it is doing, preserve player data through updates, and stay useful without forcing browser hopping.</p>
-      <h2>From Electron to Tauri</h2><p>The project began with an Electron shell and moved to Tauri in version 1.2. The React renderer remains, while Rust now handles the native backend, downloads, file operations, secure credential storage, launching, and platform integration.</p>
-    </article>
-    <aside class="surface facts"><h2>At a glance</h2><dl><div><dt>Current release</dt><dd>{downloadData.version}</dd></div><div><dt>License</dt><dd>{site.license}</dd></div><div><dt>Platforms</dt><dd>Windows, macOS, Linux</dd></div><div><dt>Core</dt><dd>Tauri, Rust, React, TypeScript</dd></div><div><dt>Content</dt><dd>Modrinth, CurseForge, FTB</dd></div></dl></aside>
-  </section>
-  <section class="section people-section"><div class="narrow"><div class="section-head"><span class="eyebrow">Maintainers & contributors</span><h2>The people in the commit history.</h2><p>Contributor data updates automatically from the public Refract repository.</p></div><div class="people-grid">{people.map((person) => <a class="person surface" href={person.href} target="_blank" rel="noreferrer"><img src={person.avatar} alt={`${person.name}'s GitHub avatar`} width="96" height="96" loading="lazy" referrerpolicy="no-referrer" /><div><span>{person.label}</span><h3>{person.name}</h3><p>{person.role} - @{person.handle}</p></div></a>)}</div></div></section>
+<BaseLayout title="About Refract" description="Refract is a free, open-source Minecraft launcher built with Tauri, Rust, React, and TypeScript. Meet the project and its public contributors." editPath="src/pages/about/index.astro">
+  <PageHero eyebrow="About Refract" title="A launcher you can make your own." description="Minecraft has always been about building things your way. Refract brings that same sense of control to the launcher." />
+  <section class="narrow about-grid"><article class="prose story"><h2>One home for the whole library.</h2><p>Refract is a free, open-source Minecraft launcher for Windows, macOS, and Linux. It brings instances, community content, accounts, Java runtimes, worlds, and server tools together.</p><p>Run vanilla Minecraft or use Fabric, Forge, Quilt, and NeoForge. Browse content from Modrinth, CurseForge, and FTB, and keep each installation's files and settings separate.</p><h2>Native foundations.<br />Public source.</h2><p>The application uses Tauri and Rust for the desktop shell and native operations, with a React and TypeScript interface. The move from Electron in version 1.2 kept the launcher identity and data folder in place.</p><p>The source, issue tracker, and release history are public. Refract is licensed under GNU GPL v3.0, so you can study it, modify it, and contribute improvements under the license's terms.</p><a class="text-link" href={site.repository}>Read the application source <ArrowUpRight size={16} /></a><h2>Clear about the details.</h2><p>Microsoft sign-in is used for licensed Minecraft: Java Edition play. The launcher also supports offline and custom authentication workflows with their own requirements. See the project's account documentation before choosing a setup.</p><p>The launcher's privacy policy describes its network services and optional analytics controls. For vulnerability reports, follow the security policy rather than posting sensitive details in a public issue.</p><div class="about-links"><a href={site.repository + "/blob/main/PRIVACY.md"}>Privacy policy <ArrowUpRight size={16}/></a><a href={site.repository + "/blob/main/SECURITY.md"}>Security policy <ArrowUpRight size={16}/></a><a href={site.repository + "/blob/main/LICENSE"}>GPL-3.0 license <ArrowUpRight size={16}/></a></div></article><aside class="facts surface"><img src="/icons/refract-iris.svg" alt="Refract logo" width="64" height="64" /><h2>Refract MC</h2><dl><div><dt>Current release</dt><dd>{data.version || "See GitHub releases"}</dd></div><div><dt>License</dt><dd>GPL-3.0</dd></div><div><dt>Platforms</dt><dd>Windows, macOS, Linux</dd></div><div><dt>Desktop foundation</dt><dd>Tauri + Rust</dd></div><div><dt>Interface</dt><dd>React + TypeScript</dd></div></dl><a href={data.releaseUrl}>Release details <ArrowUpRight size={14} /></a></aside></section>
+  <section class="narrow people-section"><div class="section-head"><h2>Built by contributors.</h2><p>People who have contributed to the public application repository. Captured at build time from GitHub.</p></div>{contributors.people.length ? <div class="people-grid">{contributors.people.map(person => <a class="person surface" href={person.href}><img src={person.avatar} alt="" width="60" height="60" loading="lazy" referrerpolicy="no-referrer" /><div><h3>{person.handle}</h3><p>{person.role}</p></div><ArrowUpRight size={16} /></a>)}</div> : <p class="status-message">Contributor data is unavailable. <a href={site.repository + "/graphs/contributors"}>See the public contributor list on GitHub.</a></p>}<a class="text-link contribute-link" href="/community/">Find your way to contribute <ArrowUpRight size={16} /></a></section>
 </BaseLayout>
 <style>
-  .about-grid { padding-bottom: 5rem; display: grid; grid-template-columns: 1fr 20rem; gap: 1rem; align-items: start; }
-  .story, .facts { padding: clamp(1.4rem, 4vw, 2.5rem); }
-  .story h2:first-child, .facts h2 { margin-top: 0; }
-  .facts { position: sticky; top: 6rem; }
-  dl { margin: 0; }
-  dl div { padding-block: .8rem; border-bottom: 1px solid var(--border); }
-  dt { color: var(--subtle); font: .7rem/1.4 var(--mono); text-transform: uppercase; }
-  dd { margin: .25rem 0 0; font-weight: 800; }
-  .people-section { border-top: 1px solid var(--border); background: rgba(9,9,13,.48); }
-  .people-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .8rem; }
-  .person { padding: 1rem; display: flex; align-items: center; gap: 1rem; transition: border-color .15s ease, transform .15s ease; }
-  .person:hover, .person:focus-visible { transform: translateY(-2px); border-color: var(--primary); }
-  .person img { width: 4.5rem; height: 4.5rem; border-radius: var(--radius); }
-  .person span { color: var(--primary-bright); font: .65rem/1 var(--mono); text-transform: uppercase; }
-  .person h3 { margin: .35rem 0 .2rem; }
-  .person p { margin: 0; font-size: .82rem; }
-  @media (max-width: 52rem) { .about-grid { grid-template-columns: 1fr; } .facts { position: static; } }
-  @media (max-width: 38rem) { .people-grid { grid-template-columns: 1fr; } }
+  .about-grid { display: grid; grid-template-columns: minmax(0,1fr) 18rem; gap: 4rem; align-items: start; padding-bottom: 4rem; }
+  .story h2 { line-height: 1.15; }
+  .story a.text-link { text-decoration: none; }
+  .facts { position: sticky; top: 2rem; padding: 1.8rem; }
+  .facts h2 { margin: 1rem 0 1.5rem; font-size: 1.3rem; }
+  dl { margin: 0 0 1.5rem; }
+  dl div { padding-block: .8rem; border-top: 1px solid var(--border); }
+  dt { color: var(--subtle); font-size: .68rem; }
+  dd { margin: .3rem 0 0; font-size: .85rem; }
+  .facts > a { display: flex; align-items: center; gap: .4rem; color: var(--primary-bright); font-size: .78rem; }
+  .about-links { display: flex; flex-wrap: wrap; gap: 1.3rem; font-size: .78rem; }
+  .people-section { border-top: 1px solid var(--border); padding-block: 3.5rem 5rem; }
+  .people-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+  .person { display: flex; gap: .8rem; align-items: center; padding: 1.1rem; }
+  .person:hover { border-color: var(--primary); }
+  .person img { width: 48px; height: 48px; border-radius: 50%; }
+  .person h3 { margin: 0 0 .4rem; font-size: .9rem; }
+  .person p { margin: 0; font-size: .7rem; }
+  .person > svg { margin-left: auto; color: var(--subtle); }
+  .contribute-link { margin-top: 2rem; }
+  @media(max-width: 50rem) { .about-grid { grid-template-columns: 1fr; gap: 2rem; } .facts { position: static; } .people-grid { grid-template-columns: repeat(2,1fr); } }
+  @media(max-width: 34rem) { .people-grid { grid-template-columns: 1fr; } }
 </style>
+

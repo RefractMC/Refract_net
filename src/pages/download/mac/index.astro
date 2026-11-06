@@ -1,6 +1,8 @@
 ---
 import DownloadLayout from "@/layouts/DownloadLayout.astro";
 ---
-<DownloadLayout platform="macos" title="macOS" description="Choose Apple silicon for M-series Macs or Intel for older hardware.">
-  <h2>macOS notes</h2><p>Refract 1.3.0 includes a signing and notarization pipeline. If macOS still blocks the first launch, open System Settings → Privacy & Security and confirm that you want to open Refract.</p><h3>Terminal install</h3><pre><code>curl -fsSL https://refractmc.net/install.sh | sh</code></pre>
+<DownloadLayout platform="macos" title="macOS" description="Separate downloads for Apple silicon and Intel Macs. Check Apple menu → About This Mac before choosing.">
+  <h2>Install on macOS</h2><ol><li>Choose the DMG that matches your processor.</li><li>Open the DMG and move Refract to Applications.</li><li>Open Refract from Applications.</li></ol>
+  <h3>Unsigned builds</h3><p>The current macOS builds are unsigned. If macOS blocks the first launch, verify that your installer came from the official Refract GitHub release. Follow <a href="https://support.apple.com/en-us/102445">Apple's guidance for opening an app from an unidentified developer</a>.</p>
+  <p>Do not disable Gatekeeper globally. If you are unsure about a warning, ask for help in the <a href="https://discord.gg/tE8s5VaWmS">Refract Discord</a>.</p>
 </DownloadLayout>

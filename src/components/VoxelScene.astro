@@ -1,0 +1,38 @@
+---
+import { Pause, Play, RotateCcw, MoveHorizontal } from "@/components/icons";
+interface Props { model: "world" | "character"; }
+const { model } = Astro.props;
+---
+<voxel-scene data-model={model} aria-label={model === "world" ? "Animated 3D floating Minecraft island and fox in a boat" : "Interactive 3D character wearing a fox hoodie"}>
+  <canvas tabindex={model === "character" ? "0" : undefined} role="img" aria-label={model === "character" ? "Fox explorer character. Drag or use left and right arrow keys to rotate." : "A floating grass island with a tree, crystals, and a fox in a wooden boat."}></canvas>
+  <div class="scene-fallback" hidden><img src="/icons/refract-iris.svg" alt="Refract" width="100" height="100" /></div>
+  <div class="scene-controls">
+    {model === "character" && <><span class="drag-hint"><MoveHorizontal size={18} /> Drag to rotate</span><button type="button" data-reset aria-label="Reset character rotation"><RotateCcw size={15} /></button></>}
+    {model === "character" && <button type="button" data-pause aria-label="Pause 3D animation" aria-pressed="false"><Pause class="pause-icon" size={18} /><Play class="play-icon" size={18} /></button>}
+  </div>
+  {model === "character" && <div class="looks" role="group" aria-label="Character preview colors">
+    <button type="button" data-look="0" aria-label="Fox explorer" aria-pressed="true" style="--look:#ed8c37"></button>
+    <button type="button" data-look="1" aria-label="Amethyst explorer" aria-pressed="false" style="--look:#ab83eb"></button>
+    <button type="button" data-look="2" aria-label="Forest explorer" aria-pressed="false" style="--look:#79bc85"></button>
+  </div>}
+</voxel-scene>
+<script>import "@/scripts/voxel-scene";</script>
+<style>
+  voxel-scene { display:block; position:relative; width:100%; height:100%; min-height:180px; }
+  canvas { width:100%; height:100%; display:block; }
+  [data-model="character"] canvas { cursor:grab; touch-action:pan-y; }
+  [data-model="character"] canvas:active { cursor:grabbing; }
+  .scene-controls { position:absolute; right:10px; bottom:12px; display:flex; align-items:center; gap:8px; }
+  .scene-controls button { width:44px; height:44px; display:grid; place-items:center; background:#151727b3; border:1px solid #ffffff36; color:#fff9eb; }
+  .scene-controls button:hover { background:#393052; }
+  .drag-hint { color:#f6dbe8; font-size:11px; display:flex; align-items:center; gap:6px; }
+  .play-icon, [aria-pressed="true"] .pause-icon { display:none; }
+  [aria-pressed="true"] .play-icon { display:block; }
+  .looks { display:flex; justify-content:center; gap:14px; position:absolute; bottom:12px; left:16px; }
+  .looks button { background:var(--look); border:3px solid #ffffff46; width:28px; height:28px; box-shadow:inset -3px -3px #0003, 0 3px #0005; }
+  .looks button[aria-pressed="true"] { outline:2px solid #fff5cc; outline-offset:4px; }
+  .scene-fallback { position:absolute; inset:0; place-items:center; }
+  .scene-fallback:not([hidden]) { display:grid; }
+  @media (prefers-reduced-motion:reduce) { [data-pause] { display:none!important; } }
+  @media(max-width:450px) { .drag-hint { display:none; } }
+</style>

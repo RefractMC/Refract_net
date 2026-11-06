@@ -1,0 +1,37 @@
+---
+import { Expand, ArrowUpRight } from "@/components/icons";
+interface Props { image: "library" | "browse" | "settings"; alt: string; tour: "modpacks" | "library" | "browse" | "settings"; }
+const { alt, tour } = Astro.props;
+const clip = tour;
+const descriptions = {
+  modpacks: "Library → Modpacks → Vanilla Perfected details → Library",
+  library: "Library → Instance mods → Updates → Library",
+  browse: "Library → Browse Mods → Library",
+  settings: "Settings → Manage themes → Dark theme → Custom theme → Library"
+};
+const description = descriptions[tour];
+const titles = {modpacks:'Install a modpack',library:'Manage an instance',browse:'Browse mods',settings:'Change your theme'};
+---
+<feature-preview role="group" aria-label={`${description}: simulated navigation video`}>
+  <div class="preview-top"><span>{titles[tour]}</span><a href={`/videos/${clip}.mp4?v=2`} aria-label={`Open video: ${titles[tour]}`}><Expand size={20} /></a></div>
+  <video controls muted loop playsinline preload="none" poster={`/videos/${clip}-poster.webp?v=2`} width="1440" height="776" aria-label={`${alt}: ${description}`} aria-describedby={`preview-note-${tour}`}>
+    <source src={`/videos/${clip}.mp4?v=2`} type="video/mp4" />
+    <a href={`/videos/${clip}.mp4`}>Watch the navigation demo</a>
+  </video>
+  <div class="preview-bottom" id={`preview-note-${tour}`}><span>Animated demo using app screenshots</span><a href={`/videos/${clip}.mp4?v=2`}>Watch video <ArrowUpRight size={16}/></a></div>
+</feature-preview>
+<script>
+  import "@/scripts/feature-preview";
+</script>
+<style>
+  feature-preview { display: block; min-width: 0; overflow: hidden; background: var(--surface-raised); border: 1px solid var(--border-strong); border-radius: .65rem; box-shadow: 0 18px 45px #080c1438; }
+  .preview-top, .preview-bottom { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .65rem 1rem; }
+  .preview-top { color: var(--muted); font-size: .7rem; border-bottom: 1px solid var(--border); }
+  .preview-top > span { display: flex; align-items: center; gap: .5rem; }
+  .preview-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--primary-bright); }
+  .preview-top a { display: grid; place-items: center; width: 44px; height: 44px; border-radius: .3rem; }
+  video { display: block; width: 100%; height: auto; aspect-ratio: 1440 / 776; background: #101014; }
+  .preview-bottom { min-height: 52px; color: var(--subtle); font-size: .65rem; flex-wrap: wrap; }
+  .preview-bottom a { display:inline-flex; align-items:center; gap:5px; min-height:44px; color: var(--text); padding-block: .35rem; }
+  a:hover { color: var(--primary-bright); }
+</style>

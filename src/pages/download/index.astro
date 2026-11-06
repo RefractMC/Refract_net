@@ -1,6 +1,51 @@
 ---
-import DownloadLayout from "@/layouts/DownloadLayout.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import DownloadSelector from "@/components/DownloadSelector";
+import CopyCommand from "@/components/CopyCommand.astro";
+import { ArrowUpRight, ArrowRight, Check } from "@/components/icons";
+import { getDownloadData } from "@/data/downloads";
+import { site } from "@/data/site";
+const data = await getDownloadData();
+const published = data.releasedAt ? new Date(data.releasedAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" }) : null;
 ---
-<DownloadLayout platform="windows" title="Windows" description="The signed x64 installer is recommended for Windows 10 and 11.">
-  <h2>Windows notes</h2><p>Run the installer and follow the system prompt. WebView2 is normally present on supported Windows versions; install it from Microsoft if the application cannot open.</p><p>The MSI is useful for managed or scripted environments. Signatures for versioned assets are published beside the files on GitHub.</p>
-</DownloadLayout>
+<BaseLayout title="Download Refract" description="Download the official Refract Minecraft launcher for Windows, Apple silicon and Intel Macs, and Linux. Choose your platform and architecture." editPath="src/pages/download/index.astro">
+  <section class="narrow download-hero"><a class="back-link" href="/">Refract <span>/</span> Downloads</a><div class="download-heading"><div><h1>Your next world<br />starts here.</h1><p>Get Refract for your desktop. Same library,<br />your choice of platform.</p></div><div class="release-summary"><img src="/icons/refract-iris.svg" alt="" width="48" height="48" /><strong>{data.version ? "Refract " + data.version : "Refract releases"}</strong>{published && <span>Released {published}</span>}<a href={data.releaseUrl}>Release notes <ArrowUpRight size={13} /></a></div></div></section>
+  <section class="narrow download-body">
+    <div class="download-main">
+      <div class="installer-section surface"><h2>Choose your installer</h2><DownloadSelector data={data} client:load /><noscript><p class="status-message">Choose a platform for direct download links: <a href="/download/windows/">Windows</a> · <a href="/download/mac/">macOS</a> · <a href="/download/linux/">Linux</a></p></noscript><p class="data-note">Installer links and sizes come from the published GitHub release. Checked {new Date(data.fetchedAt).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" })} UTC; refreshed when the site builds.</p></div>
+      <section class="package-managers" id="package-managers"><h2>Prefer the terminal?</h2><p>Community package options for Linux. Package-manager versions can differ from the latest release.</p><CopyCommand label="Arch Linux · AUR" command="yay -S refract-launcher-bin" /><CopyCommand label="Nix · run the project flake" command="nix run github:RefractMC/Refract_MC" /><a class="text-link" href="/download/linux/">Linux installation details <ArrowRight size={15} /></a></section>
+    </div>
+    <aside class="download-aside"><div><h2>A few things to know</h2><ul><li><Check size={16} />Free and open source, under GPL-3.0.</li><li><Check size={16} />Minecraft: Java Edition ownership is required for Microsoft-authenticated play.</li><li><Check size={16} />Keep backups of worlds before changing packs or game versions.</li></ul></div><div class="platform-note"><h3>On a Mac?</h3><p>The current macOS builds are unsigned. Read the first-launch guidance before opening the app.</p><a href="/download/mac/">macOS instructions <ArrowUpRight size={14} /></a></div><div><h3>Playing on Steam Deck?</h3><p>Install the Linux AppImage from Desktop Mode.</p><a href="/download/steam-deck/">Steam Deck setup <ArrowUpRight size={14} /></a></div><div><h3>Need a hand?</h3><a href="/wiki/getting-started/installing/">Installation guide <ArrowUpRight size={14} /></a><a href={site.discord}>Ask on Discord <ArrowUpRight size={14} /></a><a href={site.repository + "/releases"}>All GitHub releases <ArrowUpRight size={14} /></a></div></aside>
+  </section>
+</BaseLayout>
+<style>
+  .download-hero { padding-block: 3rem 2.5rem; }
+  .back-link { color: var(--subtle); font-size: .75rem; }
+  .back-link span { margin-inline: .6rem; color: var(--border-strong); }
+  .download-heading { display: flex; justify-content: space-between; gap: 3rem; align-items: center; margin-top: 2rem; }
+  h1 { font-size: clamp(2.8rem, 5vw, 4rem); margin-bottom: 1.1rem; }
+  .download-heading p { margin-bottom: 0; font-size: 1rem; }
+  .release-summary { display: flex; flex-direction: column; align-items: flex-end; gap: .4rem; font-size: .8rem; }
+  .release-summary img { margin-bottom: .5rem; }
+  .release-summary strong { font: 500 .95rem var(--mono); }
+  .release-summary span { color: var(--subtle); font-size: .72rem; }
+  .release-summary a { display: flex; align-items: center; gap: .3rem; min-height: 36px; color: var(--primary-bright); font-size: .75rem; }
+  .download-body { display: grid; grid-template-columns: minmax(0, 1fr) 16rem; gap: 3.3rem; padding-bottom: 6rem; align-items: start; }
+  .installer-section { padding: 1.8rem; }
+  .installer-section h2 { font-size: 1.3rem; letter-spacing: -.025em; margin-bottom: 1rem; }
+  .installer-section .data-note { border-top: 1px solid var(--border); padding-top: 1.2rem; margin: 1.1rem 0 0; font-size: .68rem; }
+  .package-managers { margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+  .package-managers h2 { font-size: 1.65rem; }
+  .package-managers p { font-size: .85rem; }
+  .download-aside > div { padding-block: 1.5rem; border-bottom: 1px solid var(--border); }
+  .download-aside > div:first-child { padding-top: .6rem; }
+  .download-aside h2, .download-aside h3 { font-size: .9rem; letter-spacing: -.01em; margin-bottom: 1rem; }
+  .download-aside p { font-size: .8rem; line-height: 1.75; }
+  .download-aside ul { list-style: none; padding: 0; margin: 0; }
+  .download-aside li { display: flex; gap: .6rem; align-items: start; margin-block: .9rem; color: var(--muted); font-size: .78rem; }
+  .download-aside li svg { margin-top: .2rem; color: var(--primary-bright); }
+  .download-aside a { display: flex; align-items: center; gap: .4rem; min-height: 36px; font-size: .77rem; color: var(--primary-bright); }
+  @media(max-width: 58rem) { .download-body { grid-template-columns: minmax(0,1fr) 13rem; gap: 1.5rem; } .installer-section { padding: 1.3rem; } }
+  @media(max-width: 43rem) { .download-hero { padding-top: 2rem; } .download-heading { display: block; } .release-summary { align-items: flex-start; margin-top: 1.5rem; } .release-summary img { display: none; } .download-body { grid-template-columns: 1fr; } .download-aside { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; } .installer-section { padding: 1rem; } }
+  @media(max-width: 30rem) { .download-aside { grid-template-columns: 1fr; gap: 0; } }
+</style>

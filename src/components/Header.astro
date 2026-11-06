@@ -1,56 +1,56 @@
 ---
-import { navigation, site } from "@/data/site";
+import { Menu, ArrowDownToLine, Home, Blocks, Book, GitHub, Discord } from "@/components/icons";
+import { navigation } from "@/data/site";
 const path = Astro.url.pathname;
-const isActive = (href: string) => href !== "/#community" && path.startsWith(href);
+const isActive = (href: string) => href === "/" ? path === "/" : path.startsWith(href);
+const navIcons = { Home, Features: Blocks, Download: ArrowDownToLine, Wiki: Book, GitHub, Discord };
 ---
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href="/" aria-label="Refract home">
-      <img src="/icons/refract-iris.svg" alt="" width="50" height="50" />
-      <span>Refract</span>
-    </a>
+    <a class="brand" href="/" aria-label="Refract home"><img src="/icons/refract-iris.svg" alt="" width="34" height="34" /><span>Refract</span></a>
     <nav class="desktop-nav" aria-label="Primary navigation">
-      {navigation.map((item) => <a href={item.href} class:list={{ active: isActive(item.href) }} aria-current={isActive(item.href) ? "page" : undefined}>{item.label}</a>)}
+      {navigation.map(item => { const Icon = navIcons[item.label as keyof typeof navIcons]; return <a href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>{Icon && <Icon size={18}/>}<span>{item.label}</span></a>; })}
     </nav>
     <div class="header-actions">
-      <a class="social-link" href={site.discord} target="_blank" rel="noreferrer" aria-label="Refract Discord, opens in a new tab"><img src="/icons/discord.svg" alt="" width="24" height="24" /></a>
-      <a class="social-link" href={site.repository} target="_blank" rel="noreferrer" aria-label="Refract on GitHub, opens in a new tab"><img src="/icons/github.svg" alt="" width="24" height="24" /></a>
-      <a class="button button-primary header-button" href="/download/">Download</a>
-      <a class="button button-primary header-button" href={`${site.repository}/blob/main/CONTRIBUTING.md`} target="_blank" rel="noreferrer">Contribute</a>
+      <a class="button button-primary" href="/download/"><ArrowDownToLine size={15} /> Download</a>
     </div>
     <details class="mobile-menu">
-      <summary>Menu</summary>
+      <summary aria-label="Toggle navigation"><Menu size={22} /><span>Menu</span></summary>
       <nav aria-label="Mobile navigation">
-        {navigation.map((item) => <a href={item.href}>{item.label}</a>)}
-        <a href={site.discord} target="_blank" rel="noreferrer">Discord</a>
-        <a href={site.repository} target="_blank" rel="noreferrer">GitHub</a>
-        <a href="/download/">Download</a>
+        {navigation.map(item => { const Icon = navIcons[item.label as keyof typeof navIcons]; return <a href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>{Icon && <Icon size={20}/>}<span>{item.label}</span></a>; })}
+        <a href="/news/">News</a><a href="/about/">About</a><a href="/community/">Community</a>
       </nav>
     </details>
   </div>
 </header>
-
+<script>
+  const menu = document.querySelector<HTMLDetailsElement>(".mobile-menu");
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && menu?.open) { menu.open = false; menu.querySelector("summary")?.focus(); }
+  });
+  document.addEventListener("click", event => {
+    if (menu?.open && event.target instanceof Node && !menu.contains(event.target)) menu.open = false;
+  });
+</script>
 <style>
-  .site-header { position: relative; z-index: 20; min-height: 75px; border-bottom: 1px solid var(--border); border-radius: 0 0 var(--radius-shell) var(--radius-shell); background: var(--surface); box-shadow: 0 5px 16px rgba(20,25,30,.2); }
-  .header-inner { min-height: 75px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 1.2rem; }
-  .brand { display: inline-flex; align-items: center; gap: .65rem; font-size: 1.65rem; font-weight: 500; }
-  .brand img { width: 50px; height: 50px; }
-  .desktop-nav { display: flex; align-items: center; gap: 1.35rem; }
-  .desktop-nav a { min-height: 44px; display: inline-flex; align-items: center; color: var(--text); font-size: 1.05rem; font-weight: 430; }
-  .desktop-nav a:hover, .desktop-nav a.active { color: #9de56a; }
-  .header-actions { display: flex; align-items: center; justify-content: flex-end; gap: .75rem; }
-  .social-link { width: 42px; height: 44px; display: grid; place-items: center; border-radius: var(--radius-control); }
-  .social-link:hover { background: rgba(255,255,255,.08); }
-  .social-link img { width: 24px; height: 24px; }
-  .header-button { min-width: 130px; font-size: 1rem; }
-  .mobile-menu { display: none; justify-self: end; }
-  .mobile-menu summary { min-width: 48px; min-height: 44px; display: grid; place-items: center; cursor: pointer; border: 1px solid var(--border); border-radius: var(--radius-control); font-weight: 750; list-style: none; }
-  .mobile-menu summary::-webkit-details-marker { display: none; }
-  .mobile-menu nav { position: absolute; left: .625rem; right: .625rem; top: calc(100% + .55rem); padding: .5rem; display: grid; overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow); }
+  .site-header { position: relative; z-index: 20; border-bottom: 1px solid var(--border); background: var(--surface); }
+  .header-inner { min-height: 76px; display: flex; align-items: center; gap: 2.5rem; }
+  .brand { display: inline-flex; flex-shrink: 0; white-space: nowrap; align-items: center; gap: .65rem; font-size: 1.4rem; font-weight: 650; letter-spacing: -.04em; }
+  .brand-dot { color: var(--primary-bright); }
+  .desktop-nav { display: flex; flex-shrink: 0; white-space: nowrap; gap: 1.65rem; margin-inline: auto; }
+  .desktop-nav a { display: flex; gap: .45rem; min-height: 44px; align-items: center; color: var(--muted); font-size: .83rem; }
+  .desktop-nav a:hover, a[aria-current="page"] { color: var(--text); }
+  .header-actions { display: flex; flex-shrink: 0; align-items: center; gap: 1rem; }
+  .header-actions .button { min-height: 38px; font-size: .78rem; padding: .6rem 1rem; }
+  .social-link { display: grid; place-items: center; width: 36px; height: 44px; opacity: .8; }
+  .social-link:hover { opacity: 1; }
+  .mobile-menu { display: none; margin-left: auto; }
+  summary { display: flex; align-items: center; gap: .5rem; min-height: 44px; padding-inline: .6rem; list-style: none; border: 1px solid var(--border); border-radius: var(--radius-control); font-size: .8rem; }
+  summary::-webkit-details-marker { display: none; }
+  .mobile-menu nav { position: absolute; top: calc(100% + .5rem); right: 1rem; left: 1rem; padding: .6rem; border: 1px solid var(--border-strong); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow); }
   .mobile-menu:not([open]) nav { display: none; }
-  .mobile-menu nav a { min-height: 48px; display: flex; align-items: center; padding-inline: .8rem; border-bottom: 1px solid var(--border); font-weight: 700; }
-  .mobile-menu nav a:last-child { border-bottom: 0; color: #b8ed91; }
-  @media (max-width: 68rem) { .header-button:last-child { display: none; } }
-  @media (max-width: 58rem) { .header-inner { grid-template-columns: 1fr auto; } .desktop-nav, .header-actions { display: none; } .mobile-menu { display: block; } }
-  @media (prefers-color-scheme: light) { .social-link img { filter: invert(1); } }
+  .mobile-menu nav a { display: flex; align-items: center; gap: .65rem; min-height: 46px; padding-inline: .8rem; border-radius: .3rem; }
+  .mobile-menu nav a:hover { background: var(--surface-raised); }
+  @media (max-width: 70rem) { .desktop-nav { display: none; } .header-actions { margin-left: auto; } .mobile-menu { display: block; margin-left: 0; } .header-inner { min-height: 68px; gap: .7rem; } }
+  @media (max-width: 25rem) { .header-actions .button { padding-inline: .65rem; } summary { padding-inline: .5rem; } summary span { display: none; } }
 </style>

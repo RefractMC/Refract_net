@@ -1,0 +1,86 @@
+[
+  {
+    "slug": "sodium",
+    "title": "Sodium",
+    "kind": "icon",
+    "project": "https://modrinth.com/mod/sodium",
+    "source": "https://cdn.modrinth.com/data/AANobbMI/295862f4724dc3f78df3447ad6072b2dcd3ef0c9_96.webp",
+    "galleryTitle": null,
+    "projectLicense": {
+      "id": "LicenseRef-Polyform-Shield-1.0.0",
+      "name": "",
+      "url": "https://github.com/CaffeineMC/sodium/blob/dev/LICENSE.md"
+    },
+    "fetchedAt": "2026-11-05T02:30:05.700Z"
+  },
+  {
+    "slug": "continuity",
+    "title": "Continuity",
+    "kind": "icon",
+    "project": "https://modrinth.com/mod/continuity",
+    "source": "https://cdn.modrinth.com/data/1IjD5062/icon.png",
+    "galleryTitle": null,
+    "projectLicense": {
+      "id": "LGPL-3.0-only",
+      "name": "GNU Lesser General Public License v3.0 only",
+      "url": null
+    },
+    "fetchedAt": "2026-11-05T02:30:05.911Z"
+  },
+  {
+    "slug": "fresh-animations",
+    "title": "Fresh Animations",
+    "kind": "icon",
+    "project": "https://modrinth.com/resourcepack/fresh-animations",
+    "source": "https://cdn.modrinth.com/data/50dA9Sha/3132c10e9e3c73fde9799720fd3da5561071708c_96.webp",
+    "galleryTitle": null,
+    "projectLicense": {
+      "id": "LicenseRef-See-Terms-of-Use-in-Description",
+      "name": "",
+      "url": null
+    },
+    "fetchedAt": "2026-11-05T02:30:05.699Z"
+  },
+  {
+    "slug": "faithful-32x",
+    "title": "Faithful 32x",
+    "kind": "icon",
+    "project": "https://modrinth.com/resourcepack/faithful-32x",
+    "source": "https://cdn.modrinth.com/data/w0TnApzs/e8403d1fb2f55321ae74402c1e8c90a3a5670856.png",
+    "galleryTitle": null,
+    "projectLicense": {
+      "id": "LicenseRef-Faithful-License",
+      "name": "",
+      "url": "https://faithfulpack.net/license"
+    },
+    "fetchedAt": "2026-11-05T02:30:05.701Z"
+  },
+  {
+    "slug": "iris",
+    "title": "Iris Shaders",
+    "kind": "gallery",
+    "project": "https://modrinth.com/mod/iris",
+    "source": "https://cdn.modrinth.com/data/YL57xq9U/images/f47cea26f135d74c2d69df0a1806751818d705d3_350.webp",
+    "galleryTitle": "Grand Teton National Park",
+    "projectLicense": {
+      "id": "LGPL-3.0-only",
+      "name": "GNU Lesser General Public License v3.0 only",
+      "url": null
+    },
+    "fetchedAt": "2026-11-05T02:30:05.703Z"
+  },
+  {
+    "slug": "bare-bones",
+    "title": "Bare Bones",
+    "kind": "gallery",
+    "project": "https://modrinth.com/resourcepack/bare-bones",
+    "source": "https://cdn.modrinth.com/data/rox3U8B6/images/08d508fd38c9ed1dd73e20f2b69c2b709eef8524_350.webp",
+    "galleryTitle": "The Copper Age",
+    "projectLicense": {
+      "id": "LicenseRef-All-Rights-Reserved",
+      "name": "",
+      "url": null
+    },
+    "fetchedAt": "2026-11-05T02:30:05.710Z"
+  }
+]

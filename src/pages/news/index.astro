@@ -3,10 +3,35 @@ import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PageHero from "@/components/PageHero.astro";
 import NewsCard from "@/components/NewsCard.astro";
-const posts = (await getCollection("news")).sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+import { getProjectData } from "@/data/project";
+import { ArrowUpRight, ArrowRight } from "@/components/icons";
+import { site } from "@/data/site";
+const [posts, project] = await Promise.all([getCollection("news"), getProjectData()]);
+posts.sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
 ---
-<BaseLayout title="News" description="Refract release notes, project updates, and development news." editPath="src/pages/news/index.astro">
-  <PageHero eyebrow="Project log" title="News from Refract." description="Release notes, migration details, and changes that affect players and contributors." compact />
-  <section class="narrow news-list">{posts.map((post) => <NewsCard href={`/news/${post.id}/`} title={post.data.title} description={post.data.description} date={post.data.publishedAt} tags={post.data.tags} />)}</section>
+<BaseLayout title="News & releases" description="Official Refract release notes, project updates, and development news." editPath="src/pages/news/index.astro">
+  <PageHero eyebrow="The project log" title="A little better, every release." description="What changed, what was fixed, and what is worth knowing before your next update." compact />
+  <div class="narrow news-content">
+    <section><div class="news-heading"><h2>Latest releases</h2><a class="text-link" href={site.repository + "/releases"}>All on GitHub <ArrowUpRight size={15} /></a></div>
+      {project.releases.length ? <div class="release-list">{project.releases.map(release => <article class="release-row"><div><time datetime={release.publishedAt}>{new Date(release.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" })}</time><span>{release.prerelease ? "Prerelease" : "Release"}</span></div><a href={"/news/releases/" + release.slug + "/"}><h3>{release.name}</h3><span>Read the official release notes <ArrowRight size={14} /></span></a><a class="source-link" href={release.url} aria-label={"View " + release.tag + " on GitHub"}><ArrowUpRight size={18} /></a></article>)}</div> : <p class="status-message">Release notes are currently unavailable here. <a href={site.repository + "/releases"}>Read the official releases on GitHub.</a></p>}
+      <p class="data-note">Published releases from GitHub, captured at build time. {project.status === "partial" && "Some API information could not be loaded."}</p>
+    </section>
+    <section class="editorial"><h2>Project notes</h2><div class="news-list">{posts.map(post => <NewsCard href={"/news/" + post.id + "/"} title={post.data.title} description={post.data.description} date={post.data.publishedAt} tags={post.data.tags} />)}</div></section>
+  </div>
 </BaseLayout>
-<style>.news-list { padding-bottom: 6rem; display: grid; gap: .8rem; }</style>
+<style>
+  .news-content { padding-bottom: 6rem; }
+  .news-heading { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; align-items: center; margin-bottom: 1.5rem; }
+  .news-heading h2, .editorial > h2 { font-size: 1.3rem; margin: 0; letter-spacing: -.025em; }
+  .news-heading .text-link { font-size: .78rem; }
+  .release-row { display: grid; grid-template-columns: 9rem minmax(0,1fr) 44px; align-items: center; gap: 1.5rem; padding-block: 1.7rem; border-top: 1px solid var(--border); }
+  .release-row time { display: block; font: .72rem var(--mono); color: var(--muted); }
+  .release-row > div > span { font-size: .65rem; color: var(--subtle); }
+  .release-row h3 { margin: 0 0 .6rem; font-size: 1.25rem; }
+  .release-row a:hover h3 { color: var(--primary-bright); }
+  .release-row a > span { display: flex; align-items: center; gap: .4rem; color: var(--subtle); font-size: .75rem; }
+  .source-link { display: grid; place-items: center; height: 44px; color: var(--subtle); }
+  .editorial { margin-top: 4rem; }
+  .news-list { margin-top: 1.5rem; display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; }
+  @media(max-width: 40rem) { .release-row { grid-template-columns: 1fr 44px; gap: .7rem; } .release-row > div { grid-column: 1 / -1; display: flex; gap: .7rem; align-items: center; } .news-list { grid-template-columns: 1fr; } }
+</style>

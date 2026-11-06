@@ -6,17 +6,19 @@ export const site = {
   url: "https://refractmc.net",
   repository: "https://github.com/RefractMC/Refract_MC",
   websiteRepository: "https://github.com/RefractMC/Refract_net",
-  discord: "https://discord.gg/T7kSaS9eWK",
+  discord: "https://discord.gg/S9K3Z9SNPB",
   issues: "https://github.com/RefractMC/Refract_MC/issues",
   discussions: "https://github.com/RefractMC/Refract_MC/discussions",
   license: "GNU GPL v3.0"
 } as const;
 
 export const navigation = [
-  { label: "News", href: "/news/" },
-  { label: "About", href: "/about/" },
+  { label: "Home", href: "/" },
+  { label: "Features", href: "/features/" },
+  { label: "Download", href: "/download/" },
   { label: "Wiki", href: "/wiki/" },
-  { label: "Community", href: "/#community" }
+  { label: "GitHub", href: site.repository },
+  { label: "Discord", href: site.discord }
 ] as const;
 
 export const docsCategories = [

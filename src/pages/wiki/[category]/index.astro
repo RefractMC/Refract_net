@@ -1,4 +1,5 @@
 ---
+import { ArrowRight } from "@/components/icons";
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PageHero from "@/components/PageHero.astro";
@@ -8,7 +9,7 @@ export async function getStaticPaths() { return docsCategories.map((category) =>
 const { category } = Astro.props;
 const docs = (await getCollection("docs")).filter((doc) => doc.data.category === category.id).sort((a,b) => a.data.order - b.data.order);
 ---
-<BaseLayout title={category.label} description={category.description}><PageHero eyebrow="Documentation" title={category.label} description={category.description} compact /><div class="narrow docs-layout"><section class="page-list">{docs.map((doc, index) => <a class="surface" href={`/wiki/${doc.id}/`}><span>{String(index+1).padStart(2,"0")}</span><div><h2>{doc.data.title}</h2><p>{doc.data.description}</p></div><strong>→</strong></a>)}</section><DocsNavigation /></div></BaseLayout>
+<BaseLayout title={category.label} description={category.description}><PageHero eyebrow="Documentation" title={category.label} description={category.description} compact /><div class="narrow docs-layout"><section class="page-list">{docs.map((doc, index) => <a class="surface" href={`/wiki/${doc.id}/`}><span>{String(index+1).padStart(2,"0")}</span><div><h2>{doc.data.title}</h2><p>{doc.data.description}</p></div><ArrowRight size={18}/></a>)}</section><DocsNavigation /></div></BaseLayout>
 <style>
   .docs-layout { padding-bottom: 6rem; display: grid; grid-template-columns: minmax(0,1fr) 19rem; gap: 1rem; }
   .page-list { display: grid; gap: .7rem; }

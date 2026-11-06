@@ -1,143 +1,105 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import LauncherShowcase from "@/components/LauncherShowcase.astro";
+import MinecraftSkin from "@/components/MinecraftSkin.astro";
+import ModrinthCloud from "@/components/ModrinthCloud.astro";
+import FeaturePreview from "@/components/FeaturePreview.astro";
+import PlatformDownloads from "@/components/PlatformDownloads.astro";
+import { ArrowDownToLine, ArrowUpRight, ArrowRight, Coffee, PackageOpen, Star, GitFork, Blocks, Paintbrush, Library, CodeXml, Gamepad2, Check, ChevronDown } from "@/components/icons";
 import { getDownloadData } from "@/data/downloads";
+import { getProjectData } from "@/data/project";
+import { getDiscordData } from "@/data/discord";
 import { site } from "@/data/site";
-const downloadData = await getDownloadData();
-const appData = { "@context": "https://schema.org", "@type": "SoftwareApplication", name: site.name, description: site.description, applicationCategory: "GameApplication", operatingSystem: "Windows 10/11, macOS, Linux, SteamOS", softwareVersion: downloadData.version, license: `${site.repository}/blob/main/LICENSE`, downloadUrl: `${site.url}/download/`, codeRepository: site.repository };
+import "@/styles/launcher-home.css";
+const [downloads, project, discord] = await Promise.all([getDownloadData(), getProjectData(), getDiscordData()]);
+const appData = { "@context": "https://schema.org", "@type": "SoftwareApplication", name: site.name, description: site.description, applicationCategory: "GameApplication", operatingSystem: "Windows, macOS, Linux", ...(downloads.version ? { softwareVersion: downloads.version } : {}), license: site.repository + "/blob/main/LICENSE", downloadUrl: site.url + "/download/", offers: { "@type": "Offer", price: "0", priceCurrency: "USD" } };
+const number = (value: number | null) => value === null ? "Unavailable" : value.toLocaleString("en-US");
+const metrics = [
+  {key:'stars',value:number(project.stars),label:'GitHub stars',icon:Star},
+  {key:'forks',value:number(project.forks),label:'Public forks',icon:GitFork},
+  {key:'downloads',value:number(project.totalDownloads),label:'Release downloads',icon:ArrowDownToLine},
+  {key:'version',value:downloads.version?`v${downloads.version}`:'Unavailable',label:'Latest release',icon:PackageOpen}
+];
+const questions = [
+  ['Is Refract free?', 'Yes. Refract is free, open-source software under GPL-3.0. You can read the code, report issues, and contribute on GitHub.'],
+  ['Do I need to own Minecraft?', 'Normal authenticated play requires a Minecraft Java Edition license. Sign in with your Microsoft account to verify ownership and play.'],
+  ['Can I bring my existing instances?', 'Refract can discover, link, or copy instances from supported launchers, including Prism, MultiMC, Modrinth App, ATLauncher, CurseForge, and GDLauncher.'],
+  ['Which mod loaders are supported?', 'Use Vanilla, Fabric, Forge, NeoForge, or Quilt. Each instance keeps its own Minecraft version, loader, mods, and settings.'],
+  ['Do I need to install Java first?', 'Refract discovers installed Java runtimes and can download a compatible runtime for your setup. You can also choose a custom Java executable.'],
+  ['Where can I get help?', 'Start with the installation guides and troubleshooting pages in the Wiki. Join the Refract Discord to ask the community, or report a reproducible bug on GitHub.']
+];
 ---
-<BaseLayout title={site.name} description={site.description} structuredData={appData} editPath="src/pages/index.astro">
-  <section class="hero">
-    <div class="container hero-grid">
+<BaseLayout title={site.name} description="Refract is a free, open-source Minecraft launcher. Organize instances, discover mods and modpacks, and manage Java on Windows, macOS, and Linux." structuredData={appData} editPath="src/pages/index.astro" bodyClass="pixel-home">
+  <div class="landing-sky">
+    <div class="sky-pixels" aria-hidden="true">{Array.from({length:14},(_,i)=><i style={`--i:${i};left:${(i*31+7)%100}%;top:${(i*19+8)%90}%`}></i>)}</div>
+    <section class="home-hero container" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <h1>Refract</h1>
-        <p>A modern, open-source Minecraft launcher for managing instances, accounts, mods, worlds, and Java runtimes.</p>
-        <a class="button button-primary hero-button" href="/download/">Download Now</a>
+        <div class="hero-brand"><img src="/icons/refract-iris.svg" width="80" height="80" alt="" /><h1 id="hero-title">REFRACT<span>LAUNCHER</span></h1></div>
+        <p class="hero-tagline">Minecraft, with your<br/><em>mods and worlds together.</em></p>
+        <p class="hero-description">A free, open-source launcher for Windows, macOS, and Linux.</p>
+        <div class="hero-actions"><a class="pixel-button lime hero-download" href="/download/" data-os-download><ArrowDownToLine size={24}/><span>Download Refract</span></a></div>
+        <div class="hero-secondary">
+          <a class="pixel-button charcoal" href={site.repository}><CodeXml size={22}/><span>View source<small>GitHub repository</small></span></a>
+          <a class="pixel-button violet" href="#features"><Gamepad2 size={22}/><span>See features<small>Explore the launcher</small></span></a>
+        </div>
+        <a href="#download" class="hero-platforms">Windows, macOS & Linux <ArrowRight size={14}/></a>
       </div>
-      <img class="hero-image" src="/images/screenshots/library.png" alt="Refract instance library" width="1919" height="1033" fetchpriority="high" />
-    </div>
-  </section>
+      <LauncherShowcase />
+    </section>
+    <nav class="feature-shortcuts container" aria-label="Explore launcher features">
+      <a href="#features" class="shortcut-green"><Blocks size={17}/> Mods & modpacks</a>
+      <a href="#personalization" class="shortcut-pink"><Paintbrush size={17}/> Make it yours</a>
+      <a href="#instances" class="shortcut-blue"><Library size={17}/> Your worlds</a>
+      <a href="#runtime" class="shortcut-orange"><Coffee size={17}/> Easy setup</a>
+      <a href="#community" class="shortcut-purple"><CodeXml size={17}/> Open source</a>
+    </nav>
+  </div>
 
-  <div class="home-main">
-    <section class="feature-row container">
-      <div class="feature-media">
-        <img src="/images/screenshots/browse.png" alt="Refract content browser" width="1919" height="1032" loading="lazy" />
+  <div class="landing-panels container">
+    <section class="game-panel install-panel" id="features" aria-labelledby="features-title">
+      <ModrinthCloud />
+      <div class="panel-split install-demo">
+        <div class="panel-copy"><h3>Find a pack.<br/>Install and play.</h3><p>Browse Modrinth, CurseForge, and FTB inside Refract. Install a pack into its own instance and keep your worlds organized.</p><ul class="check-list"><li><Check size={17}/> Pick a pack and its version</li><li><Check size={17}/> Keep dependencies together</li><li><Check size={17}/> Launch from your library</li></ul><a class="pixel-button cream" href="/wiki/getting-started/content/">Modpack install guide <ArrowRight size={17}/></a></div>
+        <FeaturePreview image="library" tour="modpacks" alt="Refract modpack browsing and Vanilla Perfected details" />
       </div>
-      <div class="feature-copy">
-        <h2>Modpack management</h2>
-        <p>Install modpacks from Modrinth, CurseForge, and FTB. Refract keeps every pack in its own clean instance and preserves worlds during updates.</p>
+      <p class="panel-fineprint">CurseForge requires an API key. Some projects require a download from the author’s page. <a href="/wiki/getting-started/content/">How it works</a></p>
+    </section>
+
+    <section class="game-panel customize-panel" id="personalization" aria-labelledby="customize-title">
+      <header class="panel-heading"><h2 id="customize-title">A little more <span>you.</span></h2><p>Preview your skin and customize the launcher’s appearance.</p></header>
+      <div class="customize-grid">
+        <div class="character-showcase"><MinecraftSkin/></div>
+        <div class="customize-content"><div class="panel-copy"><h3>Choose a theme. Make it yours.</h3><p>Choose your accent color, switch themes, or use your own background. Preview a Minecraft skin here by dragging the model or choosing a PNG.</p></div><FeaturePreview image="settings" tour="settings" alt="Refract settings, theme selection, and custom background"/><a class="text-link" href="/features/#personalization">See customization tools <ArrowRight size={17}/></a></div>
       </div>
     </section>
 
-    <section class="feature-row feature-row-reverse container">
-      <div class="feature-copy">
-        <h2>Download &amp; update mods</h2>
-        <p>Find the mod you need without leaving the launcher. Browse compatible content, install dependencies, and update individual mods in place.</p>
-      </div>
-      <div class="feature-media media-pair">
-        <img src="/images/screenshots/browse.png" alt="Mod search in Refract" width="1919" height="1032" loading="lazy" />
-        <img src="/images/screenshots/settings.png" alt="Content and runtime settings in Refract" width="1919" height="1031" loading="lazy" />
-      </div>
+    <section class="game-panel library-panel" id="instances" aria-labelledby="library-title">
+      <header class="panel-heading"><h2 id="library-title">Every world.<br class="mobile-only"/> <span>Its own home.</span></h2><p>Keep each modpack’s versions, mods, and saves separate.</p></header>
+      <div class="panel-split library-demo"><FeaturePreview image="library" tour="library" alt="Refract instance content, mods and updates"/><div class="panel-copy"><h3>Switch packs.<br/>Keep your saves.</h3><p>Keep Minecraft versions, mods, and saves separate. Pin your favorites, group your instances, and get back to the world you left.</p><ul class="check-list"><li><Check size={17}/> Import your existing instances</li><li><Check size={17}/> Enable, disable, and update mods</li><li><Check size={17}/> Export world backups as ZIP files</li></ul><a class="pixel-button cream" href="/wiki/getting-started/importing/">Import your instances <ArrowRight size={17}/></a></div></div>
+      <div class="loader-line"><span>Vanilla or modded. Your choice.</span>{[{name:'Fabric',file:'fabric.png'},{name:'Forge',file:'forge.png'},{name:'NeoForge',file:'neoforge.png'},{name:'Quilt',file:'quilt.png'}].map(loader=><span><img src={`/icons/ecosystem/${loader.file}`} width="25" height="25" loading="lazy" alt=""/>{loader.name}</span>)}</div>
     </section>
 
-    <section class="feature-row container">
-      <div class="feature-media">
-        <img src="/images/screenshots/library.png" alt="Organized Minecraft instances in Refract" width="1919" height="1033" loading="lazy" />
-      </div>
-      <div class="feature-copy">
-        <h2>Minecraft instance management</h2>
-        <p>Each instance has separate mods, resource packs, worlds, settings, and launch options. Import existing libraries without mixing files or breaking saves.</p>
-      </div>
+    <section class="utility-section" id="runtime" aria-label="Runtime and mod management">
+      <article class="utility-card runtime-card"><Coffee size={34}/><h2>Java, <span>set up for you.</span></h2><p>Refract finds or downloads a compatible Java runtime. Tune memory and launch settings when you need more control.</p><a class="text-link" href="/wiki/help/java-and-launching/">Java & launch settings <ArrowRight size={17}/></a><div class="runtime-visual" aria-hidden="true"><span class="runtime-block"><Coffee size={32}/></span><span>Choose your world<strong>We’ll find its runtime.</strong></span><Check size={22}/></div></article>
+      <article class="utility-card content-card"><PackageOpen size={34}/><h2>Find compatible mods.</h2><p>Find mods for your version, save mod profiles, and keep your favorite additions together.</p><a class="text-link" href="/features/#content">Explore content tools <ArrowRight size={17}/></a><div class="mini-demo"><FeaturePreview image="browse" tour="browse" alt="Browse compatible mods inside Refract"/></div></article>
     </section>
 
-    <section class="feature-row feature-row-reverse container">
-      <div class="feature-copy">
-        <h2>Lightweight &amp; customizable</h2>
-        <p>Refract uses Tauri and Rust for a small native shell. Choose themes, accent colors, sidebar layouts, Java versions, memory limits, and launch behavior.</p>
-      </div>
-      <div class="feature-media">
-        <img src="/images/screenshots/settings.png" alt="Refract appearance and Java settings" width="1919" height="1031" loading="lazy" />
-      </div>
-    </section>
-
-    <section class="community container" id="community">
-      <h2>Get involved</h2>
-      <hr />
-      <div class="community-grid">
-        <article>
-          <h3>Discord</h3>
-          <p>Talk with players, get help, and join project discussions.</p>
-          <a class="community-link" href={site.discord} target="_blank" rel="noreferrer">Join the Refract Discord</a>
-        </article>
-        <article>
-          <h3>GitHub</h3>
-          <p>Report reproducible bugs, propose changes, or contribute code.</p>
-          <a class="community-link" href={site.repository} target="_blank" rel="noreferrer">View the repository</a>
-        </article>
-        <article>
-          <h3>Discussions</h3>
-          <p>Share ideas and ask questions that need more room.</p>
-          <a class="community-link" href={site.discussions} target="_blank" rel="noreferrer">Open discussions</a>
-        </article>
-      </div>
-    </section>
-
-    <section class="source-section container">
-      <h2>Source code</h2>
-      <hr />
-      <p>Refract is free software licensed under GNU GPL v3.0. The application and this website are developed in public.</p>
-      <p><a href={site.repository} target="_blank" rel="noreferrer">Application source</a> · <a href={site.websiteRepository} target="_blank" rel="noreferrer">Website source</a></p>
+    <section class="game-panel community-section" id="community" aria-labelledby="community-title">
+      <header class="panel-heading"><CodeXml size={38}/><h2 id="community-title">Open source.<br class="mobile-only"/> <span>Open possibilities.</span></h2><p>Made by people who play. Built for people like you.</p></header>
+      <dl class="github-metrics">{metrics.map(metric=><div><dt><metric.icon size={15}/>{metric.label}</dt><dd data-metric={metric.key}>{metric.value}</dd></div>)}</dl>
+      <div class="community-actions"><a class="pixel-button cream" href={site.repository}>Explore the code <ArrowUpRight size={17}/></a><span>Free software. GPL-3.0.</span></div>
+      <p class="metrics-note" data-github-status>GitHub snapshot from {new Date(project.fetchedAt).toLocaleDateString("en-US",{timeZone:"UTC",month:"short",day:"numeric",year:"numeric"})}. Downloads count release assets, including updater files, not unique players.</p>
+      <div class="discord-panel"><img src="/icons/discord.svg" width="40" height="40" alt="" loading="lazy"/><div><h3>Join the Refract community.</h3><p>Share your setup, ask a question, or help shape Refract.</p><span class="discord-info" data-discord-name>{discord.name}</span><span class="discord-info" data-discord-counts>{discord.onlineCount!==null?`${number(discord.onlineCount)} online${discord.memberCount!==null?` / ${number(discord.memberCount)} members`:''}`:'Join the community'}</span><span data-discord-status class="sr-only">Discord snapshot from {discord.fetchedAt}</span></div><a class="pixel-button violet" href={site.discord}>Join Discord <ArrowUpRight size={17}/></a></div>
     </section>
   </div>
-</BaseLayout>
 
-<style>
-  .hero { min-height: 570px; height: calc(100dvh - 75px); max-height: 700px; display: grid; align-items: center; }
-  .hero-grid { display: grid; grid-template-columns: minmax(22rem, .95fr) minmax(32rem, 1.05fr); align-items: center; gap: clamp(2rem, 5vw, 5rem); padding-block: 2rem; }
-  .hero-copy { text-align: center; }
-  .hero h1 { margin: 0 0 1.6rem; font-size: clamp(2.7rem, 4.2vw, 3.4rem); }
-  .hero p { max-width: 35rem; margin: 0 auto; color: var(--text); font-size: clamp(1.2rem, 2vw, 1.58rem); line-height: 1.45; }
-  .hero-button { min-height: 56px; margin-top: 2.6rem; padding-inline: 2.6rem; font-size: 1.22rem; }
-  .hero-image { width: 100%; border: 1px solid rgba(255,255,255,.14); border-radius: var(--radius-card); filter: drop-shadow(0 15px 18px rgba(14,19,24,.5)); }
-  .home-main { width: min(calc(100% - 1rem), var(--container)); margin: 0 auto 1rem; overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-shell); background: var(--surface); box-shadow: var(--shadow); }
-  .feature-row { min-height: 570px; padding-block: clamp(3rem, 6vw, 5.5rem); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: clamp(2rem, 6vw, 6rem); }
-  .feature-copy { text-align: center; }
-  .feature-copy h2 { margin: 0 0 1.5rem; font-size: clamp(2rem, 3vw, 2.45rem); }
-  .feature-copy p { max-width: 38rem; margin: 0 auto; color: var(--text); font-size: clamp(1.08rem, 1.7vw, 1.45rem); line-height: 1.45; }
-  .feature-media { position: relative; }
-  .feature-media img { width: 100%; border: 1px solid rgba(255,255,255,.13); border-radius: var(--radius-card); filter: drop-shadow(0 13px 16px rgba(12,15,19,.55)); }
-  .media-pair { min-height: 25rem; }
-  .media-pair img { position: absolute; width: 70%; }
-  .media-pair img:first-child { left: 0; bottom: 0; }
-  .media-pair img:last-child { right: 0; top: 0; }
-  .community, .source-section { padding-block: clamp(3.5rem, 7vw, 6rem); }
-  .community h2, .source-section h2 { margin-bottom: .6rem; }
-  hr { height: 1px; margin: 0 0 2.2rem; border: 0; background: rgba(255,255,255,.35); }
-  .community-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(2rem, 5vw, 5rem); }
-  .community-grid h3 { margin-bottom: .7rem; }
-  .community-grid p { min-height: 3.3rem; margin-bottom: 1rem; }
-  .community-link, .source-section a { color: #a7e77a; text-decoration: underline; text-underline-offset: .2em; }
-  .source-section { padding-top: 1.5rem; }
-  .source-section > p { max-width: 55rem; font-size: 1.05rem; }
-  @media (max-width: 58rem) {
-    .hero { height: auto; max-height: none; padding-block: 3.5rem; }
-    .hero-grid, .feature-row { grid-template-columns: 1fr; }
-    .hero-copy { order: 1; }
-    .hero-image { order: 2; }
-    .feature-row { min-height: 0; gap: 2.5rem; }
-    .feature-row .feature-copy { order: 1; }
-    .feature-row .feature-media { order: 2; }
-    .media-pair { min-height: 22rem; }
-    .community-grid { grid-template-columns: 1fr; gap: 2rem; }
-    .community-grid p { min-height: 0; }
-  }
-  @media (max-width: 38rem) {
-    .hero { padding-block: 3rem; }
-    .hero-grid { grid-template-columns: minmax(0,1fr); gap: 2.5rem; }
-    .hero h1 { margin-bottom: 1rem; }
-    .hero p { font-size: 1.1rem; }
-    .hero-button { margin-top: 1.7rem; }
-    .feature-row { padding-block: 3.5rem; }
-    .feature-copy p { font-size: 1.03rem; }
-    .media-pair { min-height: 15rem; }
-  }
-</style>
+  <section class="downloads-section container" id="download" aria-labelledby="download-title"><header class="panel-heading"><h2 id="download-title">Your next world<br/> <span>starts here.</span></h2><p>Free for Windows, macOS, and Linux. Pick your platform.</p></header><PlatformDownloads data={downloads}/><p class="release-data-note"><a href={downloads.releaseUrl} data-release-link><span data-release-version>{downloads.version?`v${downloads.version}`:'Latest release'}</span> release notes <ArrowUpRight size={13}/></a></p><p class="release-data-note" data-release-status>Release data checked {new Date(downloads.fetchedAt).toLocaleDateString('en-US',{timeZone:'UTC',month:'short',day:'numeric',year:'numeric'})}. <a href={site.repository+'/releases'}>All GitHub releases</a></p></section>
+  <section class="faq-section container" aria-labelledby="faq-title"><header class="panel-heading"><h2 id="faq-title">Before you <span>download.</span></h2></header><div class="faq-list">{questions.map(([question,answer])=><details><summary>{question}<ChevronDown size={18}/></summary><p>{answer}</p></details>)}</div><a class="text-link" href="/wiki/">More answers in the Wiki <ArrowRight size={16}/></a></section>
+  <div class="closing-wordmark container" aria-hidden="true">REFRACT<span>LET’S PLAY.</span></div>
+</BaseLayout>
+<script>
+  import { refreshHomepage } from "@/scripts/homepage";
+  refreshHomepage();
+  const reveal=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('arrived');reveal.unobserve(entry.target);}}),{threshold:.08});
+  document.querySelectorAll('.game-panel,.utility-card').forEach(element=>{element.classList.add('will-reveal');reveal.observe(element);});
+</script>

@@ -3,7 +3,7 @@ title: Refract moves to Tauri
 description: Version 1.2 keeps launcher data in place while moving the native shell and backend to Tauri and Rust.
 publishedAt: 2026-07-02
 tags: [development, release]
-hero: /images/screenshots/settings.png
+hero: /images/screenshots/settings.webp
 ---
 
 Refract 1.2 moved the desktop app from Electron to **Tauri** without changing the app identity or launcher data folder. Existing instances, settings, themes, worlds, screenshots, options, and server lists remain in place.
@@ -16,4 +16,4 @@ Microsoft accounts require one sign-in after migration because credentials move 
 
 ## Why it matters
 
-The migration creates a smaller native foundation with hardened capabilities and a signed updater path. It also gives the project one shared renderer for future platform work.
+The migration creates a smaller native foundation with scoped capabilities and a Tauri updater path. It also gives the project one shared renderer for future platform work. Installer signing varies by platform; see the current [download instructions](/download/) before installing.

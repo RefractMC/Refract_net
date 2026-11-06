@@ -20,8 +20,13 @@ const docs = (await getCollection("docs")).sort((a, b) => a.data.order - b.data.
     </nav>
   </details>
 </aside>
+<script>
+  if (matchMedia("(max-width: 55rem)").matches) {
+    document.querySelectorAll<HTMLDetailsElement>(".docs-nav details").forEach(details => { details.open = false; });
+  }
+</script>
 <style>
-  .docs-nav { position: sticky; top: 6rem; align-self: start; padding: 1rem; overflow: hidden; border: 1px solid rgba(103,189,47,.42); border-radius: var(--radius-card); background: color-mix(in srgb, var(--primary-dark) 30%, var(--surface)); }
+  .docs-nav { position: sticky; top: 2rem; align-self: start; padding: 1rem; overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); }
   summary { padding: .4rem .3rem .8rem; cursor: pointer; font-weight: 850; }
   nav { display: grid; }
   nav a { min-height: 40px; display: flex; align-items: center; padding: .45rem .65rem; border-radius: var(--radius-control); color: var(--muted); font-size: .86rem; font-weight: 650; }

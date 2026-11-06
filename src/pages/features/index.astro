@@ -1,0 +1,105 @@
+---
+import { ArrowRight } from "@/components/icons";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+import { featureGroups } from "@/data/features";
+---
+
+<BaseLayout title="Features" description="Explore Refract's instance library, mod loaders, community content, accounts, Java management, themes, worlds, and Quick Play.">
+  <PageHero eyebrow="Inside Refract" title="A place for every way you play." description="One launcher for the worlds you keep coming back to. Organize your instances, discover community content, and make the details your own.">
+    <div class="page-hero-actions">
+      <a class="button button-primary" href="/download/">Download Refract</a>
+      <a class="button button-ghost" href="/wiki/">Read the guides</a>
+    </div>
+  </PageHero>
+
+  <div class="container feature-index">
+    <span class="eyebrow">Explore the launcher</span>
+    <nav aria-label="Feature sections">
+      <a href="#instances">Your library</a>
+      <a href="#content">Community content</a>
+      <a href="#personalization">Your setup</a>
+      <a href="#worlds-and-servers">Worlds & servers</a>
+    </nav>
+  </div>
+
+  <div class="container feature-chapters">
+    {featureGroups.map((group) => (
+      <section class:list={["feature-chapter", { "with-image": "image" in group }]} id={group.id} aria-labelledby={`${group.id}-title`}>
+        <div class="feature-intro">
+          <span class="feature-number" aria-hidden="true">{group.number}</span>
+          <div>
+            <h2 id={`${group.id}-title`}>{group.title}</h2>
+            <p>{group.description}</p>
+            <a class="text-link" href={group.href}>{group.linkLabel}<ArrowRight size={16}/></a>
+          </div>
+        </div>
+        {"image" in group && (
+          <figure class="feature-image">
+            <div class="screenshot-frame">
+              <img src={`/images/screenshots/${group.image}.webp`} alt={group.imageAlt} width="1920" height="1080" loading="lazy" decoding="async" />
+            </div>
+            <figcaption>Project screenshot from an earlier release. The current interface may differ.</figcaption>
+          </figure>
+        )}
+        <dl class="feature-details">
+          {group.items.map((item) => (
+            <div>
+              <dt>{item.title}</dt>
+              <dd>{item.description}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+    ))}
+  </div>
+
+  <section class="container feature-footer" aria-labelledby="feature-footer-title">
+    <div>
+      <span class="eyebrow">Free & open source</span>
+      <h2 id="feature-footer-title">Start with one instance.</h2>
+      <p>Available for Windows, macOS, and Linux. Built in the open under GPL-3.0.</p>
+    </div>
+    <a class="button button-primary button-large" href="/download/">Get Refract<ArrowRight size={16}/></a>
+  </section>
+  <p class="container feature-source data-note">Feature descriptions are based on the <a href="https://github.com/RefractMC/Refract_MC/blob/main/README.md">official project README</a> and <a href="https://github.com/RefractMC/Refract_MC/blob/main/PROJECT_KNOWLEDGE.md">launcher documentation</a>. Availability can vary by version and content provider.</p>
+</BaseLayout>
+
+<style>
+  .feature-index { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem 2rem; padding-block: 1.5rem 2rem; border-bottom: 1px solid var(--border); }
+  .feature-index nav { display: flex; flex-wrap: wrap; gap: .5rem 1.8rem; }
+  .feature-index nav a { color: var(--muted); font-size: .85rem; padding-block: .4rem; }
+  .feature-index nav a:hover { color: var(--text); text-decoration: underline; text-underline-offset: .3em; }
+  .feature-chapter { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem 5rem; padding-block: clamp(3.5rem, 6vw, 6rem); border-bottom: 1px solid var(--border); }
+  .feature-intro { display: grid; grid-template-columns: 2rem minmax(0, 1fr); align-content: start; gap: 1.5rem; }
+  .feature-number { color: var(--primary-bright); font: .75rem/1.5 var(--mono); padding-top: .55rem; }
+  .feature-intro h2 { max-width: 14ch; margin-bottom: 1rem; font-size: clamp(2rem, 3.1vw, 2.85rem); }
+  .feature-intro p { max-width: 45ch; margin-bottom: 1.6rem; }
+  .feature-details { margin: 0; display: grid; grid-template-columns: 1fr; align-content: start; gap: 1.8rem; }
+  .feature-details dt { font-size: .95rem; font-weight: 600; margin-bottom: .4rem; }
+  .feature-details dd { margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.7; }
+  .feature-image { margin: 0; min-width: 0; align-self: start; }
+  .screenshot-frame { overflow: hidden; border: 1px solid var(--border-strong); border-radius: var(--radius-card); background: var(--surface); }
+  .screenshot-frame img { width: 100%; height: auto; }
+  figcaption { margin-top: .7rem; color: var(--subtle); font-size: .68rem; }
+  .with-image { grid-template-columns: .85fr 1.15fr; }
+  .with-image .feature-details { grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem 5rem; padding-left: 3.5rem; }
+  .feature-footer { display: flex; align-items: center; justify-content: space-between; gap: 2rem; padding-block: 5rem 3rem; }
+  .feature-footer h2 { margin: 1rem 0; }
+  .feature-footer p { margin: 0; }
+  .feature-footer .button { flex-shrink: 0; }
+  .feature-source { padding-bottom: 4rem; }
+  @media (max-width: 64rem) {
+    .feature-index { align-items: start; flex-direction: column; }
+    .feature-chapter, .with-image { gap: 2rem; }
+    .feature-intro { gap: .75rem; grid-template-columns: 1.5rem minmax(0, 1fr); }
+    .with-image .feature-details { gap: 1.75rem 2rem; padding-left: 2.25rem; }
+  }
+  @media (max-width: 48rem) {
+    .feature-chapter, .with-image { grid-template-columns: minmax(0, 1fr); }
+    .feature-intro h2 { max-width: 18ch; }
+    .feature-details, .with-image .feature-details { grid-template-columns: minmax(0, 1fr); padding-left: 2.25rem; gap: 1.5rem; }
+    .feature-footer { align-items: start; flex-direction: column; padding-block: 3.5rem 2rem; }
+    .feature-index nav { gap: .5rem 1.25rem; }
+  }
+</style>

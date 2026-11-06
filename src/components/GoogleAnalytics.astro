@@ -1,0 +1,13 @@
+<!-- Production-only GA4: local previews never send test traffic. -->
+<script is:inline>
+  if (['refractmc.net', 'www.refractmc.net'].includes(window.location.hostname)) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ window.dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-MX248BTV0T', { allow_google_signals: false, allow_ad_personalization_signals: false });
+    const tag = document.createElement('script');
+    tag.async = true;
+    tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-MX248BTV0T';
+    document.head.appendChild(tag);
+  }
+</script>

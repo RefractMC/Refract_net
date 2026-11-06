@@ -3,7 +3,7 @@ title: Refract 1.3.0 brings Quick Play, smarter imports, and smaller builds
 description: Launch straight into a world or server, export mrpack files, import backup worlds, and get a more reliable Linux experience.
 publishedAt: 2026-07-11
 tags: [release, launcher]
-hero: /images/screenshots/library.png
+hero: /images/screenshots/library.webp
 ---
 
 Refract 1.3.0 makes the distance between choosing a world and playing it much shorter. **Quick Play** can launch directly into a server or world, and desktop shortcuts can target one specific destination.
@@ -21,4 +21,4 @@ Instances can now be exported in Modrinth's `.mrpack` format. ZIP world backups 
 
 ## Reliability
 
-The release adds Java 25 detection, writes failed game launches to the launcher log, fixes several Linux window issues, and reduces packaged binary sizes. The full change list and signed assets are available on the [GitHub release](https://github.com/RefractMC/Refract_MC/releases/tag/v1.3.0).
+The release adds Java 25 detection, writes failed game launches to the launcher log, fixes several Linux window issues, and reduces packaged binary sizes. The full change list and published assets are available on the [GitHub release](https://github.com/RefractMC/Refract_MC/releases/tag/v1.3.0).

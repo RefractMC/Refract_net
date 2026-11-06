@@ -1,0 +1,58 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+import { ArrowUpRight, ArrowRight, Bug, GitPullRequest, MessagesSquare } from "@/components/icons";
+import { getProjectData } from "@/data/project";
+import { getDiscordData } from "@/data/discord";
+import { getPeopleData } from "@/data/people";
+import { site } from "@/data/site";
+const [project, discord, contributors] = await Promise.all([getProjectData(), getDiscordData(), getPeopleData()]);
+const format = (value: number) => value.toLocaleString("en-US");
+const captured = new Date(project.fetchedAt).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" });
+const opportunities = [
+  { icon: Bug, title: "Found a rough edge?", text: "Include your Refract version, operating system, relevant logs, and steps to reproduce it.", label: "Report a bug", href: site.issues + "/new/choose" },
+  { icon: MessagesSquare, title: "Have something in mind?", text: "Discuss an idea or ask a question with enough detail for others to build on it.", label: "Open discussions", href: site.discussions },
+  { icon: GitPullRequest, title: "Want to get involved?", text: "Read the contribution guide, explore open issues, and help with code, translations, or documentation.", label: "Contribution guide", href: site.repository + "/blob/main/CONTRIBUTING.md" }
+];
+---
+<BaseLayout title="Community" description="Join the Refract Minecraft launcher community on Discord and GitHub. Get help, report bugs, discuss ideas, and contribute." editPath="src/pages/community/index.astro">
+  <PageHero eyebrow="Built together" title="Good software starts with people." description="Ask a question. Share an idea. Help make the next release better. There is a place for you in Refract." />
+  <div class="narrow community-channels">
+    <section class="discord-panel surface"><img src="/icons/discord.svg" alt="" width="38" height="38" /><h2>{discord.name}</h2><p>Meet other players, find help with your setup, and talk about what comes next.</p>{(discord.memberCount !== null || discord.onlineCount !== null) && <dl class="discord-counts">{discord.memberCount !== null && <div><dt>Approx. members</dt><dd>{format(discord.memberCount)}</dd></div>}{discord.onlineCount !== null && <div><dt>Approx. online</dt><dd>{format(discord.onlineCount)}</dd></div>}</dl>}<a class="button button-primary" href={discord.inviteUrl}>Join the Discord <ArrowUpRight size={16} /></a><p class="data-note">{discord.status === "unavailable" ? "Public server counts are currently unavailable. You can still use the official invite." : "Public Discord counts captured when the site builds; they may have changed."}</p></section>
+    <section class="github-panel surface"><img src="/icons/github.svg" alt="" width="34" height="34" /><h2>Out in the open.</h2><p>Read the source, follow releases, and see the work behind the launcher.</p><dl class="github-counts">{project.stars !== null && <div><dt>GitHub stars</dt><dd>{format(project.stars)}</dd></div>}{project.forks !== null && <div><dt>Public forks</dt><dd>{format(project.forks)}</dd></div>}{project.downloads !== null && <div><dt>Installer downloads</dt><dd>{format(project.downloads)}</dd></div>}</dl><a class="button button-secondary" href={site.repository}>Explore GitHub <ArrowUpRight size={16} /></a><p class="data-note">GitHub release downloads are not unique users. <a href="#project-data">How we count</a>.</p></section>
+  </div>
+  <section class="section narrow opportunities"><h2>Small contributions.<br />A better launcher.</h2>{opportunities.map(item => <article><item.icon size={24} stroke-width={1.5} /><div><h3>{item.title}</h3><p>{item.text}</p></div><a class="text-link" href={item.href}>{item.label}<ArrowUpRight size={16} /></a></article>)}</section>
+  <section class="narrow contributors-section"><div class="section-head"><h2>The people behind the commits.</h2><p>Public contributors to the Refract application repository.</p></div>{contributors.people.length ? <div class="contributors">{contributors.people.map(person => <a class="contributor" href={person.href}><img src={person.avatar + (person.avatar.includes("?") ? "&s=96" : "?s=96")} alt="" width="44" height="44" loading="lazy" referrerpolicy="no-referrer" /><div><strong>{person.handle}</strong><span>{person.role}</span></div><ArrowUpRight size={14} /></a>)}</div> : <p class="status-message">Contributor data is currently unavailable. <a href={site.repository + "/graphs/contributors"}>View the contributors on GitHub.</a></p>}<p class="data-note">Captured at build time. {contributors.status === "partial" && "Some contributor records could not be loaded."}</p></section>
+  <section class="narrow data-method" id="project-data"><h2>About these numbers</h2><p>GitHub data was checked on {captured} UTC. This static site refreshes data during builds, rather than continuously.</p><p>Installer downloads add the GitHub <code>download_count</code> for EXE, MSI, DMG, PKG, AppImage, DEB, and RPM assets across published releases, including prereleases. Repeated asset IDs are counted once. Updater archives, manifests, signatures, and source archives are excluded.</p><p>These counts do not measure unique users, successful installations, or package-manager downloads. Incomplete API totals are hidden. {project.status !== "available" && "Some GitHub data was unavailable at the last build."}</p><a class="text-link" href={site.repository + "/releases"}>View the source releases <ArrowRight size={15} /></a></section>
+</BaseLayout>
+<style>
+  .community-channels { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; }
+  .community-channels > section { padding: clamp(1.5rem, 4vw, 2.5rem); }
+  .discord-panel { background: #211b2b; border-color: #493858; }
+  .community-channels h2 { margin: 1.7rem 0 1rem; font-size: 2rem; }
+  .community-channels > section > p { max-width: 42ch; font-size: .9rem; }
+  .community-channels .data-note { font-size: .68rem; margin: 1.2rem 0 0; }
+  dl { display: flex; flex-wrap: wrap; gap: 1.8rem; margin: 1.8rem 0; }
+  dl div { display: flex; flex-direction: column-reverse; gap: .4rem; }
+  dt { color: var(--subtle); font-size: .67rem; } dd { margin: 0; font: 500 1.6rem var(--mono); }
+  .opportunities > h2 { margin-bottom: 2.5rem; }
+  .opportunities article { display: grid; grid-template-columns: 30px 1fr auto; gap: 1.5rem; align-items: center; padding-block: 1.8rem; border-top: 1px solid var(--border); }
+  .opportunities article > svg { color: var(--primary-bright); }
+  .opportunities h3 { font-size: 1.1rem; margin-bottom: .6rem; }
+  .opportunities p { font-size: .83rem; margin: 0; max-width: 60ch; }
+  .opportunities .text-link { font-size: .8rem; }
+  .contributors { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; }
+  .contributor { display: flex; align-items: center; gap: .8rem; padding: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: .6rem; }
+  .contributor:hover { border-color: var(--primary); }
+  .contributor img { border-radius: 50%; }
+  .contributor strong { display: block; font-size: .83rem; }
+  .contributor span { display: block; color: var(--subtle); font-size: .7rem; }
+  .contributor > svg { margin-left: auto; color: var(--subtle); }
+  .data-method { margin-block: 3rem 6rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+  .data-method h2 { font-size: 1.3rem; }
+  .data-method p { max-width: 90ch; font-size: .78rem; }
+  .data-method code { font-family: var(--mono); }
+  @media(max-width: 50rem) { .contributors { grid-template-columns: 1fr 1fr; } .opportunities article { grid-template-columns: 25px 1fr; } .opportunities .text-link { grid-column: 2; } }
+  @media(max-width: 38rem) { .community-channels, .contributors { grid-template-columns: 1fr; } .opportunities article { gap: 1rem; } }
+</style>
+

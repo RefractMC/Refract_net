@@ -1,7 +1,14 @@
 ---
 import DownloadLayout from "@/layouts/DownloadLayout.astro";
+import CopyCommand from "@/components/CopyCommand.astro";
 ---
-<DownloadLayout platform="linux" title="Linux" description="Use the AppImage for a portable install, or choose the package that matches your distribution.">
-  <h2>Linux install</h2><p>The one-line installer selects the published package for your system:</p><pre><code>curl -fsSL https://refractmc.net/install.sh | sh</code></pre><h3>AppImage</h3><pre><code>chmod +x Refract-Linux-x86_64.AppImage
-./Refract-Linux-x86_64.AppImage</code></pre><p>Debian/Ubuntu users can install the <code>.deb</code> with <code>sudo apt install ./Refract-Linux-amd64.deb</code>. Fedora/RHEL users can install the RPM with <code>sudo dnf install ./Refract-1.3.0-1.x86_64.rpm</code>.</p>
+<DownloadLayout platform="linux" title="Linux" description="Choose an x86_64 AppImage or the package for your distribution. Arch Linux and Nix options are below.">
+  <h2>Install the downloaded package</h2><p>Run these commands from the folder containing your download. Match the filename to the asset you downloaded.</p>
+  <CopyCommand label="AppImage" command={"chmod +x Refract-Linux-x86_64.AppImage\n./Refract-Linux-x86_64.AppImage"} />
+  <CopyCommand label="Debian / Ubuntu" command="sudo apt install ./Refract-Linux-amd64.deb" />
+  <CopyCommand label="Fedora" command="sudo dnf install ./Refract-Linux-x86_64.rpm" />
+  <h3>Community package options</h3><p>AUR packages and the project Nix flake are separate installation paths. Their versions may differ from the published binaries above.</p>
+  <CopyCommand label="Arch Linux · AUR" command="yay -S refract-launcher-bin" />
+  <CopyCommand label="Nix project flake" command="nix run github:RefractMC/Refract_MC" />
+  <p>See the <a href="https://github.com/RefractMC/Refract_MC/blob/main/docs/PACKAGING.md">project packaging guide</a> for requirements and packaging status. For SteamOS, follow the <a href="/download/steam-deck/">Steam Deck instructions</a>.</p>
 </DownloadLayout>

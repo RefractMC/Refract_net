@@ -1,0 +1,22 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getReleases, type Release } from "@/data/project";
+import { renderReleaseNotes } from "@/lib/markdown";
+import { ArrowLeft, ArrowUpRight } from "@/components/icons";
+export async function getStaticPaths() { return (await getReleases()).map(release => ({ params: { slug: release.slug }, props: { release } })); }
+const { release } = Astro.props as { release: Release };
+const notes = renderReleaseNotes(release.body);
+---
+<BaseLayout title={release.name} description={`Official Refract ${release.version} release notes, published ${release.publishedAt.slice(0, 10)}.`}>
+  <article class="narrow release-article"><a class="text-link" href="/news/"><ArrowLeft size={15} /> All news & releases</a><header><span class="eyebrow">{release.prerelease ? "Prerelease" : "Published release"}</span><h1>{release.name}</h1><time datetime={release.publishedAt}>{new Date(release.publishedAt).toLocaleDateString("en-US", { dateStyle: "long", timeZone: "UTC" })}</time><a href={release.url}>View on GitHub <ArrowUpRight size={14} /></a></header><div class="prose">{notes ? <Fragment set:html={notes} /> : <p>No release notes were published for this version. <a href={release.url}>View the release on GitHub.</a></p>}</div><aside class="release-end surface"><p>Release notes are published by the Refract project and captured when this site builds.</p><a class="button button-secondary" href={release.url}>Downloads for this release <ArrowUpRight size={15} /></a></aside></article>
+</BaseLayout>
+<style>
+  .release-article { max-width: 52rem; padding-block: 3rem 6rem; }
+  header { margin-block: 2.5rem 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+  header .eyebrow { display: block; margin-bottom: 1rem; }
+  h1 { font-size: clamp(2.5rem, 5vw, 3.7rem); margin-bottom: 1rem; }
+  header time { color: var(--subtle); font-size: .8rem; margin-right: 1.5rem; }
+  header > a { display: inline-flex; align-items: center; gap: .3rem; color: var(--primary-bright); font-size: .8rem; }
+  .release-end { margin-top: 3rem; padding: 1.5rem; }
+  .release-end p { font-size: .8rem; }
+</style>

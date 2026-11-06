@@ -3,7 +3,7 @@ interface Props { href: string; title: string; description: string; date: Date; 
 const { href, title, description, date, tags } = Astro.props;
 ---
 <article class="news-card surface">
-  <div class="meta"><time datetime={date.toISOString()}>{date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</time><span>{tags[0] ?? "News"}</span></div>
+  <div class="meta"><time datetime={date.toISOString()}>{date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" })}</time><span>{tags[0] ?? "News"}</span></div>
   <h2><a href={href}>{title}</a></h2>
   <p>{description}</p>
   <div class="tags">{tags.map((tag) => <a class="tag" href={`/tags/${encodeURIComponent(tag.toLowerCase())}/`}>{tag}</a>)}</div>

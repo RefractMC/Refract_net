@@ -1,0 +1,29 @@
+---
+import { Copy } from "@/components/icons";
+interface Props { command: string; label: string; }
+const { command, label } = Astro.props;
+---
+<copy-command><span class="command-label">{label}</span><div><pre><code>{command}</code></pre><button type="button" aria-label={`Copy ${label} command`} data-command={command}><Copy size={16} /><span>Copy</span></button></div><span class="copy-status" role="status" aria-live="polite"></span></copy-command>
+<script>
+  class CopyCommand extends HTMLElement {
+    connectedCallback() {
+      const button = this.querySelector("button")!;
+      const status = this.querySelector<HTMLElement>(".copy-status")!;
+      button.addEventListener("click", async () => {
+        try { await navigator.clipboard.writeText(button.dataset.command!); status.textContent = "Copied to clipboard."; }
+        catch { status.textContent = "Copy unavailable. Select the command above and copy it manually."; }
+      });
+    }
+  }
+  customElements.define("copy-command", CopyCommand);
+</script>
+<style>
+  copy-command { display: block; margin-block: 1.25rem; min-width: 0; }
+  .command-label { display: block; margin-bottom: .5rem; color: var(--text); font-size: .8rem; font-weight: 550; }
+  copy-command > div { display: flex; align-items: center; gap: .5rem; background: var(--code); border: 1px solid var(--border-strong); border-radius: var(--radius-control); padding-right: .5rem; }
+  pre { margin: 0; min-width: 0; overflow-x: auto; padding: 1rem; font: .76rem/1.6 var(--mono); color: #d8c6f7; flex: 1; }
+  button { display: inline-flex; justify-content: center; align-items: center; gap: .4rem; min-height: 44px; min-width: 44px; border: 0; border-radius: .3rem; padding: .5rem; background: var(--surface-raised); color: var(--text); font-size: .7rem; }
+  button:hover { background: #332a40; }
+  .copy-status { display: block; min-height: 1.4rem; margin-top: .25rem; font-size: .7rem; color: var(--primary-bright); }
+  @media(max-width: 30rem) { button span { display: none; } }
+</style>

@@ -1,0 +1,72 @@
+---
+import { PanelsTopLeft, Search, Settings2, Expand, X, ArrowUpRight } from "@/components/icons";
+const shots = [
+  { id: "library", title: "Instance library", alt: "Refract v1.5.0 instance library with Fresh & Smooth, Capybaras Valley, and Homestead instances, launch controls, and activity history.", icon: PanelsTopLeft, height: 1028 },
+  { id: "browse", title: "Browse mods", alt: "Refract v1.5.0 mod browser with Minecraft version and loader filters, mod cards, and install controls.", icon: Search, height: 1031 },
+  { id: "settings", title: "Make it yours", alt: "Refract v1.5.0 settings for custom themes, accent colors, memory, sidebar width, language, and launch behavior.", icon: Settings2, height: 1033 }
+];
+---
+<refract-gallery>
+  <div class="gallery-bar">
+    <div class="gallery-tabs" role="tablist" aria-label="Launcher screenshots">
+      {shots.map((shot, index) => <button type="button" id={`tab-${shot.id}`} role="tab" aria-selected={index === 0} aria-controls={`panel-${shot.id}`} tabindex={index === 0 ? 0 : -1} data-shot={shot.id}><shot.icon size={15} /><span>{shot.title}</span></button>)}
+    </div>
+    <a class="expand-link" href="/images/screenshots/library.webp" data-expand aria-label="Enlarge launcher screenshot"><Expand size={17} /></a>
+  </div>
+  <div class="gallery-screen">
+    {shots.map((shot, index) => <div role="tabpanel" id={`panel-${shot.id}`} aria-labelledby={`tab-${shot.id}`} hidden={index !== 0} tabindex="0"><img src={`/images/screenshots/${shot.id}.webp`} srcset={`/images/screenshots/${shot.id}-768.webp 768w, /images/screenshots/${shot.id}-1280.webp 1280w, /images/screenshots/${shot.id}.webp 1919w`} sizes="(max-width: 640px) calc(100vw - 32px), (max-width: 1280px) calc(100vw - 64px), 1216px" alt={shot.alt} width="1919" height={shot.height} loading={index === 0 ? "eager" : "lazy"} fetchpriority={index === 0 ? "high" : "auto"} /></div>)}
+  </div>
+  <div class="gallery-caption"><span>Actual launcher interface · v1.5.0 · custom theme</span><a href="/features/">Explore the features <span aria-hidden="true"><ArrowUpRight size={16}/></span></a></div>
+  <dialog aria-label="Launcher screenshot enlarged"><button class="dialog-close" type="button" aria-label="Close screenshot"><X size={20} /></button><img src="/images/screenshots/library.webp" alt={shots[0].alt} width="1919" height={shots[0].height} /></dialog>
+</refract-gallery>
+<script>
+  class RefractGallery extends HTMLElement {
+    connectedCallback() {
+      const tabs = [...this.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+      const panels = [...this.querySelectorAll<HTMLElement>('[role="tabpanel"]')];
+      const expand = this.querySelector<HTMLAnchorElement>("[data-expand]")!;
+      const dialog = this.querySelector<HTMLDialogElement>("dialog")!;
+      const select = (selected: HTMLButtonElement) => {
+        tabs.forEach(tab => { tab.setAttribute("aria-selected", String(tab === selected)); tab.tabIndex = tab === selected ? 0 : -1; });
+        panels.forEach(panel => { panel.hidden = panel.id !== selected.getAttribute("aria-controls"); });
+        const active = panels.find(panel => !panel.hidden)?.querySelector("img");
+        if (active) { expand.href = active.src; const enlarged = dialog.querySelector("img")!; enlarged.src = active.src; enlarged.alt = active.alt; enlarged.width = active.width; enlarged.height = active.height; }
+      };
+      tabs.forEach((tab, index) => {
+        tab.addEventListener("click", () => select(tab));
+        tab.addEventListener("keydown", event => {
+          let next = index;
+          if (event.key === "ArrowRight") next = (index + 1) % tabs.length;
+          else if (event.key === "ArrowLeft") next = (index + tabs.length - 1) % tabs.length;
+          else if (event.key === "Home") next = 0;
+          else if (event.key === "End") next = tabs.length - 1;
+          else return;
+          event.preventDefault(); select(tabs[next]); tabs[next].focus();
+        });
+      });
+      expand.addEventListener("click", event => { event.preventDefault(); dialog.showModal(); });
+      dialog.querySelector("button")!.addEventListener("click", () => dialog.close());
+      dialog.addEventListener("click", event => { if (event.target === dialog) dialog.close(); });
+    }
+  }
+  customElements.define("refract-gallery", RefractGallery);
+</script>
+<style>
+  refract-gallery { display: block; }
+  .gallery-bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+  .gallery-tabs { display: flex; gap: .4rem; }
+  .gallery-tabs button { min-height: 40px; display: inline-flex; align-items: center; gap: .55rem; border: 1px solid transparent; border-radius: .5rem; padding: .65rem 1rem; color: var(--subtle); background: transparent; font-size: .78rem; }
+  .gallery-tabs button[aria-selected="true"] { color: var(--text); background: var(--surface-raised); border-color: var(--border-strong); }
+  .gallery-tabs button:hover { color: var(--text); }
+  .expand-link { display: grid; place-items: center; height: 40px; width: 40px; color: var(--subtle); border: 1px solid var(--border); border-radius: .5rem; }
+  .gallery-screen { overflow: hidden; border: 1px solid var(--border-strong); border-radius: .7rem; background: #0f0f12; box-shadow: 0 30px 90px #0004; }
+  .gallery-screen img { width: 100%; aspect-ratio: 1919 / 1033; object-fit: contain; }
+  .gallery-caption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; margin-top: 1rem; color: var(--subtle); font-size: .7rem; }
+  .gallery-caption a { color: var(--muted); }
+  .gallery-caption a:hover { color: var(--primary-bright); }
+  dialog { width: min(96vw, 1600px); max-width: none; padding: 3rem .5rem .5rem; border: 1px solid var(--border-strong); border-radius: .75rem; background: var(--surface); color: var(--text); }
+  dialog::backdrop { background: #050508e8; }
+  .dialog-close { position: absolute; top: .3rem; right: .5rem; display: grid; place-items: center; width: 40px; height: 40px; background: transparent; border: 0; color: var(--text); }
+  dialog img { max-height: 82vh; width: 100%; object-fit: contain; }
+  @media (max-width: 40rem) { .gallery-tabs { gap: .1rem; } .gallery-tabs button { padding: .6rem .65rem; font-size: .68rem; gap: .35rem; } .gallery-tabs svg { display: none; } .gallery-bar { gap: .35rem; } .gallery-caption { font-size: .65rem; } }
+</style>

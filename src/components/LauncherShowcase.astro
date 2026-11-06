@@ -1,0 +1,46 @@
+---
+import { Expand, PanelsTopLeft, Search, Settings2 } from "@/components/icons";
+import VoxelScene from "./VoxelScene.astro";
+---
+<launcher-showcase>
+  <div class="showcase-window">
+    <div class="window-title"><span><img src="/icons/refract-iris.svg" width="14" height="14" alt="" /> REFRACT LAUNCHER</span><span aria-hidden="true">− □ ×</span></div>
+    <img data-showcase-image src="/images/landing/library.webp" alt="Refract instance library with separate modpacks and play controls" width="1440" height="770" fetchpriority="high" />
+    <a data-showcase-expand href="/images/landing/library.webp" aria-label="Open full launcher screenshot"><Expand size={16}/></a>
+  </div>
+  <div class="world-scene"><VoxelScene model="world" /></div>
+  <div class="showcase-tabs" role="group" aria-label="Choose launcher screenshot">
+    <button type="button" data-image="/images/landing/library.webp" data-alt="Refract instance library with separate modpacks and play controls" aria-pressed="true"><PanelsTopLeft size={18}/>Library</button>
+    <button type="button" data-image="/images/screenshots/browse-1280.webp" data-alt="Refract mod browser with filters and install controls" aria-pressed="false"><Search size={18}/>Mods</button>
+    <button type="button" data-image="/images/screenshots/settings-1280.webp" data-alt="Refract custom theme and appearance settings" aria-pressed="false"><Settings2 size={18}/>Themes</button>
+  </div>
+</launcher-showcase>
+<script>
+  class LauncherShowcase extends HTMLElement {
+    connectedCallback(){
+      const image=this.querySelector<HTMLImageElement>('[data-showcase-image]')!;
+      const expand=this.querySelector<HTMLAnchorElement>('[data-showcase-expand]')!;
+      this.querySelectorAll<HTMLButtonElement>('[data-image]').forEach(button=>button.addEventListener('click',()=>{
+        image.src=button.dataset.image!;image.alt=button.dataset.alt!;expand.href=button.dataset.image!;
+        this.querySelectorAll('[data-image]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
+      }));
+    }
+  }
+  if(!customElements.get('launcher-showcase'))customElements.define('launcher-showcase',LauncherShowcase);
+</script>
+<style>
+  launcher-showcase { position:relative; display:block; min-width:0; padding-top:12px; padding-bottom:130px; }
+  .showcase-window { position:relative; transform:perspective(1200px) rotateY(-8deg) rotateX(3deg) rotateZ(1deg); border:3px solid #726389; box-shadow:8px 9px 0 #28203c, 18px 30px 65px #0809167a; background:#14151f; }
+  .window-title { display:flex; justify-content:space-between; align-items:center; padding:7px 10px; font-size:9px; letter-spacing:.12em; color:#d8c9f0; background:#272338; }
+  .window-title span:first-child { display:flex; align-items:center; gap:7px; }
+  .window-title span:last-child { letter-spacing:.6em; color:#9989b7; }
+  .showcase-window>img { aspect-ratio:1.868; width:100%; object-fit:cover; }
+  .showcase-window>a { position:absolute; right:8px; bottom:8px; display:grid; place-items:center; background:#211c34; border:1px solid #a28bbd; width:44px; height:44px; }
+  .world-scene { position:absolute; width:68%; height:270px; bottom:5px; right:-24px; pointer-events:none; }
+  .world-scene :global(button) { pointer-events:auto; }
+  .showcase-tabs { position:absolute; bottom:96px; left:0; display:flex; gap:7px; }
+  .showcase-tabs button { display:flex; align-items:center; gap:6px; font-size:12px; font-weight:650; color:#c1b9d1; padding:7px 10px; min-height:44px; background:#242133; border:1px solid #514461; box-shadow:0 3px #0d0d18; }
+  .showcase-tabs button[aria-pressed="true"] { background:#9162d5; color:#fff7e8; border-color:#bc94ef; }
+  .showcase-tabs button:hover { transform:translateY(-2px); }
+  @media(max-width:767px) { launcher-showcase { padding-bottom:152px; } .world-scene { height:240px; bottom:0; right:-12px; width:65%; } .showcase-tabs { bottom:95px; gap:4px; } .showcase-tabs button { font-size:10px; padding:6px; } .showcase-window { transform:perspective(1200px) rotateY(-4deg) rotateZ(1deg); } }
+</style>

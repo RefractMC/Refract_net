@@ -40,6 +40,8 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Check content and types
         run: pnpm typecheck
+      - name: Check public data and release-note sanitization
+        run: pnpm test
       - name: Build site
         run: pnpm build
         env:

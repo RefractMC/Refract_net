@@ -1,27 +1,30 @@
 ---
+import { ArrowUpRight } from "@/components/icons";
 import { site } from "@/data/site";
 const editPath = Astro.props.editPath as string | undefined;
 ---
 <footer class="footer">
-  <div class="container footer-inner">
-    <a class="footer-brand" href="/"><img src="/icons/refract-iris.svg" alt="" width="42" height="42" /><span>Refract</span></a>
-    <nav aria-label="Footer navigation">
-      {editPath && <a href={`${site.websiteRepository}/edit/main/${editPath}`} target="_blank" rel="noreferrer">Edit this page</a>}
-      <a href={site.repository} target="_blank" rel="noreferrer">Source</a>
-      <a href={`${site.repository}/blob/main/LICENSE`} target="_blank" rel="noreferrer">GPL-3.0</a>
-      <a href={site.issues} target="_blank" rel="noreferrer">Issues</a>
-    </nav>
-    <p>© 2026 Refract contributors</p>
+  <div class="container footer-top">
+    <div class="footer-identity"><a class="footer-brand" href="/"><img src="/icons/refract-iris.svg" alt="" width="30" height="30" /><span>Refract</span></a><p>Your Minecraft library, in focus.</p><div class="footer-social"><a href={site.repository} aria-label="GitHub"><img src="/icons/github.svg" alt="" width="19" height="19" /></a><a href={site.discord} aria-label="Discord"><img src="/icons/discord.svg" alt="" width="21" height="21" /></a></div></div>
+    <nav aria-label="Product links"><h2>Product</h2><a href="/download/">Download</a><a href="/features/">Features</a><a href="/news/">News & releases</a><a href="/wiki/">Documentation</a></nav>
+    <nav aria-label="Project links"><h2>Project</h2><a href="/about/">About Refract</a><a href="/community/">Community</a><a href={site.repository + "/blob/main/CONTRIBUTING.md"}>Contribute</a><a href={site.issues}>Report a bug</a></nav>
+    <nav aria-label="Legal and source links"><h2>Open source</h2><a href={site.repository}>Application source</a><a href={site.websiteRepository}>Website source</a><a href={site.repository + "/blob/main/PRIVACY.md"}>Privacy</a><a href={site.repository + "/blob/main/SECURITY.md"}>Security policy</a></nav>
   </div>
+  <div class="container footer-bottom"><p>© {new Date().getUTCFullYear()} Refract contributors · <a href={site.repository + "/blob/main/LICENSE"}>GPL-3.0</a></p><p>Not affiliated with Mojang or Microsoft.</p>{editPath && <a href={site.websiteRepository + "/edit/main/" + editPath}>Edit this page <ArrowUpRight size={16}/></a>}</div>
 </footer>
 <style>
-  .footer { border-top: 1px solid var(--border); border-radius: var(--radius-shell) var(--radius-shell) 0 0; background: var(--surface); }
-  .footer-inner { min-height: 100px; padding-block: 1.5rem; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 2rem; }
-  .footer-brand { display: inline-flex; align-items: center; gap: .6rem; font-size: 1.35rem; font-weight: 500; }
-  .footer-brand img { width: 42px; height: 42px; }
-  .footer nav { display: flex; flex-wrap: wrap; gap: 1.2rem; }
-  .footer nav a { color: var(--text); font-size: .95rem; }
-  .footer nav a:hover { color: #9de56a; }
-  .footer p { margin: 0; color: var(--subtle); font-size: .82rem; }
-  @media (max-width: 46rem) { .footer-inner { grid-template-columns: 1fr; gap: 1rem; } }
+  .footer { border-top: 1px solid var(--border); }
+  .footer-top { padding-block: 3.5rem 3rem; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem; }
+  .footer-brand { display: inline-flex; align-items: center; gap: .5rem; font-size: 1.6rem; font-weight: 600; letter-spacing: -.06em; }
+  .footer-identity p { margin: .8rem 0 1rem; font-size: .83rem; }
+  .footer-social { display: flex; gap: .5rem; }
+  .footer-social a { display: grid; place-items: center; width: 38px; height: 38px; border: 1px solid var(--border); border-radius: .5rem; }
+  .footer nav { display: flex; flex-direction: column; align-items: start; }
+  .footer nav h2 { margin-bottom: .85rem; font-size: .8rem; letter-spacing: 0; font-weight: 600; }
+  .footer nav a { padding-block: .35rem; color: var(--muted); font-size: .78rem; }
+  .footer a:hover { color: var(--primary-bright); }
+  .footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; padding-block: 1.6rem; border-top: 1px solid var(--border); color: var(--subtle); font-size: .68rem; }
+  .footer-bottom p { margin: 0; color: inherit; }
+  @media (max-width: 48rem) { .footer-top { grid-template-columns: repeat(3, 1fr); } .footer-identity { grid-column: 1 / -1; } }
+  @media (max-width: 30rem) { .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem 1rem; } }
 </style>

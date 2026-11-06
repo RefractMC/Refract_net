@@ -1,0 +1,53 @@
+---
+import { Monitor, Laptop, Terminal, ArrowDownToLine, ArrowUpRight, ArrowRight } from "@/components/icons";
+import type { DownloadData } from "@/data/downloads";
+const { data } = Astro.props as { data: DownloadData };
+const groups = [
+  { name: "Windows", icon: Monitor, guide: "/download/windows/", description: "For your Windows desktop.", slots: [
+    { key: "windows-x64", name: "Windows x64", format: "EXE", architecture: "x64", platform: "windows" as const, detail: ".exe installer" }
+  ] },
+  { name: "macOS", icon: Laptop, guide: "/download/mac/", description: "Choose your Mac’s processor.", slots: [
+    { key: "mac-arm64", name: "Apple Silicon", format: "DMG", architecture: "arm64", platform: "macos" as const, detail: ".dmg installer" },
+    { key: "mac-x64", name: "Intel", format: "DMG", architecture: "x64", platform: "macos" as const, detail: ".dmg installer" }
+  ] },
+  { name: "Linux", icon: Terminal, guide: "/download/linux/", description: "Packages for x86_64 / amd64.", slots: [
+    { key: "linux-appimage", name: "AppImage", format: "AppImage", architecture: "x64", platform: "linux" as const, detail: "Portable" },
+    { key: "linux-deb", name: ".deb", format: "DEB", architecture: "x64", platform: "linux" as const, detail: "Debian / Ubuntu" },
+    { key: "linux-rpm", name: ".rpm", format: "RPM", architecture: "x64", platform: "linux" as const, detail: "Fedora / RHEL" }
+  ] }
+];
+---
+<div class="platform-downloads">
+  {groups.map(group => <article class="platform-card">
+    <group.icon size={28} stroke-width={1.5} />
+    <h3>{group.name}</h3><p>{group.description}</p>
+    <div class="download-rows">{group.slots.map(slot => {
+      const asset = data.platforms[slot.platform].find(item => item.architecture === slot.architecture && item.format === slot.format);
+      return <div class="download-row" data-download-slot={slot.key} data-format={slot.format} data-architecture={slot.architecture} data-platform={slot.platform}>
+        <div><strong>{slot.name}</strong><span>{slot.detail}<span data-asset-size>{asset?.size ? ` · ${asset.size}` : ""}</span></span></div>
+        <a class="download-file" href={asset?.href ?? data.releaseUrl} data-asset-link aria-label={asset ? `Download ${group.name} ${slot.name}` : `Check availability of ${group.name} ${slot.name}`}><span data-asset-action>{asset ? "Download" : "Check release"}</span><ArrowDownToLine size={16} /></a>
+      </div>;
+    })}</div>
+    <a class="text-link guide" href={group.guide}>Installation guide <ArrowUpRight size={15} /></a>
+  </article>)}
+</div>
+<div class="download-notes"><p>macOS builds are unsigned. Read the installation guide before your first launch.</p><a class="text-link" href="/download/linux/">Arch / AUR, Nix & Linux setup <ArrowRight size={15} /></a></div>
+<style>
+  .platform-downloads { display: grid; grid-template-columns: repeat(3, 1fr); text-align: left; border: 1px solid var(--border); border-radius: .65rem; background: var(--surface); overflow: hidden; }
+  .platform-card { min-width: 0; padding: 2rem; display: flex; flex-direction: column; }
+  .platform-card + .platform-card { border-left: 1px solid var(--border); }
+  .platform-card > svg { color: var(--muted); margin-bottom: 1.2rem; }
+  h3 { font-size: 1.5rem; margin-bottom: .55rem; }
+  .platform-card > p { font-size: .8rem; margin-bottom: 1.5rem; }
+  .download-rows { margin-bottom: 1.3rem; }
+  .download-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem; padding-block: .85rem; border-top: 1px solid var(--border); }
+  .download-row strong { display: block; font-size: .83rem; font-weight: 550; }
+  .download-row div > span { display: block; font-size: .68rem; color: var(--subtle); margin-top: .2rem; }
+  .download-file { display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; font-size: .76rem; color: var(--primary-bright); }
+  .download-file:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .guide { font-size: .78rem; margin-top: auto; min-height: 44px; }
+  .download-notes { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem 2rem; margin-top: 1.3rem; text-align: left; }
+  .download-notes p, .download-notes a { font-size: .76rem; margin: 0; }
+  @media (max-width: 1023px) { .platform-card { padding: 1.3rem; } }
+  @media (max-width: 767px) { .platform-downloads { grid-template-columns: 1fr; } .platform-card { padding: 1.5rem; } .platform-card + .platform-card { border-left: 0; border-top: 1px solid var(--border); } }
+</style>
