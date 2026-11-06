@@ -127,7 +127,7 @@
   .pixel-home .container { width:calc(100% - 36px); }.pixel-home .header-inner { min-height:68px; gap:12px; }.pixel-home .header-actions { margin-left:auto; }
   .pixel-home .home-hero { grid-template-columns:1fr; gap:24px; padding-top:39px; padding-bottom:0; }.pixel-home .hero-copy { max-width:500px; margin:auto; width:100%; padding-bottom:0; }
   .pixel-home .hero-brand { justify-content:center; gap:16px; margin-bottom:24px; }.pixel-home h1 { font-size:clamp(44px,12vw,65px); }.pixel-home .hero-brand>img { width:58px; height:58px; }
-  .pixel-home .hero-tagline { text-align:center; font-size:24px; }.pixel-home .hero-description { text-align:center; font-size:13px; }.pixel-home .hero-download { min-height:60px; font-size:18px; }
+  .pixel-home .hero-tagline { text-align:center; font-size:24px; }.pixel-home .hero-description { text-align:center; font-size:13px; }.pixel-home .hero-actions { display:none; }
   .pixel-home .hero-secondary .pixel-button { justify-content:center; font-size:12px; }.pixel-home .hero-secondary small { font-size:11px; }.pixel-home .hero-platforms { margin-top:18px; }
   .pixel-home launcher-showcase { margin-top:10px; }.pixel-home .landing-sky { padding-bottom:35px; }
   .pixel-home .feature-shortcuts { gap:9px; margin-top:0; }.pixel-home .feature-shortcuts a { font-size:11px; padding:8px 12px; gap:6px; }.pixel-home .feature-shortcuts svg { width:14px; height:14px; }
